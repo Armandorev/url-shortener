@@ -1,0 +1,29 @@
+group 'benjamin.groehbiel.ch'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'spring-boot'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.2.3.RELEASE'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.2.3.RELEASE'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.2.3'
+}
+
+idea.module {
+    outputDir = file('.idea/classes/main')
+    testOutputDir = file('.idea/classes/test')
+}
