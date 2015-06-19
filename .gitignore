@@ -1,8 +1,13 @@
 .gradle
+gradle/
+gradlew
+gradlew.bat
+!gradle-wrapper.jar
+settings.gradle
 build/
 
-# Ignore Gradle GUI config
-gradle-app.setting
+.idea/
+.DS_Store
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
+.gitignore
+url-shortener.iml
