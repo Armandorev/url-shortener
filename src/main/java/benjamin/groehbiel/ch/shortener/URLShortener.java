@@ -3,7 +3,6 @@ package benjamin.groehbiel.ch.shortener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
@@ -23,25 +22,24 @@ public class URLShortener {
 
         String hash = digits.stream()
                 .map(d -> alphabet.getLetterFor(d).toString())
-                .collect(Collectors.joining());
+                .collect(joining());
 
         return hash;
     }
 
-    protected Integer encode(String hash) {
-        List<Integer> mappedToInt = hash.chars()
+    protected Long encode(String hash) {
+        List<Integer> mappedToInts = hash.chars()
                 .mapToObj(characterValue -> alphabet.getIndexFor((char) characterValue))
                 .collect(toList());
 
-        return stringify(mappedToInt);
+        return longify(mappedToInts);
     }
 
-    // TODO: verify upper bounds, Long is used elsewhere.
-    private Integer stringify(List<Integer> listOfInts) {
-        String concatInts = listOfInts.stream()
+    private Long longify(List<Integer> listOfInts) {
+        String number = listOfInts.stream()
                 .map(item -> new String("" + item))
                 .collect(joining());
 
-        return Integer.parseInt(concatInts);
+        return Long.parseLong(number);
     }
 }

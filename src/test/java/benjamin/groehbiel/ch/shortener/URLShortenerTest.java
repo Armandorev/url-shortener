@@ -36,15 +36,15 @@ public class URLShortenerTest {
     @Test
     public void shouldDecode() {
         String hash = "bba";
-        Integer id = urlShortener.encode(hash);
-        MatcherAssert.assertThat(id, Matchers.equalTo(110));
+        Long id = urlShortener.encode(hash);
+        MatcherAssert.assertThat(id, Matchers.equalTo(110L));
     }
 
     @Test
     public void shouldDecodeAZeroHash() {
         String hash = "a";
-        Integer id = urlShortener.encode(hash);
-        MatcherAssert.assertThat(id, Matchers.equalTo(0));
+        Long id = urlShortener.encode(hash);
+        MatcherAssert.assertThat(id, Matchers.equalTo(0L));
     }
 
 
