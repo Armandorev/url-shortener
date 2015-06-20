@@ -28,6 +28,7 @@ public class UrlShortenerServiceTest {
         URI inputUri = new URI("http://www.example.org");
         URI shortenedURI = shortenerService.shorten(inputUri);
         MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/a"));
+
         URI anotherShortenedUri = new URI("http://www.example2.org");
         shortenedURI = shortenerService.shorten(anotherShortenedUri);
         MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/b"));
@@ -36,13 +37,10 @@ public class UrlShortenerServiceTest {
     @Test
     public void shouldReuseShortenedURIs() throws URISyntaxException {
         URI inputUri = new URI("http://www.example.org");
-
         URI shortenedURI = shortenerService.shorten(inputUri);
-
         MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/a"));
 
         shortenedURI = shortenerService.shorten(inputUri);
-
         MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/a"));
     }
 
