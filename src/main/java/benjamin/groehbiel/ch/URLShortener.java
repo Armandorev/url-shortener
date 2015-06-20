@@ -8,24 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class URLShortener {
 
-    private Map<Integer, Character> alphabet;
+    Alphabet alphabet;
 
     public URLShortener() {
-        alphabet = new HashMap<>();
-        alphabet.put(0, 'a');
-        alphabet.put(1, 'b');
-        alphabet.put(2, 'c');
-        alphabet.put(3, 'd');
-        alphabet.put(4, 'e');
-        alphabet.put(5, 'f');
-        alphabet.put(6, 'g');
-        alphabet.put(7, 'h');
-        alphabet.put(8, 'i');
-        alphabet.put(9, 'j');
+        alphabet = new Base10Alphabet();
     }
 
     protected String decode(Long id) {
@@ -33,14 +27,26 @@ public class URLShortener {
         List<Integer> digits = BaseConverter.convert(id, 10, 10);
 
         String hash = digits.stream()
-                .map(d -> alphabet.get(d).toString())
+                .map(d -> alphabet.getLetterFor(d).toString())
                 .collect(Collectors.joining());
 
         return hash;
     }
 
-    protected URI restore(String hash) {
-        return null;
+    protected Integer encode(String hash) {
+        List<Integer> mappedToInt = hash.chars()
+                .mapToObj(characterValue -> alphabet.getIndexFor((char) characterValue))
+                .collect(toList());
+
+        return stringify(mappedToInt);
     }
 
+    // TODO: verify upper bounds, Long is used elsewhere.
+    private Integer stringify(List<Integer> listOfInts) {
+        String concatInts = listOfInts.stream()
+                .map(item -> new String("" + item))
+                .collect(joining());
+
+        return Integer.parseInt(concatInts);
+    }
 }

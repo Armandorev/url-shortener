@@ -23,7 +23,7 @@ public class BaseConverterTest {
     @Test
     public void convertBase10ToBase2NumberIsZero() throws Exception {
         List<Integer> convertedNumber = BaseConverter.convert(0L, 10, 2);
-        MatcherAssert.assertThat(convertedNumber, Matchers.hasSize(0));
+        MatcherAssert.assertThat(convertedNumber, Matchers.hasSize(1));
     }
 
     @Test
