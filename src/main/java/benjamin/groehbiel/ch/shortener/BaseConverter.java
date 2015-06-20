@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch;
+package benjamin.groehbiel.ch.shortener;
 
 import java.util.ArrayList;
 import java.util.List;

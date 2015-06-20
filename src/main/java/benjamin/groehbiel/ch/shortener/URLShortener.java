@@ -1,14 +1,9 @@
-package benjamin.groehbiel.ch;
+package benjamin.groehbiel.ch.shortener;
 
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;

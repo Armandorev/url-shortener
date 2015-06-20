@@ -1,5 +1,6 @@
-package benjamin.groehbiel.ch;
+package benjamin.groehbiel.ch.shortener;
 
+import benjamin.groehbiel.ch.shortener.BaseConverter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;

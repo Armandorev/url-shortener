@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch;
+package benjamin.groehbiel.ch.shortener;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.Ignore;
