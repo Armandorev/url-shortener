@@ -1,2 +1,4 @@
 # url-shortener
-A URL shortener service which should be easily deployable to PWS. 
+An URL shortener which is easily deployed on PWS.
+
+[Demo](http://bengro-url-shortener.cfapps.io/)
