@@ -1,11 +1,13 @@
 package benjamin.groehbiel.ch.shortener;
 
+import org.springframework.stereotype.Service;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+@Service
 public class ShortenerService {
 
     private Long nextUniqueId = 0L;
@@ -14,7 +16,7 @@ public class ShortenerService {
 
     URLShortener urlShortener = new URLShortener();
 
-    protected URI shorten(URI inputUri) throws URISyntaxException {
+    public URI shorten(URI inputUri) throws URISyntaxException {
         if (hasShortenedURI.containsKey(inputUri)) {
             Long id = hasShortenedURI.get(inputUri);
             String hash = urlShortener.decode(id);
@@ -43,5 +45,9 @@ public class ShortenerService {
         }).findFirst().get();
 
         return existingURI.getKey();
+    }
+
+    public Map<URI, Long> getShortenedURIs() {
+        return hasShortenedURI;
     }
 }
