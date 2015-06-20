@@ -15,7 +15,6 @@ public class UrlShortenerService {
     @Test
     public void shouldShortenUri() throws URISyntaxException {
         URI inputUri = new URI("http://www.example.org");
-
     }
 
     @Ignore

@@ -1,9 +1,12 @@
 package benjamin.groehbiel.ch;
 
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 
@@ -33,5 +36,20 @@ public class URLShortenerTest {
         String hash = urlShortener.decode(101L);
         MatcherAssert.assertThat(hash, Matchers.equalTo("bab"));
     }
+
+    @Test
+    public void shouldDecode() {
+        String hash = "bba";
+        Integer id = urlShortener.encode(hash);
+        MatcherAssert.assertThat(id, Matchers.equalTo(110));
+    }
+
+    @Test
+    public void shouldDecodeAZeroHash() {
+        String hash = "a";
+        Integer id = urlShortener.encode(hash);
+        MatcherAssert.assertThat(id, Matchers.equalTo(0));
+    }
+
 
 }
