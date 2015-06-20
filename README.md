@@ -1,2 +1,2 @@
-# did-you-mean
-Levensthein edit distance as a service.
+# url-shortener
+A URL shortener service which should be easily deployable to PWS. 
