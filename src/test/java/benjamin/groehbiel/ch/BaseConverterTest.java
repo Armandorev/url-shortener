@@ -37,4 +37,10 @@ public class BaseConverterTest {
         List<Integer> convertedNumber = BaseConverter.convert(31L, 10, 8);
         MatcherAssert.assertThat(convertedNumber, Matchers.contains(3, 7));
     }
+
+    @Test
+    public void convertBase10ToBase10() {
+        List<Integer> convertedNumber = BaseConverter.convert(0L, 10, 10);
+        MatcherAssert.assertThat(convertedNumber, Matchers.contains(0));
+    }
 }
