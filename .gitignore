@@ -11,4 +11,4 @@ build/
 
 .gitignore
 url-shortener.iml
-git-correction.sh
+tmp
