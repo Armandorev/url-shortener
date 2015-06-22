@@ -10,6 +10,7 @@ import java.util.Map;
 @Service
 public class ShortenerService {
 
+    public static final String SHORTENER_HOST = "http://www.shortener.com/";
     private Long nextUniqueId = 0L;
 
     Map<URI, Long> hasShortenedURI = new HashMap<>();
@@ -33,10 +34,10 @@ public class ShortenerService {
     }
 
     private URI createURI(String hash) throws URISyntaxException {
-        return new URI("http://www.shortener.com/" + hash);
+        return new URI(SHORTENER_HOST + hash);
     }
 
-    // TODO: runs in O(n), should be O(1).
+    // TODO: runs in O(n), should be O(1). Use Synced HashMaps, O(N) memory, O(1) complexity.
     public URI expand(String hash) throws URISyntaxException {
         Long hashId = urlShortener.encode(hash);
         Map.Entry<URI, Long> existingURI = hasShortenedURI.entrySet().stream().filter(uriLongEntry -> {
@@ -49,5 +50,11 @@ public class ShortenerService {
 
     public Map<URI, Long> getShortenedURIs() {
         return hasShortenedURI;
+    }
+
+    // TODO: only exists for tests to clear state after each test. Find better pattern.
+    public void clear() {
+        nextUniqueId = 0L;
+        hasShortenedURI.clear();
     }
 }
