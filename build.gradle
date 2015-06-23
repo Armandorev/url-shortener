@@ -30,3 +30,7 @@ idea.module {
     outputDir = file('.idea/classes/main')
     testOutputDir = file('.idea/classes/test')
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
