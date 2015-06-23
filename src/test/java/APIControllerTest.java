@@ -41,15 +41,18 @@ public class APIControllerTest {
     @Value("${local.server.port}")
     int port;
 
+    String host;
+
     @Before
     public void before() {
-        Logger.getLogger("APIController.class").info("Running tests on port " + port);
+        host = "http://localhost:" + port;
+        Logger.getLogger("APIController.class").info("Running tests on " + host);
         shortenerService.clear();
     }
 
     @Test
     public void shouldExposeAListOfTheAllURIsShortened() throws Exception {
-        URL resourceURL = new URL("http://localhost:" + port + "/api/all");
+        URL resourceURL = new URL(host + "/api/all");
 
         List<ShortenerResponse> response = OBJECT_MAPPER.readValue(resourceURL, new TypeReference<List<ShortenerResponse>>() {});
         MatcherAssert.assertThat(response, hasSize(0));
@@ -70,26 +73,32 @@ public class APIControllerTest {
 
     @Test
     public void shouldAddShortenedURLWhenPostedTo() throws Exception {
-        URI newURI = new URI("https://run.pivotal.io/");
-        HttpURLConnection conn = post(newURI);
+        String validURL = "https://run.pivotal.io/";
+        HttpURLConnection conn = post(validURL);
 
         ShortenerResponse response = OBJECT_MAPPER.readValue(conn.getInputStream(), new TypeReference<ShortenerResponse>() {});
-        MatcherAssert.assertThat(response.getOriginal(), equalTo(newURI));
+        MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(validURL));
         MatcherAssert.assertThat(response.getShortened().toString(), equalTo(ShortenerService.SHORTENER_HOST + "a"));
     }
 
+    @Test
+    public void shouldGetErrorMessageWhenSubmittingAnInvalidURL() throws Exception {
+        String invalidURL = "htp://test.com";
+        HttpURLConnection   conn = post(invalidURL);
+        MatcherAssert.assertThat(conn.getResponseCode(), equalTo(500));
+    }
+
     /**
-     *
-     * @param urlPostParam has the form param1=value1&param2=value2
+     * @param postParams has the form param1=value1&param2=value2
      * @return connection handle
      * @throws IOException
      * @throws URISyntaxException
      */
-    public HttpURLConnection post(URI urlPostParam) throws IOException, URISyntaxException {
+    public HttpURLConnection post(String postParams) throws IOException, URISyntaxException {
         URL url = new URL("http://localhost:" + port + "/api/shorten");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        byte[] postData = urlPostParam.toString().getBytes(Charset.forName("UTF-8"));
+        byte[] postData = postParams.getBytes(Charset.forName("UTF-8"));
         int postDataLength = postData.length;
 
         conn.setDoOutput(true);

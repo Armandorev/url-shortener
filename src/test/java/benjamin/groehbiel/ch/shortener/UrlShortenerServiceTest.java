@@ -1,16 +1,12 @@
 package benjamin.groehbiel.ch.shortener;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 

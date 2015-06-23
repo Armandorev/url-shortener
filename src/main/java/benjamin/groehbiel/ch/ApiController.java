@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,14 +36,15 @@ class APIController {
     }
 
     // TODO: serialize RequestBody Params as Java object
-    @RequestMapping(
-            value = "/shorten",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Object shortenURL(@RequestBody String url) throws URISyntaxException {
-        URI uri = new URI(url);
+    @RequestMapping(value = "/shorten", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object shortenURL(@RequestBody String url) throws URISyntaxException, MalformedURLException {
+        URI uri = validateURL(url);
         ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
         return new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI());
+    }
+
+    private URI validateURL(String url) throws URISyntaxException, MalformedURLException {
+        URL validateURL = new URI(url).toURL();
+        return new URI(validateURL.toString());
     }
 }
