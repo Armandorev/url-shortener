@@ -72,6 +72,13 @@ public class APIControllerTest {
         MatcherAssert.assertThat(response.getShortened().toString(), equalTo(ShortenerService.SHORTENER_HOST + "a"));
     }
 
+    /**
+     *
+     * @param urlPostParam has the form param1=value1&param2=value2
+     * @return connection handle
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     public HttpURLConnection post(URI urlPostParam) throws IOException, URISyntaxException {
         URL url = new URL("http://localhost:" + port + "/api/shorten");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
