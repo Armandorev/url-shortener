@@ -25,8 +25,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -55,11 +54,18 @@ public class APIControllerTest {
         List<ShortenerResponse> response = OBJECT_MAPPER.readValue(resourceURL, new TypeReference<List<ShortenerResponse>>() {});
         MatcherAssert.assertThat(response, hasSize(0));
 
-        shortenerService.shorten(new URI("http://www.pivotal.io"));
-        shortenerService.shorten(new URI("http://www.pivotallabs.com"));
+        URI urlPivotal = new URI("http://www.pivotal.io");
+        URI urlLabs = new URI("http://www.pivotallabs.com");
+        shortenerService.shorten(urlPivotal);
+        shortenerService.shorten(urlLabs);
 
         List<ShortenerResponse> newResponse = OBJECT_MAPPER.readValue(resourceURL, new TypeReference<List<ShortenerResponse>>() {});
         MatcherAssert.assertThat(newResponse, hasSize(2));
+
+        MatcherAssert.assertThat(newResponse, containsInAnyOrder(
+                new ShortenerResponse(urlPivotal, new URI(ShortenerService.SHORTENER_HOST + "a")),
+                new ShortenerResponse(urlLabs, new URI(ShortenerService.SHORTENER_HOST + "b"))
+        ));
     }
 
     @Test

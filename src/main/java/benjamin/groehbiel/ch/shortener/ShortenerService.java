@@ -10,51 +10,68 @@ import java.util.Map;
 @Service
 public class ShortenerService {
 
+    /**
+     * The URL under which the shortener is running.
+     */
     public static final String SHORTENER_HOST = "http://www.shortener.com/";
+
+    /**
+     * Contains a dictionary of the original url as key, and the generated hash as value.
+     */
+    private Map<URI, ShortenerHandle> originals = new HashMap<>();
+
+    /**
+     * Contains a dictionary of the hash of the shortenend url to the original url; used for resolving the URI.
+     */
+    private Map<String, URI> resolver = new HashMap<>();
+
+    /**
+     * Each URL is assigned a unique ID originating from this counter.
+     */
     private Long nextUniqueId = 0L;
 
-    Map<URI, Long> hasShortenedURI = new HashMap<>();
+    private URLShortener urlShortener = new URLShortener();
 
-    URLShortener urlShortener = new URLShortener();
-
-    public URI shorten(URI inputUri) throws URISyntaxException {
-        if (hasShortenedURI.containsKey(inputUri)) {
-            Long id = hasShortenedURI.get(inputUri);
-            String hash = urlShortener.decode(id);
-            return createURI(hash);
+    /**
+     * Shortens a provided URL.
+     * @param originalURI URL wanting to be shortened
+     * @throws URISyntaxException
+     */
+    public ShortenerHandle shorten(URI originalURI) throws URISyntaxException {
+        if (originals.containsKey(originalURI)) {
+            ShortenerHandle shortenerHandle = originals.get(originalURI);
+            return shortenerHandle;
         }
 
         String hash = urlShortener.decode(nextUniqueId);
-        URI shortenedURI = createURI(hash);
+        URI shortenedURI = new URI(SHORTENER_HOST + hash);
 
-        hasShortenedURI.put(inputUri, nextUniqueId);
+        ShortenerHandle newShortenerHandle = new ShortenerHandle(originalURI, shortenedURI, hash, nextUniqueId);
+        originals.put(originalURI, newShortenerHandle);
+        resolver.put(hash, originalURI);
+
         nextUniqueId++;
 
-        return shortenedURI;
+        return newShortenerHandle;
     }
 
-    private URI createURI(String hash) throws URISyntaxException {
-        return new URI(SHORTENER_HOST + hash);
-    }
-
-    // TODO: runs in O(n), should be O(1). Use Synced HashMaps, O(N) memory, O(1) complexity.
+    /**
+     * Expands a hash into the original URL.
+     * @param hash
+     * @return the original URI
+     * @throws URISyntaxException
+     */
     public URI expand(String hash) throws URISyntaxException {
-        Long hashId = urlShortener.encode(hash);
-        Map.Entry<URI, Long> existingURI = hasShortenedURI.entrySet().stream().filter(uriLongEntry -> {
-            if (uriLongEntry.getValue() == hashId) return true;
-            return false;
-        }).findFirst().get();
-
-        return existingURI.getKey();
+        return resolver.get(hash);
     }
 
-    public Map<URI, Long> getShortenedURIs() {
-        return hasShortenedURI;
-    }
-
-    // TODO: only exists for tests to clear state after each test. Find better pattern.
+    // TODO: only exists for tests to clear state after each test.
     public void clear() {
         nextUniqueId = 0L;
-        hasShortenedURI.clear();
+        originals.clear();
+    }
+
+    public Map<URI, ShortenerHandle> getAllUrls() {
+        return originals;
     }
 }

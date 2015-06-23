@@ -26,28 +26,28 @@ public class UrlShortenerServiceTest {
     @Test
     public void shouldGenerateAUniqueCodeForEachDistinctURI() throws URISyntaxException {
         URI inputUri = new URI("http://www.example.org");
-        URI shortenedURI = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/a"));
+        ShortenerHandle shortenerHandle = shortenerService.shorten(inputUri);
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/a"));
 
         URI anotherShortenedUri = new URI("http://www.example2.org");
-        shortenedURI = shortenerService.shorten(anotherShortenedUri);
-        MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/b"));
+        shortenerHandle = shortenerService.shorten(anotherShortenedUri);
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/b"));
     }
 
     @Test
     public void shouldReuseShortenedURIs() throws URISyntaxException {
         URI inputUri = new URI("http://www.example.org");
-        URI shortenedURI = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/a"));
+        ShortenerHandle shortenerHandle = shortenerService.shorten(inputUri);
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/a"));
 
-        shortenedURI = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenedURI.toString(), Matchers.equalTo("http://www.shortener.com/a"));
+        shortenerHandle = shortenerService.shorten(inputUri);
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/a"));
     }
 
     @Test
     public void shouldDecodeShortURIToOriginalURI() throws Exception {
         URI inputUri = new URI("http://www.example.org");
-        URI shortenedURI = shortenerService.shorten(inputUri);
+        shortenerService.shorten(inputUri);
 
         URI expandedURI = shortenerService.expand("a");
         MatcherAssert.assertThat(expandedURI, equalTo(inputUri));

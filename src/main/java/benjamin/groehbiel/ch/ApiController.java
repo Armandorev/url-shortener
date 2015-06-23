@@ -1,5 +1,6 @@
 package benjamin.groehbiel.ch;
 
+import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,19 +23,14 @@ class APIController {
     @Autowired
     ShortenerService shortenerService;
 
-    @RequestMapping(
-            value = "/all",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ShortenerResponse> latest() {
-        Map<URI, Long> allShortenedURLs = shortenerService.getShortenedURIs();
-        List<ShortenerResponse> response = allShortenedURLs.entrySet().stream()
-                .map((Map.Entry<URI, Long> entry) -> {
-                    return new ShortenerResponse(entry.getKey(), entry.getValue());
-                })
-                .collect(Collectors.toList());
+        Map<URI, ShortenerHandle> allShortenedURLs = shortenerService.getAllUrls();
 
-        return response;
+        return allShortenedURLs.entrySet()
+                .stream()
+                .map((Entry<URI, ShortenerHandle> entry) -> ShortenerResponse.summarise(entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     // TODO: serialize RequestBody Params as Java object
@@ -44,7 +41,7 @@ class APIController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public Object shortenURL(@RequestBody String url) throws URISyntaxException {
         URI uri = new URI(url);
-        URI shortened = shortenerService.shorten(uri);
-        return new ShortenerResponse(new URI(url), shortened);
+        ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
+        return new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI());
     }
 }
