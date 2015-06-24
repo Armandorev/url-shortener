@@ -35,10 +35,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
 
-task cleanJS(type: Delete){
-    delete fileTree(dir: "src/main/webapp")
-}
-
 task buildJS(type: Exec) {
     workingDir 'src/main/js'
     commandLine 'sh', 'install.sh'
@@ -54,12 +50,11 @@ task packageJS(type: Exec) {
     commandLine 'sh', 'deploy.sh'
 }
 
-war.dependsOn packageJS;
-war.doLast {
-    cleanJS.execute();
+sourceSets {
+    main {
+        output.dir("$buildDir/webapp", builtBy: packageJS)
+    }
 }
-
-bootRun.dependsOn packageJS;
 
 // travis runs ./gradlew check to run all tests
 check.doLast {
