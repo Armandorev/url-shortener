@@ -34,3 +34,27 @@ idea.module {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
+
+task cleanJS(type: Delete){
+    delete fileTree(dir: "src/main/webapp")
+}
+
+task buildJS(type: Exec) {
+    workingDir 'src/main/js'
+    commandLine 'sh', 'install.sh'
+}
+
+task testJS(type: Exec) {
+    workingDir 'src/main/js'
+    commandLine 'gulp', 'test-once'
+}
+
+task packageJS(type: Exec) {
+    workingDir 'src/main/js'
+    commandLine 'sh', 'deploy.sh'
+}
+
+war.dependsOn packageJS;
+war.doLast {
+    cleanJS.execute();
+}

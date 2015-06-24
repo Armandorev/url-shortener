@@ -5,10 +5,14 @@ gradlew.bat
 !gradle-wrapper.jar
 settings.gradle
 build/
-
 .idea/
-.DS_Store
+url-shortener.iml
 
 .gitignore
-url-shortener.iml
 tmp
+
+.DS_Store
+
+src/main/js/bower_components
+src/main/js/node_modules
+src/main/webapp
