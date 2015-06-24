@@ -3,7 +3,6 @@ package benjamin.groehbiel.ch;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerRequest;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +39,6 @@ class APIController {
     // TODO: serialize RequestBody Params as Java object
     @RequestMapping(value = "/shorten", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Object shortenURL(@RequestBody ShortenerRequest request) throws URISyntaxException, MalformedURLException {
-        System.out.println(" ---------------------------------- caught the request!!!!!!!!!!!");
         URI uri = validateURL(request);
         ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
         return new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI());
