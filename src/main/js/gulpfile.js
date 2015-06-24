@@ -7,7 +7,7 @@ var htmlmin = require('gulp-html-minifier');
 var rev = require('gulp-rev');
 var karma = require('karma').server;
 
-var pathToDistDir = '../webapp/';
+var pathToDistDir = '../../../build/webapp/static';
 
 /********************** PACKAGE */
 gulp.task('package', ['html', 'index.html']);
