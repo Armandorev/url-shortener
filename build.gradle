@@ -58,3 +58,9 @@ war.dependsOn packageJS;
 war.doLast {
     cleanJS.execute();
 }
+
+// travis runs ./gradlew check to run all tests
+check.doLast {
+    buildJS.execute();
+    testJS.execute();
+}
