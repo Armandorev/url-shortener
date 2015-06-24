@@ -10,18 +10,11 @@ var karma = require('karma').server;
 var pathToDistDir = '../webapp/';
 
 /********************** PACKAGE */
-gulp.task('package', ['js', 'html', 'index.html']);
+gulp.task('package', ['html', 'index.html']);
 
 gulp.task('clean', function() {
     return gulp.src(pathToDistDir + '/*', {read: false})
         .pipe(clean({force: true}));
-});
-
-gulp.task('js', function () {
-    return gulp.src(['app/main.js', 'app/**/*.js', '!**/*.test.js'])
-        .pipe(concat('app.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(pathToDistDir));
 });
 
 gulp.task('html', function () {
