@@ -16,13 +16,24 @@
 
     <!-- build:js1 app.js -->
     <script src="main.js"></script>
-    <script src="URLForm/UrlFormCtrl.js"></script>
+    <script src="ShortenerForm/ShortenerFormCtrl.js"></script>
     <!-- endbuild -->
 
 </head>
 
-<body>
-    <h1>Project page...</h1>
+<body ng-app="UrlShortenerApp">
+
+    <form class="container" ng-controller="ShortenerFormCtrl">
+        <h1>URL Shortener</h1>
+
+        {{shortenerResponse}}
+
+        <p ng-if="shortenerResponse.error" class="error"><span>{{shortenerResponse.error.status}}</span> {{shortenerResponse.error.error}}</p>
+
+        <input type="text" ng-model="url"/>
+        <input type="submit" value="Shorten me!" ng-click="postURL()"/>
+    </form>
+
 </body>
 
 </html>
