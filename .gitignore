@@ -1,15 +1,12 @@
-.gradle
-gradle/
-!gradle-wrapper.jar
 settings.gradle
 build/
+.gradle
 .idea/
-url-shortener.iml
+*.iml
 
 .gitignore
 tmp
 
 .DS_Store
-
 src/main/js/bower_components
 src/main/js/node_modules
