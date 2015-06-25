@@ -3,7 +3,7 @@
 
     var app = angular.module('UrlShortenerApp');
     app.controller('ShortenerFormCtrl', function ($scope, $http, $timeout) {
-
+        var notificationDuration = 7000;
         $scope.shortenerResponse = {};
 
         $scope.postURL = function () {
@@ -14,14 +14,14 @@
                     $timeout(function () {
                         $scope.showSuccess = false;
                         $scope.url = undefined;
-                    }, 5000);
+                    }, notificationDuration);
                 })
                 .error(function(data) {
                     $scope.showError = true;
                     $scope.shortenerResponse = data;
                     $timeout(function () {
                         $scope.showError = false;
-                    }, 5000)
+                    }, notificationDuration)
                 });
         };
     });
