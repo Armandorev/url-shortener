@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 @RequestMapping("/api")
-class APIController {
+class ApiController {
 
     @Autowired
     ShortenerService shortenerService;
@@ -35,6 +35,12 @@ class APIController {
                 .stream()
                 .map((Entry<URI, ShortenerHandle> entry) -> ShortenerResponse.summarise(entry.getValue()))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/stats", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ShortenerStats getStats() {
+        int count = shortenerService.getCount();
+        return new ShortenerStats(count);
     }
 
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

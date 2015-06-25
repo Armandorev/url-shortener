@@ -11,9 +11,9 @@
                 .success(function(data) {
                     $scope.shortenerResponse = data;
                     $scope.showSuccess = true;
+                    $scope.fetchURLCount();
                     $timeout(function () {
                         $scope.showSuccess = false;
-                        $scope.url = undefined;
                     }, notificationDuration);
                 })
                 .error(function(data) {
@@ -24,6 +24,14 @@
                     }, notificationDuration)
                 });
         };
+
+        $scope.fetchURLCount = function () {
+            $http.get('/api/stats').success(function (data) {
+                $scope.counter = data.counter;
+            });
+        };
+
+        $scope.fetchURLCount();
     });
 
 }(angular));

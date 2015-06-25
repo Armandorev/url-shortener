@@ -5,10 +5,9 @@ import org.fluentlenium.core.domain.FluentWebElement;
 import org.fluentlenium.core.filter.Filter;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.concurrent.TimeUnit;
+import java.net.URI;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -47,6 +46,14 @@ public class HomeScreenTest extends SpringTestFluentlenium {
 
         FluentWebElement errorMessage = find("p.error", new Filter[]{}).get(0);
         MatcherAssert.assertThat(errorMessage.getText(), containsString("I hate to say"));
+    }
+
+    @Test
+    public void counterIsShownDenotingTheNumberOfShortenedURLs() throws Exception {
+        shortenerService.shorten(new URI("http://pivotal.io"));
+        goTo("http://localhost:" + port);
+        FluentWebElement statsElement = find(".stats", new Filter[]{}).get(0);
+        MatcherAssert.assertThat(statsElement.getText(), equalTo("1 shortened URLs."));
     }
 
 }

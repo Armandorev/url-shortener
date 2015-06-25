@@ -71,3 +71,8 @@ a {
 #urlForm p.error {
     background: rgb(255, 180, 180);
 }
+.stats {
+    font-size: 0.8em;
+    color: gainsboro;
+    margin: 15px 0;
+}

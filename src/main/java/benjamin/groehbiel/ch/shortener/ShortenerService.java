@@ -74,4 +74,8 @@ public class ShortenerService {
     public Map<URI, ShortenerHandle> getAllUrls() {
         return originals;
     }
+
+    public Integer getCount() {
+        return originals.size();
+    }
 }
