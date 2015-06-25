@@ -1,21 +1,12 @@
-import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.ShortenerResponse;
 import benjamin.groehbiel.ch.shortener.ShortenerRequest;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,32 +17,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.hamcrest.Matchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
-public class APIControllerTest {
+public class APIControllerTest extends SpringTest {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-    @Autowired
-    ShortenerService shortenerService;
-
-    @Value("${local.server.port}")
-    int port;
-
-    String host;
-
-    @Before
-    public void before() {
-        host = "http://localhost:" + port;
-        Logger.getLogger("APIController.class").info("Running tests on " + host);
-        shortenerService.clear();
-    }
 
     @Test
     public void shouldExposeAListOfTheAllURIsShortened() throws Exception {

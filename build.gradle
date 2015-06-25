@@ -23,7 +23,10 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.2.3.RELEASE'
+
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.2.3.RELEASE'
+    testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: '0.10.3'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '2.45.0'
 }
 
 idea.module {
@@ -31,8 +34,16 @@ idea.module {
     testOutputDir = file('.idea/classes/test')
 }
 
+test {
+    exclude 'benjamin/groehbiel/ch/E2E/**'
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
+}
+
+task e2e(type: Test) {
+    include 'benjamin/groehbiel/ch/E2E/**'
 }
 
 task buildJS(type: Exec) {
@@ -50,14 +61,14 @@ task packageJS(type: Exec) {
     commandLine 'sh', 'deploy.sh'
 }
 
-sourceSets {
-    main {
-        output.dir("$buildDir/webapp", builtBy: packageJS)
-    }
-}
-
 // travis runs ./gradlew check to run all tests
 check.doLast {
     buildJS.execute();
     testJS.execute();
+}
+
+sourceSets {
+    main {
+        output.dir("$buildDir/webapp", builtBy: packageJS)
+    }
 }
