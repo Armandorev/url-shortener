@@ -42,10 +42,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
 
-task e2e(type: Test) {
-    include 'benjamin/groehbiel/ch/E2E/**'
-}
-
 task buildJS(type: Exec) {
     workingDir 'src/main/js'
     commandLine 'sh', 'install.sh'
@@ -60,6 +56,11 @@ task packageJS(type: Exec) {
     workingDir 'src/main/js'
     commandLine 'sh', 'deploy.sh'
 }
+
+task e2e(type: Test) {
+    include 'benjamin/groehbiel/ch/E2E/**'
+}
+e2e.dependsOn packageJS;
 
 // travis runs ./gradlew check to run all tests
 check.doLast {
