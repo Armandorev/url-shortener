@@ -23,15 +23,16 @@
 
 <body ng-app="UrlShortenerApp">
 
-    <form class="container" ng-controller="ShortenerFormCtrl">
+    <form id="urlForm" ng-controller="ShortenerFormCtrl">
         <h1>URL Shortener</h1>
 
-        {{shortenerResponse}}
+        <p class="error" ng-if="shortenerResponse.error">I hate to say, but: {{shortenerResponse.error}} <span>({{shortenerResponse.status}})</span></p>
 
-        <p ng-if="shortenerResponse.error" class="error"><span>{{shortenerResponse.error.status}}</span> {{shortenerResponse.error.error}}</p>
+        <p class="success" ng-if="showSuccess">{{shortenerResponse.shortened}} has been copied to the clipboard!</p>
 
-        <input type="text" ng-model="url"/>
-        <input type="submit" value="Shorten me!" ng-click="postURL()"/>
+        <input class="url" type="text" ng-model="url"/>
+
+        <button ng-click="postURL()" type="submit"/>Shorten me!</button>
     </form>
 
 </body>
