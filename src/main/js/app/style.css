@@ -1,10 +1,73 @@
-body {
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    background: rgb(82, 60, 103);
     font-family: Helvetica Neue, Helvetica, Arial;
 }
 
-.container {
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+a {
+    color:  rgb(82, 60, 103);
+}
+
+#urlForm {
     width: 60%;
-    background: gainsboro;
     margin: auto;
     padding: 20px;
+    text-align: center;
+}
+
+#urlForm h1 {
+    margin: 0 0 -9px 9px;
+    padding: 0px;
+    color:  white;
+}
+#urlForm h1.error {
+    color: rgb(255, 180, 180);
+}
+#urlForm h1.success {
+    color: rgb(230, 247, 230);
+}
+
+#urlForm fieldset {
+    padding: 15px 5px;
+    border: none;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 10px 10px 150px -21px rgba(255,255,255,0.4);
+}
+#urlForm fieldset input.url {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid gainsboro;
+    text-align: center;
+}
+
+#urlForm fieldset button {
+    padding: 10px;
+    margin: 10px 0 0 0;
+    border: none;
+    color: #fff;
+}
+#urlForm p.success,
+#urlForm p.error {
+    padding: 10px 0;
+    margin: -15px -5px 10px;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+}
+#urlForm p.success {
+    background: rgb(230, 247, 230);
+}
+#urlForm p.error {
+    background: rgb(255, 180, 180);
 }

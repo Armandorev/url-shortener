@@ -17,7 +17,11 @@
                     }, 5000);
                 })
                 .error(function(data) {
+                    $scope.showError = true;
                     $scope.shortenerResponse = data;
+                    $timeout(function () {
+                        $scope.showError = false;
+                    }, 5000)
                 });
         };
     });

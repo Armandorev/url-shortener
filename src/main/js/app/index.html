@@ -7,6 +7,7 @@
     <title>URL Shortener</title>
 
     <!-- build:css style.css -->
+    <link rel="stylesheet" href="normalize.css"/>
     <link rel="stylesheet" href="style.css"/>
     <!-- endbuild -->
 
@@ -23,17 +24,19 @@
 
 <body ng-app="UrlShortenerApp">
 
-    <form id="urlForm" ng-controller="ShortenerFormCtrl">
-        <h1>URL Shortener</h1>
+<form id="urlForm" ng-controller="ShortenerFormCtrl">
+    <h1 ng-class="{success : showSuccess, error : showError}">URL Shortener</h1>
 
-        <p class="error" ng-if="shortenerResponse.error">I hate to say, but: {{shortenerResponse.error}} <span>({{shortenerResponse.status}})</span></p>
+    <fieldset>
+        <p class="error" ng-if="showError">I hate to say, but: {{shortenerResponse.message}} <span>({{shortenerResponse.status}})</span></p>
 
-        <p class="success" ng-if="showSuccess">{{shortenerResponse.shortened}} has been copied to the clipboard!</p>
+        <p class="success" ng-if="showSuccess"><a href="{{shortenerResponse.shortened}}">{{shortenerResponse.shortened}}</a> is your shortened URL.</p>
 
-        <input class="url" type="text" ng-model="url"/>
+        <input class="url" type="text" ng-model="url" placeholder="Paste your URL. Now."/>
 
-        <button ng-click="postURL()" type="submit"/>Shorten me!</button>
-    </form>
+        <button ng-click="postURL()" type="submit"/> Do it.</button>
+    </fieldset>
+</form>
 
 </body>
 

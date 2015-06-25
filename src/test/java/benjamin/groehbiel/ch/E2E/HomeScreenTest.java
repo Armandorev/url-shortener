@@ -5,7 +5,6 @@ import org.fluentlenium.core.domain.FluentWebElement;
 import org.fluentlenium.core.filter.Filter;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -35,19 +34,19 @@ public class HomeScreenTest extends SpringTestFluentlenium {
         await();
 
         FluentWebElement successMessage = find("p.success", new Filter[]{}).get(0);
-        MatcherAssert.assertThat(successMessage.getText(), containsString("has been copied"));
+        MatcherAssert.assertThat(successMessage.getText(), containsString("is your shortened URL"));
     }
 
-    public void waitForAngular() {
-        String script = "angular.getTestability(document.querySelector('body')).whenStable(arguments[0]);";
-        ((JavascriptExecutor) getDriver()).executeAsyncScript(script);
-    }
+    @Test
+    public void submittingAInvalidURLShowsAnError() throws Exception {
+        goTo("http://localhost:" + port);
+        fill("#urlForm .url").with("htp://www.pivotal.io");
+        click("#urlForm button");
 
-    @Override
-    public WebDriver getDefaultDriver() {
-        WebDriver driver = super.getDefaultDriver();
-        driver.manage().timeouts().setScriptTimeout(6, TimeUnit.SECONDS);
-        return driver;
+        await();
+
+        FluentWebElement errorMessage = find("p.error", new Filter[]{}).get(0);
+        MatcherAssert.assertThat(errorMessage.getText(), containsString("I hate to say"));
     }
 
 }
