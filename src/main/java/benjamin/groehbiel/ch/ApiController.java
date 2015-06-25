@@ -1,13 +1,10 @@
 package benjamin.groehbiel.ch;
 
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
-import benjamin.groehbiel.ch.shortener.ShortenerRequest;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.MalformedURLException;
@@ -19,6 +16,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 @RestController
 @RequestMapping("/api")
 class APIController {
@@ -26,7 +27,7 @@ class APIController {
     @Autowired
     ShortenerService shortenerService;
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/all", method = GET, produces = APPLICATION_JSON_VALUE)
     public List<ShortenerResponse> latest() {
         Map<URI, ShortenerHandle> allShortenedURLs = shortenerService.getAllUrls();
 
@@ -36,16 +37,17 @@ class APIController {
                 .collect(Collectors.toList());
     }
 
-    // TODO: serialize RequestBody Params as Java object
-    @RequestMapping(value = "/shorten", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object shortenURL(@RequestBody ShortenerRequest request) throws URISyntaxException, MalformedURLException {
-        URI uri = validateURL(request);
+    @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ShortenerResponse shortenURL(@RequestBody ShortenerRequest shortenerRequest) throws MalformedURLException, URISyntaxException {
+        URI uri = validateURL(shortenerRequest);
         ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
-        return new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI());
+        ShortenerResponse shortenerResponse = new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI());
+        return shortenerResponse;
     }
 
     private URI validateURL(ShortenerRequest url) throws URISyntaxException, MalformedURLException {
         URL validateURL = new URI(url.getUrl()).toURL();
         return new URI(validateURL.toString());
     }
+
 }

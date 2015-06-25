@@ -1,12 +1,13 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch;
 
 import java.io.Serializable;
 
-public class ShortenerRequest implements Serializable{
+public class ShortenerRequest implements Serializable {
 
     private String url;
 
-    protected ShortenerRequest() {}
+    protected ShortenerRequest() {
+    }
 
     public ShortenerRequest(String url) {
         this.url = url;
