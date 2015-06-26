@@ -21,7 +21,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @IntegrationTest("server.port:0")
 public abstract class SpringHashBasedApplicationTest {
 
-    //TODO: this needs to be refreshed for each test.
     @Autowired
     private ShortenerRepository shortenerRepository;
 

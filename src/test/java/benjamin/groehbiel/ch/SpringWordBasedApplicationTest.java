@@ -3,6 +3,7 @@ package benjamin.groehbiel.ch;
 import benjamin.groehbiel.ch.ApplicationWordBased;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
+import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
 import benjamin.groehbiel.ch.shortener.word.WordBasedRepository;
 import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 import org.junit.Before;
@@ -26,7 +27,10 @@ import java.util.List;
 public abstract class SpringWordBasedApplicationTest {
 
     @Autowired
-    private ShortenerRepository shortenerRepository;
+    private EnglishDictionary englishDictionary;
+
+    @Autowired
+    ShortenerRepository shortenerRepository;
 
     @Before
     public void clearRepository() {
@@ -36,10 +40,7 @@ public abstract class SpringWordBasedApplicationTest {
         words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));
         words.add(new WordDefinition("eloquence", "fluent or persuasive speaking or writing."));
         words.add(new WordDefinition("elephant", "a very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia."));
-
-        WordBasedRepository wordBasedRepository = (WordBasedRepository) this.shortenerRepository;
-
-        wordBasedRepository.setDictionary(words);
+        englishDictionary.set(words);
     }
 
 }

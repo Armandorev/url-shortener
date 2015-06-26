@@ -3,6 +3,7 @@ package benjamin.groehbiel.ch.E2E.word;
 import benjamin.groehbiel.ch.ApplicationWordBased;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
+import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
 import benjamin.groehbiel.ch.shortener.word.WordBasedRepository;
 import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 import org.fluentlenium.adapter.FluentTest;
@@ -29,6 +30,9 @@ public abstract class SpringTestFluentleniumWordBased extends FluentTest {
     @Autowired
     private ShortenerRepository shortenerRepository;
 
+    @Autowired
+    private EnglishDictionary englishDictionary;
+
     @Before
     public void clearRepository() {
         shortenerRepository.clear();
@@ -37,10 +41,7 @@ public abstract class SpringTestFluentleniumWordBased extends FluentTest {
         words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));
         words.add(new WordDefinition("eloquence", "fluent or persuasive speaking or writing."));
         words.add(new WordDefinition("elephant", "a very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia."));
-
-        WordBasedRepository wordBasedRepository = (WordBasedRepository) this.shortenerRepository;
-
-        wordBasedRepository.setDictionary(words);
+        englishDictionary.set(words);
     }
 
 }

@@ -3,31 +3,29 @@ package benjamin.groehbiel.ch.shortener.word;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 @Repository
 public class WordBasedRepository implements ShortenerRepository {
 
-    private List<WordDefinition> words = new LinkedList<>();
+    @Autowired
+    private EnglishDictionary words;
 
     private Map<String, URI> resolver = new HashMap<>();
-
     private Map<URI, ShortenerHandle> originals = new HashMap<>();
-
     private Long counter = 0L;
 
     public ShortenerHandle add(URI originalURI) throws URISyntaxException {
         if (originals.containsKey(originalURI)) {
             return originals.get(originalURI);
         } else {
-            WordDefinition nextWord = words.remove(0);
+            WordDefinition nextWord = words.get();
 
             String word = nextWord.getWord();
             String desc = nextWord.getDescription();
@@ -56,8 +54,4 @@ public class WordBasedRepository implements ShortenerRepository {
         counter = 0L;
     }
 
-    public void setDictionary(List<WordDefinition> words) {
-        this.words.clear();
-        this.words.addAll(words);
-    }
 }

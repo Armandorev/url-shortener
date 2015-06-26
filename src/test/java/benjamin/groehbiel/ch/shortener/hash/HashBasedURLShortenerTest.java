@@ -5,7 +5,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 
-public class URLShortenerTest {
+public class HashBasedURLShortenerTest {
     HashBasedURLShortener hashBasedUrlShortener = new HashBasedURLShortener();
 
     @Test

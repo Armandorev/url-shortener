@@ -3,7 +3,7 @@
 
     var app = angular.module('UrlShortenerApp');
     app.controller('ShortenerFormCtrl', function ($scope, $http, $timeout) {
-        var notificationDuration = 7000;
+        var notificationDuration = 10000;
         $scope.shortenerResponse = {};
 
         $scope.postURL = function () {
