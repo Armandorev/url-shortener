@@ -23,14 +23,7 @@ public class WordBasedRepository implements ShortenerRepository {
 
     private Long counter = 0L;
 
-    public WordBasedRepository() {
-        words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));
-        words.add(new WordDefinition("eloquence", "fluent or persuasive speaking or writing."));
-        words.add(new WordDefinition("elephant", "a very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia."));
-    }
-
     public ShortenerHandle add(URI originalURI) throws URISyntaxException {
-        System.out.println("running add....");
         if (originals.containsKey(originalURI)) {
             return originals.get(originalURI);
         } else {
@@ -61,5 +54,10 @@ public class WordBasedRepository implements ShortenerRepository {
     public void clear() {
         resolver.clear();
         counter = 0L;
+    }
+
+    public void setDictionary(List<WordDefinition> words) {
+        this.words.clear();
+        this.words.addAll(words);
     }
 }

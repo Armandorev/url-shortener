@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,6 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplicationTest {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    @Autowired
+    ShortenerService shortenerService;
 
     @Autowired
     private WebApplicationContext wac;
@@ -96,7 +100,7 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
 
     public byte[] ojectToBytes(Object o) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = null;
+        ObjectOutput out;
         out = new ObjectOutputStream(bos);
         out.writeObject(o);
         return bos.toByteArray();

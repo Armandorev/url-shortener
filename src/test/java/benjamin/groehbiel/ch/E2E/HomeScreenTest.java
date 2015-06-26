@@ -1,10 +1,12 @@
 package benjamin.groehbiel.ch.E2E;
 
+import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
 import org.fluentlenium.core.filter.Filter;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.net.URI;
@@ -13,6 +15,9 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class HomeScreenTest extends SpringTestFluentleniumHashBased {
+
+    @Autowired
+    ShortenerService shortenerService;
 
     @Value("${local.server.port}")
     int port;

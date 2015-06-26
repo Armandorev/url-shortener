@@ -8,6 +8,8 @@ import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 import org.fluentlenium.adapter.FluentTest;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
@@ -25,17 +27,20 @@ import java.util.List;
 public abstract class SpringTestFluentleniumWordBased extends FluentTest {
 
     @Autowired
-    ShortenerRepository shortenerRepository;
-
-    @Value("${local.server.port}")
-    int port;
-
-    String host;
+    private ShortenerRepository shortenerRepository;
 
     @Before
-    public void before() {
-        host = "http://localhost:" + port;
+    public void clearRepository() {
         shortenerRepository.clear();
+
+        List<WordDefinition> words = new LinkedList<>();
+        words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));
+        words.add(new WordDefinition("eloquence", "fluent or persuasive speaking or writing."));
+        words.add(new WordDefinition("elephant", "a very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia."));
+
+        WordBasedRepository wordBasedRepository = (WordBasedRepository) this.shortenerRepository;
+
+        wordBasedRepository.setDictionary(words);
     }
 
 }

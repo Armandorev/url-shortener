@@ -59,6 +59,7 @@ task packageJS(type: Exec) {
 
 task e2e(type: Test) {
     include 'benjamin/groehbiel/ch/E2E/**'
+    reports.html.destination = file('build/reports/e2e')
 }
 e2e.dependsOn packageJS;
 
@@ -72,4 +73,8 @@ sourceSets {
     main {
         output.dir("$buildDir/webapp", builtBy: packageJS)
     }
+}
+
+test {
+    reports.html.destination = file('build/reports/test')
 }

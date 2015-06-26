@@ -15,17 +15,17 @@ import java.net.URISyntaxException;
 public class WordBasedRepositoryTest extends SpringWordBasedApplicationTest {
 
     @Autowired
-    ShortenerService shortenerService;
+    private ShortenerService shortenerService;
 
     @Test
-    public void shouldGenerateAUniqueCodeForEachDistinctURI() throws URISyntaxException {
+    public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException {
         URI inputUri = new URI("http://www.example.org");
         ShortenerHandle shortenerHandle = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/eloquence"));
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/fun"));
 
         URI anotherShortenedUri = new URI("http://www.example2.org");
         shortenerHandle = shortenerService.shorten(anotherShortenedUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/elephant"));
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/eloquence"));
     }
 
 }
