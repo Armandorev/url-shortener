@@ -4,15 +4,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-public abstract class ShortenerRepository {
+public interface ShortenerRepository {
 
-    protected abstract ShortenerHandle add(URI originalURI) throws URISyntaxException;
+    ShortenerHandle add(URI originalURI) throws URISyntaxException;
 
-    protected abstract URI get(String hash);
-    protected abstract Map<URI,ShortenerHandle> get();
+    URI get(String hash);
+    Map<URI,ShortenerHandle> get();
 
-    protected abstract Integer getCount();
+    Integer getCount();
 
-    public abstract void clear();
+    void clear();
 
 }

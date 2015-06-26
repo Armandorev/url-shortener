@@ -47,8 +47,7 @@ class ApiController {
     public ShortenerResponse shortenURL(@RequestBody ShortenerRequest shortenerRequest) throws MalformedURLException, URISyntaxException {
         URI uri = validateURL(shortenerRequest);
         ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
-        ShortenerResponse shortenerResponse = new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI());
-        return shortenerResponse;
+        return ShortenerResponse.summarise(shortenerHandle);
     }
 
     private URI validateURL(ShortenerRequest url) throws URISyntaxException, MalformedURLException {

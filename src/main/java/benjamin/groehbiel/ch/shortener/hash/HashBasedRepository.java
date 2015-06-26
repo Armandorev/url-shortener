@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class HashBasedRepository extends ShortenerRepository {
+public class HashBasedRepository implements ShortenerRepository {
 
     /**
      * Contains a dictionary of the original url as key, and the generated hash as value.
@@ -40,7 +40,7 @@ public class HashBasedRepository extends ShortenerRepository {
         String hash = urlShortener.decode(nextUniqueId);
         URI shortenedURI = new URI(ShortenerService.SHORTENER_HOST + hash);
 
-        ShortenerHandle newShortenerHandle = new ShortenerHandle(originalURI, shortenedURI, hash, nextUniqueId);
+        ShortenerHandle newShortenerHandle = new ShortenerHandle(originalURI, shortenedURI, hash, "", nextUniqueId);
         originals.put(originalURI, newShortenerHandle);
         resolver.put(hash, originalURI);
 

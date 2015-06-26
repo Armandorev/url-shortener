@@ -21,11 +21,11 @@ public class WordBasedRepositoryTest extends SpringWordBasedApplicationTest {
     public void shouldGenerateAUniqueCodeForEachDistinctURI() throws URISyntaxException {
         URI inputUri = new URI("http://www.example.org");
         ShortenerHandle shortenerHandle = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://short.io"));
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/eloquence"));
 
         URI anotherShortenedUri = new URI("http://www.example2.org");
         shortenerHandle = shortenerService.shorten(anotherShortenedUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://short.io"));
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), Matchers.equalTo("http://www.shortener.com/elephant"));
     }
 
 }

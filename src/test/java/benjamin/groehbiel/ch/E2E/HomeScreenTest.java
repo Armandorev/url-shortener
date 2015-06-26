@@ -12,7 +12,7 @@ import java.net.URI;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class HomeScreenTest extends SpringTestFluentlenium {
+public class HomeScreenTest extends SpringTestFluentleniumHashBased {
 
     @Value("${local.server.port}")
     int port;

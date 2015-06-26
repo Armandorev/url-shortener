@@ -2,6 +2,7 @@ package benjamin.groehbiel.ch;
 
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.hash.HashBasedRepository;
+import benjamin.groehbiel.ch.shortener.word.WordBasedRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,7 @@ public class Application {
 
     @Bean
     public ShortenerRepository shortenerRepository() {
-        return new HashBasedRepository();
+        return new WordBasedRepository();
     }
 
 }

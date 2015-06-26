@@ -68,6 +68,12 @@ a {
 #urlForm p.success {
     background: rgb(230, 247, 230);
 }
+#urlForm p.success .description {
+    display: block;
+    padding: 10px 0 0 0;
+    font-weight: normal;
+    font-style: italic;
+}
 #urlForm p.error {
     background: rgb(255, 180, 180);
 }

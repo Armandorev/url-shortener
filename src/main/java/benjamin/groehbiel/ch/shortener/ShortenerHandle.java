@@ -6,14 +6,16 @@ public class ShortenerHandle {
     private URI originalURI;
     private URI shortenedURI;
     private String hash;
+    private String description;
     private Long nextUniqueId;
 
     protected ShortenerHandle() {}
 
-    public ShortenerHandle(URI originalURI, URI shortenedURI, String hash, Long nextUniqueId) {
+    public ShortenerHandle(URI originalURI, URI shortenedURI, String hash, String desc, Long nextUniqueId) {
         this.originalURI = originalURI;
         this.shortenedURI = shortenedURI;
         this.hash = hash;
+        this.description = desc;
         this.nextUniqueId = nextUniqueId;
     }
 
@@ -27,6 +29,10 @@ public class ShortenerHandle {
 
     public String getHash() {
         return hash;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Long getNextUniqueId() {

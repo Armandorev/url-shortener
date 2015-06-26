@@ -30,7 +30,10 @@
     <fieldset>
         <p class="error" ng-if="showError">I hate to say, but: {{shortenerResponse.message}} <span>({{shortenerResponse.status}})</span></p>
 
-        <p class="success" ng-if="showSuccess"><a href="{{shortenerResponse.shortened}}">{{shortenerResponse.shortened}}</a> is your shortened URL.</p>
+        <p class="success" ng-if="showSuccess">
+            <a href="{{shortenerResponse.shortened}}">{{shortenerResponse.shortened}}</a> is your shortened URL.
+            <span ng-if="shortenerResponse.description" class="description">xxx{{ shortenerResponse.description }}</span>
+        </p>
 
         <input class="url" type="text" ng-model="url" placeholder="Paste your URL."/>
 

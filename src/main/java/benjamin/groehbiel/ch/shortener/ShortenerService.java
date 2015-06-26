@@ -12,7 +12,6 @@ public class ShortenerService {
 
     public static final String SHORTENER_HOST = "http://www.shortener.com/";
 
-    // TODO: this must be customisable, use either integer based or word based hashing.
     @Autowired
     ShortenerRepository shortenerRepository;
 
