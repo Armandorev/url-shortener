@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch.shortener.alphabets.hash;
 
 import java.util.ArrayList;
 import java.util.List;

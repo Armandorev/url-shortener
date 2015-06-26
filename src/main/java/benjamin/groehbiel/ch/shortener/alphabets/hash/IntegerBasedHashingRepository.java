@@ -1,5 +1,8 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch.shortener.alphabets.hash;
 
+import benjamin.groehbiel.ch.shortener.ShortenerHandle;
+import benjamin.groehbiel.ch.shortener.ShortenerRepository;
+import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.stereotype.Repository;
 
 import java.net.URI;
@@ -8,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class UrlRepository {
+public class IntegerBasedHashingRepository extends ShortenerRepository {
 
     /**
      * Contains a dictionary of the original url as key, and the generated hash as value.
@@ -50,7 +53,7 @@ public class UrlRepository {
         return resolver.get(hash);
     }
 
-    public Map<URI,ShortenerHandle> getAll() {
+    public Map<URI,ShortenerHandle> get() {
         return originals;
     }
 
@@ -63,4 +66,5 @@ public class UrlRepository {
         originals.clear();
         nextUniqueId = 0L;
     }
+
 }

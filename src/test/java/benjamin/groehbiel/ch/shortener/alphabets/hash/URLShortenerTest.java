@@ -1,6 +1,6 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch.shortener.alphabets.hash;
 
-import benjamin.groehbiel.ch.shortener.URLShortener;
+import benjamin.groehbiel.ch.shortener.alphabets.hash.URLShortener;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -46,6 +46,5 @@ public class URLShortenerTest {
         Long id = urlShortener.encode(hash);
         MatcherAssert.assertThat(id, Matchers.equalTo(0L));
     }
-
 
 }

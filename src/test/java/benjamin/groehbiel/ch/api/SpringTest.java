@@ -2,8 +2,7 @@ package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
-import benjamin.groehbiel.ch.shortener.UrlRepository;
-import org.fluentlenium.adapter.FluentTest;
+import benjamin.groehbiel.ch.shortener.alphabets.hash.IntegerBasedHashingRepository;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public abstract class SpringTest {
 
     @Autowired
-    UrlRepository urlRepository;
+    IntegerBasedHashingRepository integerBasedHashingRepository;
 
     @Autowired
     ShortenerService shortenerService;
@@ -33,7 +32,7 @@ public abstract class SpringTest {
     @Before
     public void before() {
         host = "http://localhost:" + port;
-        urlRepository.clear();
+        integerBasedHashingRepository.clear();
     }
 
 }
