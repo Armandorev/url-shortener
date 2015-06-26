@@ -1,6 +1,7 @@
 package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.api.SpringTest;
+import benjamin.groehbiel.ch.shortener.alphabets.hash.IntegerBasedHashingRepository;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;

@@ -13,6 +13,6 @@ public abstract class ShortenerRepository {
 
     protected abstract Integer getCount();
 
-    protected abstract void clear();
+    public abstract void clear();
 
 }

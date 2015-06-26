@@ -1,6 +1,5 @@
 package benjamin.groehbiel.ch.shortener;
 
-import benjamin.groehbiel.ch.shortener.alphabets.hash.IntegerBasedHashingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,24 +12,24 @@ public class ShortenerService {
 
     public static final String SHORTENER_HOST = "http://www.shortener.com/";
 
-    // TODO: this must be customisable
+    // TODO: this must be customisable, use either integer based or word based hashing.
     @Autowired
-    IntegerBasedHashingRepository integerBasedHashingRepository;
+    ShortenerRepository shortenerRepository;
 
     public ShortenerHandle shorten(URI originalURI) throws URISyntaxException {
-        return integerBasedHashingRepository.add(originalURI);
+        return shortenerRepository.add(originalURI);
     }
 
     public URI expand(String hash) throws URISyntaxException {
-        return integerBasedHashingRepository.get(hash);
+        return shortenerRepository.get(hash);
     }
 
     public Map<URI, ShortenerHandle> getAllUrls() {
-        return integerBasedHashingRepository.get();
+        return shortenerRepository.get();
     }
 
     public Integer getCount() {
-        return integerBasedHashingRepository.getCount();
+        return shortenerRepository.getCount();
     }
 
 }
