@@ -1,7 +1,8 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch.shortener.hash;
 
-import benjamin.groehbiel.ch.api.SpringTest;
-import benjamin.groehbiel.ch.shortener.alphabets.hash.IntegerBasedHashingRepository;
+import benjamin.groehbiel.ch.api.SpringHashBasedApplicationTest;
+import benjamin.groehbiel.ch.shortener.ShortenerHandle;
+import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import java.net.URISyntaxException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class UrlShortenerServiceTest extends SpringTest {
+public class HashBasedRepositoryTest extends SpringHashBasedApplicationTest {
 
     @Autowired
     ShortenerService shortenerService;

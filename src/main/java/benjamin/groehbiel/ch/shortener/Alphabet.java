@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener.alphabets;
+package benjamin.groehbiel.ch.shortener;
 
 public interface Alphabet {
 

@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener.alphabets.hash;
+package benjamin.groehbiel.ch.shortener.hash;
 
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class IntegerBasedHashingRepository extends ShortenerRepository {
+public class HashBasedRepository extends ShortenerRepository {
 
     /**
      * Contains a dictionary of the original url as key, and the generated hash as value.

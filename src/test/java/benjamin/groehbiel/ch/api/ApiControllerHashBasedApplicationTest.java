@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ApiControllerTest extends SpringTest {
+public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplicationTest {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

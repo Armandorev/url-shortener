@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener.alphabets.hash;
+package benjamin.groehbiel.ch.shortener.hash;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

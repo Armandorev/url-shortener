@@ -1,6 +1,6 @@
-package benjamin.groehbiel.ch.shortener.alphabets.hash;
+package benjamin.groehbiel.ch.shortener.hash;
 
-import benjamin.groehbiel.ch.shortener.alphabets.Alphabet;
+import benjamin.groehbiel.ch.shortener.Alphabet;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

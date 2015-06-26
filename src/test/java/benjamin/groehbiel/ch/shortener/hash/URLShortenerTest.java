@@ -1,6 +1,5 @@
-package benjamin.groehbiel.ch.shortener.alphabets.hash;
+package benjamin.groehbiel.ch.shortener.hash;
 
-import benjamin.groehbiel.ch.shortener.alphabets.hash.URLShortener;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
