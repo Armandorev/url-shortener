@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch;
+package benjamin.groehbiel.ch.api;
 
 public class ShortenerStats {
 

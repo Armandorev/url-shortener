@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch;
+package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;

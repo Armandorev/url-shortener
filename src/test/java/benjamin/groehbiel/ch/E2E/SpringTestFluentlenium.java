@@ -2,6 +2,7 @@ package benjamin.groehbiel.ch.E2E;
 
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
+import benjamin.groehbiel.ch.shortener.UrlRepository;
 import org.fluentlenium.adapter.FluentTest;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -17,6 +18,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 public abstract class SpringTestFluentlenium extends FluentTest {
+
+    @Autowired
+    UrlRepository urlRepository;
+
     @Autowired
     ShortenerService shortenerService;
 
@@ -28,6 +33,7 @@ public abstract class SpringTestFluentlenium extends FluentTest {
     @Before
     public void before() {
         host = "http://localhost:" + port;
-        shortenerService.clear();
+        urlRepository.clear();
     }
+
 }

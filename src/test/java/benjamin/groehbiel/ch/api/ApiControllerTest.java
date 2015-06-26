@@ -1,6 +1,5 @@
-import benjamin.groehbiel.ch.ShortenerException;
-import benjamin.groehbiel.ch.ShortenerRequest;
-import benjamin.groehbiel.ch.ShortenerResponse;
+package benjamin.groehbiel.ch.api;
+
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

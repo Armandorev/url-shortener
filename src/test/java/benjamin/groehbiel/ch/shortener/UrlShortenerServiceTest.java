@@ -1,23 +1,20 @@
 package benjamin.groehbiel.ch.shortener;
 
+import benjamin.groehbiel.ch.api.SpringTest;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class UrlShortenerServiceTest {
+public class UrlShortenerServiceTest extends SpringTest {
 
+    @Autowired
     ShortenerService shortenerService;
-
-    @Before
-    public void before() {
-        shortenerService = new ShortenerService();
-    }
 
     @Test
     public void shouldGenerateAUniqueCodeForEachDistinctURI() throws URISyntaxException {
