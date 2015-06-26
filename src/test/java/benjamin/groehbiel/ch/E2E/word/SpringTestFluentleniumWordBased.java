@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.E2E;
+package benjamin.groehbiel.ch.E2E.word;
 
 import benjamin.groehbiel.ch.ApplicationWordBased;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;

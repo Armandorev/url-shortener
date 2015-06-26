@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.api;
+package benjamin.groehbiel.ch;
 
 import benjamin.groehbiel.ch.ApplicationWordBased;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;

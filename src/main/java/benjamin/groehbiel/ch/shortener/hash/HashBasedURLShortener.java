@@ -9,11 +9,11 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 @Service
-public class URLShortener {
+public class HashBasedURLShortener {
 
     Alphabet alphabet;
 
-    public URLShortener() {
+    public HashBasedURLShortener() {
         alphabet = new Base10Alphabet();
     }
 

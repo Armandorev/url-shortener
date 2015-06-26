@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.E2E;
+package benjamin.groehbiel.ch.E2E.hash;
 
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.fluentlenium.core.domain.FluentList;

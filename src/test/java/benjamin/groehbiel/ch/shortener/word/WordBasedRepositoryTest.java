@@ -1,7 +1,7 @@
 
 package benjamin.groehbiel.ch.shortener.word;
 
-import benjamin.groehbiel.ch.api.SpringWordBasedApplicationTest;
+import benjamin.groehbiel.ch.SpringWordBasedApplicationTest;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.hamcrest.MatcherAssert;

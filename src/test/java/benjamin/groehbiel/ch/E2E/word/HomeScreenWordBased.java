@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.E2E;
+package benjamin.groehbiel.ch.E2E.word;
 
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;

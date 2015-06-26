@@ -1,6 +1,6 @@
 package benjamin.groehbiel.ch.shortener.hash;
 
-import benjamin.groehbiel.ch.api.SpringHashBasedApplicationTest;
+import benjamin.groehbiel.ch.SpringHashBasedApplicationTest;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.hamcrest.MatcherAssert;

@@ -28,7 +28,7 @@ public class HashBasedRepository implements ShortenerRepository {
      */
     private Long nextUniqueId = 0L;
 
-    private URLShortener urlShortener = new URLShortener();
+    private HashBasedURLShortener hashBasedUrlShortener = new HashBasedURLShortener();
 
     public ShortenerHandle add(URI originalURI) throws URISyntaxException {
 
@@ -37,7 +37,7 @@ public class HashBasedRepository implements ShortenerRepository {
             return shortenerHandle;
         }
 
-        String hash = urlShortener.decode(nextUniqueId);
+        String hash = hashBasedUrlShortener.decode(nextUniqueId);
         URI shortenedURI = new URI(ShortenerService.SHORTENER_HOST + hash);
 
         ShortenerHandle newShortenerHandle = new ShortenerHandle(originalURI, shortenedURI, hash, "", nextUniqueId);
