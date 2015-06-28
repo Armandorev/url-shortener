@@ -1,5 +1,6 @@
 package benjamin.groehbiel.ch.E2E.hash;
 
+import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
@@ -56,9 +57,27 @@ public class HomeScreenTest extends SpringTestFluentleniumHashBased {
     @Test
     public void counterIsShownDenotingTheNumberOfShortenedURLs() throws Exception {
         shortenerService.shorten(new URI("http://pivotal.io"));
-        goTo("http://localhost:" + port);
+        goTo("http://localhost:" + port + "/");
         FluentWebElement statsElement = find(".stats", new Filter[]{}).get(0);
         MatcherAssert.assertThat(statsElement.getText(), equalTo("1 shortened URLs."));
+    }
+
+    @Test
+    public void shouldResolveExistingShortenedUrl() throws Exception {
+        String url = "http://pivotal.io/";
+        ShortenerHandle handle = shortenerService.shorten(new URI(url));
+        goTo("http://localhost:" + port + "/" + handle.getHash());
+
+        MatcherAssert.assertThat(url(), equalTo(url));
+        MatcherAssert.assertThat(title(), containsString("Pivotal"));
+    }
+
+    @Test
+    public void shouldThrow404WhenNonExistingUrl() throws Exception {
+        String url = "http://localhost:" + port + "/abc";
+        goTo(url);
+
+        MatcherAssert.assertThat(url(), equalTo(url));
     }
 
 }
