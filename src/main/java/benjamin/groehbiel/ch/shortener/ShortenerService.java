@@ -1,6 +1,7 @@
 package benjamin.groehbiel.ch.shortener;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -9,8 +10,6 @@ import java.util.Map;
 
 @Service
 public class ShortenerService {
-
-    public static final String SHORTENER_HOST = "http://www.shortener.com/";
 
     @Autowired
     ShortenerRepository shortenerRepository;

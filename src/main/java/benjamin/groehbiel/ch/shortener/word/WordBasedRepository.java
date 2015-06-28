@@ -4,6 +4,7 @@ import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.net.URI;
@@ -17,6 +18,9 @@ public class WordBasedRepository implements ShortenerRepository {
     @Autowired
     private EnglishDictionary words;
 
+    @Value("${app.domain}")
+    public String SHORTENER_HOST;
+
     private Map<String, URI> resolver = new HashMap<>();
     private Map<URI, ShortenerHandle> originals = new HashMap<>();
     private Long counter = 0L;
@@ -29,7 +33,7 @@ public class WordBasedRepository implements ShortenerRepository {
 
             String word = nextWord.getWord();
             String desc = nextWord.getDescription();
-            ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(ShortenerService.SHORTENER_HOST + word), word, desc, counter++);
+            ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(SHORTENER_HOST + word), word, desc, counter++);
             resolver.put(word, shortenerHandle.getOriginalURI());
             originals.put(originalURI, shortenerHandle);
 

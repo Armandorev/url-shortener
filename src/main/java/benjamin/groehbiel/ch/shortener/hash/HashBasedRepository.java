@@ -3,6 +3,7 @@ package benjamin.groehbiel.ch.shortener.hash;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.net.URI;
@@ -12,6 +13,10 @@ import java.util.Map;
 
 @Repository
 public class HashBasedRepository implements ShortenerRepository {
+
+
+    @Value("${app.domain}")
+    public String SHORTENER_HOST;
 
     /**
      * Contains a dictionary of the original url as key, and the generated hash as value.
@@ -38,7 +43,7 @@ public class HashBasedRepository implements ShortenerRepository {
         }
 
         String hash = hashBasedUrlShortener.decode(nextUniqueId);
-        URI shortenedURI = new URI(ShortenerService.SHORTENER_HOST + hash);
+        URI shortenedURI = new URI(SHORTENER_HOST + hash);
 
         ShortenerHandle newShortenerHandle = new ShortenerHandle(originalURI, shortenedURI, hash, "", nextUniqueId);
         originals.put(originalURI, newShortenerHandle);

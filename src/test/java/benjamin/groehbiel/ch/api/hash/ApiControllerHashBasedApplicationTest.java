@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -37,6 +38,9 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
 
     @Autowired
     ShortenerService shortenerService;
+
+    @Value("${app.domain}")
+    public String SHORTENER_HOST;
 
     @Autowired
     private WebApplicationContext wac;
@@ -64,8 +68,8 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
         MatcherAssert.assertThat(newResponse, hasSize(2));
 
         MatcherAssert.assertThat(newResponse, containsInAnyOrder(
-                new ShortenerResponse(urlPivotal, new URI(ShortenerService.SHORTENER_HOST + "a")),
-                new ShortenerResponse(urlLabs, new URI(ShortenerService.SHORTENER_HOST + "b"))
+                new ShortenerResponse(urlPivotal, new URI(SHORTENER_HOST + "a")),
+                new ShortenerResponse(urlLabs, new URI(SHORTENER_HOST + "b"))
         ));
     }
 
@@ -82,7 +86,7 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
 
         ShortenerResponse response = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerResponse>() {});
         MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
-        MatcherAssert.assertThat(response.getShortened().toString(), equalTo(ShortenerService.SHORTENER_HOST + "a"));
+        MatcherAssert.assertThat(response.getShortened().toString(), equalTo(SHORTENER_HOST + "a"));
     }
 
     @Ignore
