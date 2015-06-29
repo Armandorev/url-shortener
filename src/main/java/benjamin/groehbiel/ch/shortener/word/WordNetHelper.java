@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.words;
+package benjamin.groehbiel.ch.shortener.word;
 
 import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 
