@@ -1,7 +1,5 @@
 package benjamin.groehbiel.ch.shortener.word;
 
-import benjamin.groehbiel.ch.shortener.word.WordDefinition;
-import benjamin.groehbiel.ch.shortener.word.WordNetHelper;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
@@ -17,9 +15,9 @@ import static org.hamcrest.Matchers.hasSize;
 public class WordNetHelperTest {
 
     @Test
-    public void shouldParseWordNetFileAndReturnDictioary() throws Exception {
-        List<WordDefinition> dict = WordNetHelper.parse("src/test/resources/WordNet/test_data.adj");
-        assertThat(dict, hasSize(20));
+    public void shouldReturnAListOfAllWordDefinitions() throws Exception {
+        List<WordDefinition> words = WordNetHelper.load("src/test/resources/WordNet/");
+        MatcherAssert.assertThat(words, hasSize(21));
     }
 
     @Test
@@ -33,9 +31,9 @@ public class WordNetHelperTest {
     }
 
     @Test
-    public void shouldReturnAListOfAllWordDefinitions() throws Exception {
-        List<WordDefinition> words = WordNetHelper.load("src/test/resources/WordNet/");
-        MatcherAssert.assertThat(words, hasSize(21));
+    public void shouldParseWordNetFileAndReturnDictioary() throws Exception {
+        List<WordDefinition> dict = WordNetHelper.parse("src/test/resources/WordNet/test_data.adj");
+        assertThat(dict, hasSize(20));
     }
 
 }
