@@ -1,7 +1,5 @@
 package benjamin.groehbiel.ch.shortener.word;
 
-import benjamin.groehbiel.ch.shortener.word.WordDefinition;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -29,6 +27,7 @@ public class WordNetHelper {
                     if (matcher.find()) {
                         String word = matcher.group(1);
                         String desc = matcher.group(2);
+                        if ("".equals(word) || "".equals(desc) || word == null || desc == null) return null;
                         return new WordDefinition(word, desc);
                     } else {
                         return null;
