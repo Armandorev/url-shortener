@@ -1,7 +1,9 @@
 package benjamin.groehbiel.ch.shortener.word;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +34,8 @@ public class EnglishDictionary {
     }
 
     public List<WordDefinition> load() throws IOException {
-        List<WordDefinition> englishWords = WordNetHelper.load("src/main/resources/WordNet");
+        File wordNet = new ClassPathResource("WordNet").getFile();
+        List<WordDefinition> englishWords = WordNetHelper.load(wordNet.getPath());
         Collections.shuffle(englishWords);
         return englishWords;
     }
