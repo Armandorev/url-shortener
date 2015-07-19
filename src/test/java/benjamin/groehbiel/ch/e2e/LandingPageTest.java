@@ -1,16 +1,16 @@
-package benjamin.groehbiel.ch.E2E.word;
+package benjamin.groehbiel.ch.e2e;
 
-import benjamin.groehbiel.ch.ApplicationWordBased;
+import benjamin.groehbiel.ch.ApplicationTest;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
-import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
-import benjamin.groehbiel.ch.shortener.word.WordBasedRepository;
 import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 import org.fluentlenium.adapter.FluentTest;
+import org.fluentlenium.core.domain.FluentList;
+import org.fluentlenium.core.domain.FluentWebElement;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
@@ -21,11 +21,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.*;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationWordBased.class)
+@SpringApplicationConfiguration(classes = ApplicationTest.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public abstract class SpringTestFluentleniumWordBased extends FluentTest {
+public class LandingPageTest extends FluentTest {
 
     @Autowired
     private ShortenerRepository shortenerRepository;
@@ -42,6 +44,23 @@ public abstract class SpringTestFluentleniumWordBased extends FluentTest {
         words.add(new WordDefinition("eloquence", "fluent or persuasive speaking or writing."));
         words.add(new WordDefinition("elephant", "a very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia."));
         englishDictionary.set(words);
+    }
+
+    @Value("${local.server.port}")
+    int port;
+
+    @Test
+    public void showsSuccessAndWordDescription() {
+        goTo("http://localhost:" + port);
+        fill("#urlForm .url").with("http://www.pivotal.io");
+        click("#urlForm button");
+
+        await();
+
+        FluentList<FluentWebElement> descriptions = find(".success .description");
+        MatcherAssert.assertThat(descriptions, hasSize(1));
+        MatcherAssert.assertThat(descriptions.get(0).isDisplayed(), equalTo(true));
+        MatcherAssert.assertThat(descriptions.get(0).getText(), containsString("enjoyment, amusement, or light-hearted pleasure."));
     }
 
 }

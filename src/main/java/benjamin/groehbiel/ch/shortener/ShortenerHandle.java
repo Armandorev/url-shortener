@@ -9,7 +9,8 @@ public class ShortenerHandle {
     private String description;
     private Long nextUniqueId;
 
-    protected ShortenerHandle() {}
+    protected ShortenerHandle() {
+    }
 
     public ShortenerHandle(URI originalURI, URI shortenedURI, String hash, String desc, Long nextUniqueId) {
         this.originalURI = originalURI;

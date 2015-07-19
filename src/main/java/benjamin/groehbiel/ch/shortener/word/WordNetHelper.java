@@ -18,7 +18,6 @@ import static java.nio.file.Files.lines;
 public class WordNetHelper {
 
     public static List<WordDefinition> parse(String filename) throws IOException {
-
         Stream<String> lines = lines(Paths.get(filename), Charset.defaultCharset());
         List<WordDefinition> words = lines
                 .map(line -> {
@@ -53,7 +52,6 @@ public class WordNetHelper {
 
 
     public static List<WordDefinition> load(String wordNetDirectory) throws IOException {
-
         List<WordDefinition> allWords = new ArrayList<>();
 
         List<Path> wordNetFiles = scan(wordNetDirectory);

@@ -14,7 +14,8 @@ public class ShortenerResponse {
     private URI shortened;
     private String description;
 
-    public ShortenerResponse() {}
+    public ShortenerResponse() {
+    }
 
     public ShortenerResponse(URI original, URI shortened, String description) {
         this.original = original;

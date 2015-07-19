@@ -9,7 +9,8 @@ public interface ShortenerRepository {
     ShortenerHandle add(URI originalURI) throws URISyntaxException;
 
     URI get(String hash);
-    Map<URI,ShortenerHandle> get();
+
+    Map<URI, ShortenerHandle> get();
 
     Integer getCount();
 

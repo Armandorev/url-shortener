@@ -1,19 +1,24 @@
-package benjamin.groehbiel.ch.api.hash;
+package benjamin.groehbiel.ch.api;
 
-import benjamin.groehbiel.ch.api.ShortenerException;
-import benjamin.groehbiel.ch.api.ShortenerRequest;
-import benjamin.groehbiel.ch.api.ShortenerResponse;
-import benjamin.groehbiel.ch.SpringHashBasedApplicationTest;
+import benjamin.groehbiel.ch.ApplicationTest;
+import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
+import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
+import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,6 +29,7 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.URI;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -32,7 +38,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplicationTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = ApplicationTest.class)
+@WebAppConfiguration
+@IntegrationTest("server.port:0")
+public class ApiApplicationTest  {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -42,6 +52,9 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
     @Value("${app.domain}")
     public String SHORTENER_HOST;
 
+    @Value("${local.server.port}")
+    private int port;
+
     @Autowired
     private WebApplicationContext wac;
 
@@ -50,6 +63,23 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+    }
+
+    @Autowired
+    private EnglishDictionary englishDictionary;
+
+    @Autowired
+    ShortenerRepository shortenerRepository;
+
+    @Before
+    public void clearRepository() {
+        shortenerRepository.clear();
+
+        List<WordDefinition> words = new LinkedList<>();
+        words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));
+        words.add(new WordDefinition("eloquence", "fluent or persuasive speaking or writing."));
+        words.add(new WordDefinition("elephant", "a very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia."));
+        englishDictionary.set(words);
     }
 
     @Test
@@ -68,8 +98,8 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
         MatcherAssert.assertThat(newResponse, hasSize(2));
 
         MatcherAssert.assertThat(newResponse, containsInAnyOrder(
-                new ShortenerResponse(urlPivotal, new URI(SHORTENER_HOST + "a")),
-                new ShortenerResponse(urlLabs, new URI(SHORTENER_HOST + "b"))
+                new ShortenerResponse(urlPivotal, new URI(SHORTENER_HOST + "fun")),
+                new ShortenerResponse(urlLabs, new URI(SHORTENER_HOST + "eloquence"))
         ));
     }
 
@@ -86,11 +116,11 @@ public class ApiControllerHashBasedApplicationTest extends SpringHashBasedApplic
 
         ShortenerResponse response = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerResponse>() {});
         MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
-        MatcherAssert.assertThat(response.getShortened().toString(), equalTo(SHORTENER_HOST + "a"));
+        MatcherAssert.assertThat(response.getShortened().toString(), equalTo(SHORTENER_HOST + "fun"));
     }
 
-    @Ignore
     @Test
+    @Ignore
     public void shouldGetErrorMessageWhenSubmittingAnInvalidURL() throws Exception {
         ShortenerRequest request = new ShortenerRequest("htp://invalid.url");
 

@@ -35,7 +35,7 @@ idea.module {
 }
 
 test {
-    exclude 'benjamin/groehbiel/ch/E2E/**'
+    exclude 'benjamin/groehbiel/ch/e2e/**'
 }
 
 task wrapper(type: Wrapper) {
@@ -58,7 +58,7 @@ task packageJS(type: Exec) {
 }
 
 task e2e(type: Test) {
-    include 'benjamin/groehbiel/ch/E2E/**'
+    include 'benjamin/groehbiel/ch/e2e/**'
     reports.html.destination = file('build/reports/e2e')
 }
 e2e.dependsOn packageJS;

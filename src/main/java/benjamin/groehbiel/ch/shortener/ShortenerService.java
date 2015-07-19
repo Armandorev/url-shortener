@@ -1,7 +1,6 @@
 package benjamin.groehbiel.ch.shortener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;

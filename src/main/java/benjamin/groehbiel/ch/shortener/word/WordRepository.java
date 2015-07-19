@@ -2,7 +2,6 @@ package benjamin.groehbiel.ch.shortener.word;
 
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
-import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class WordBasedRepository implements ShortenerRepository {
+public class WordRepository implements ShortenerRepository {
 
     @Autowired
     private EnglishDictionary words;
@@ -55,6 +54,7 @@ public class WordBasedRepository implements ShortenerRepository {
 
     public void clear() {
         resolver.clear();
+        originals.clear();
         counter = 0L;
     }
 

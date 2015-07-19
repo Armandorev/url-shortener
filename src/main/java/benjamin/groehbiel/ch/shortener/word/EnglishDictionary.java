@@ -13,7 +13,7 @@ public class EnglishDictionary {
 
     private List<WordDefinition> words;
 
-    public EnglishDictionary () throws IOException {
+    public EnglishDictionary() throws IOException {
         words = load();
     }
 

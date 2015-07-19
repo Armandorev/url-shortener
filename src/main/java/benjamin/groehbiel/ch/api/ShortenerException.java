@@ -4,7 +4,8 @@ public class ShortenerException {
 
     private String message;
 
-    protected ShortenerException() {}
+    protected ShortenerException() {
+    }
 
     public ShortenerException(String message) {
         this.message = message;
