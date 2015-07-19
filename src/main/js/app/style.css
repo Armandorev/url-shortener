@@ -57,8 +57,8 @@ a {
     margin: 10px 0 0 0;
     border: none;
     color: #fff;
+    background:  rgb(82, 60, 103);
 }
-#urlForm p.success,
 #urlForm p.error {
     padding: 10px 0;
     margin: -15px -5px 10px;
@@ -67,6 +67,9 @@ a {
 }
 #urlForm p.success {
     background: rgb(230, 247, 230);
+    margin: 10px -5px -15px;
+    padding: 10px 0;
+    border-radius: 5px;
 }
 #urlForm p.success .description {
     display: block;

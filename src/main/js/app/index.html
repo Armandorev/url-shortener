@@ -30,14 +30,14 @@
     <fieldset>
         <p class="error" ng-if="showError">I hate to say, but: {{shortenerResponse.message}} <span>({{shortenerResponse.status}})</span></p>
 
-        <p class="success" ng-if="showSuccess">
-            <a href="{{shortenerResponse.shortened}}">{{shortenerResponse.shortened}}</a> is your shortened URL.
-            <span ng-if="shortenerResponse.description" class="description">{{ shortenerResponse.description }}</span>
-        </p>
-
         <input class="url" type="text" ng-model="url" placeholder="Paste your URL."/>
 
-        <button ng-click="postURL()" type="submit"> Do it.</button>
+        <button ng-click="postURL()" type="submit"> Shorten!</button>
+
+        <p class="success" ng-if="showSuccess">
+            <a href="{{shortenerResponse.shortened}}">{{shortenerResponse.shortened}}</a>
+            <span ng-if="shortenerResponse.description" class="description">{{ shortenerResponse.description }}</span>
+        </p>
     </fieldset>
     <div class="stats">{{ counter }} shortened URLs.</div>
 </form>

@@ -3,25 +3,21 @@
 
     var app = angular.module('UrlShortenerApp');
     app.controller('ShortenerFormCtrl', function ($scope, $http, $timeout) {
-        var notificationDuration = 10000;
         $scope.shortenerResponse = {};
 
         $scope.postURL = function () {
             $http.post('/api/shorten', {url: $scope.url})
                 .success(function(data) {
+                    $scope.shortenerResponse = {};
                     $scope.shortenerResponse = data;
+                    $scope.showError = false;
                     $scope.showSuccess = true;
                     $scope.fetchURLCount();
-                    $timeout(function () {
-                        $scope.showSuccess = false;
-                    }, notificationDuration);
                 })
                 .error(function(data) {
+                    $scope.showSuccess = false;
                     $scope.showError = true;
                     $scope.shortenerResponse = data;
-                    $timeout(function () {
-                        $scope.showError = false;
-                    }, notificationDuration)
                 });
         };
 
