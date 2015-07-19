@@ -1,6 +1,7 @@
 package benjamin.groehbiel.ch.e2e;
 
 import benjamin.groehbiel.ch.ApplicationTest;
+import benjamin.groehbiel.ch.SpringTest;
 import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
 import benjamin.groehbiel.ch.shortener.word.WordDefinition;

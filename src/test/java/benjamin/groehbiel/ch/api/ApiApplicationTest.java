@@ -1,10 +1,8 @@
 package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.ApplicationTest;
-import benjamin.groehbiel.ch.shortener.ShortenerRepository;
+import benjamin.groehbiel.ch.SpringTest;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
-import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
-import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
@@ -29,7 +27,6 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.URI;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -42,44 +39,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = ApplicationTest.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class ApiApplicationTest  {
+public class ApiApplicationTest extends SpringTest {
 
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Autowired
     ShortenerService shortenerService;
 
-    @Value("${app.domain}")
-    public String SHORTENER_HOST;
-
-    @Value("${local.server.port}")
-    private int port;
-
     @Autowired
     private WebApplicationContext wac;
+
+    @Value("${app.domain}")
+    public String SHORTENER_HOST;
 
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
-
-    @Autowired
-    private EnglishDictionary englishDictionary;
-
-    @Autowired
-    ShortenerRepository shortenerRepository;
-
-    @Before
-    public void clearRepository() {
-        shortenerRepository.clear();
-
-        List<WordDefinition> words = new LinkedList<>();
-        words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));
-        words.add(new WordDefinition("eloquence", "fluent or persuasive speaking or writing."));
-        words.add(new WordDefinition("elephant", "a very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia."));
-        englishDictionary.set(words);
     }
 
     @Test
