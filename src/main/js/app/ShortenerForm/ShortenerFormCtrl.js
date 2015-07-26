@@ -6,6 +6,7 @@
         $scope.shortenerResponse = {};
 
         $scope.postURL = function () {
+            $scope.disabled = true;
             $http.post('/api/shorten', {url: $scope.url})
                 .success(function(data) {
                     $scope.shortenerResponse = {};
@@ -18,6 +19,7 @@
                     $scope.showSuccess = false;
                     $scope.showError = true;
                     $scope.shortenerResponse = data;
+                    $scope.disabled = false;
                 });
         };
 
@@ -25,6 +27,12 @@
             $http.get('/api/stats').success(function (data) {
                 $scope.counter = data.counter;
             });
+        };
+
+        $scope.close = function () {
+            $scope.disabled = false;
+            $scope.showSuccess = false;
+            $scope.url = undefined;
         };
 
         $scope.fetchURLCount();

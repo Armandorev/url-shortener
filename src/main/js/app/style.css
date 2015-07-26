@@ -59,6 +59,9 @@ a {
     color: #fff;
     background:  rgb(82, 60, 103);
 }
+#urlForm fieldset button[disabled] {
+    background: gainsboro;
+}
 #urlForm p.error {
     padding: 10px 0;
     margin: -15px -5px 10px;

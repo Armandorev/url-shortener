@@ -32,11 +32,12 @@
 
         <input class="url" type="text" ng-model="url" placeholder="Paste your URL."/>
 
-        <button ng-click="postURL()" type="submit"> Shorten!</button>
+        <button ng-click="postURL()" type="submit" ng-disabled="disabled"> Shorten!</button>
 
         <p class="success" ng-if="showSuccess">
             <a href="{{shortenerResponse.shortened}}">{{shortenerResponse.shortened}}</a>
             <span ng-if="shortenerResponse.description" class="description">{{ shortenerResponse.description }}</span>
+            <a href="#" ng-click="close()" class="close">close</a>
         </p>
     </fieldset>
     <div class="stats">{{ counter }} shortened URLs.</div>
