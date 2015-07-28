@@ -23,6 +23,8 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.2.3.RELEASE'
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '1.5.2.RELEASE'
+    compile group: 'redis.clients', name: 'jedis', version: '2.7.3'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.2.3.RELEASE'
     testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: '0.10.3'
