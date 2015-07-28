@@ -8,6 +8,9 @@ import benjamin.groehbiel.ch.shortener.word.WordDefinition;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +65,49 @@ public class LandingPageTest extends FluentTest {
         MatcherAssert.assertThat(descriptions, hasSize(1));
         MatcherAssert.assertThat(descriptions.get(0).isDisplayed(), equalTo(true));
         MatcherAssert.assertThat(descriptions.get(0).getText(), containsString("enjoyment, amusement, or light-hearted pleasure."));
+    }
+
+    @Test
+    public void makeSuccessMessageClosable() {
+        goTo("http://localhost:" + port);
+        fill("#urlForm .url").with("http://www.pivotal.io");
+        click("#urlForm button");
+
+        await();
+
+        FluentWebElement searchButton = findFirst("#urlForm button");
+        MatcherAssert.assertThat(searchButton, hasAttribute("disabled"));
+
+        FluentWebElement closeIcon = findFirst(".success .close");
+        closeIcon.click();
+
+        MatcherAssert.assertThat(searchButton, not(hasAttribute("disabled")));
+    }
+
+    private Matcher<? super FluentWebElement> hasAttribute(String attribute) {
+        Matcher<FluentWebElement> matcher = new BaseMatcher<FluentWebElement>() {
+            @Override
+            public void describeTo(Description description) {
+            }
+
+            @Override
+            public boolean matches(Object item) {
+                FluentWebElement button = (FluentWebElement) item;
+                String disabledAttr = button.getAttribute(attribute);
+                if (disabledAttr == null) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            @Override
+            public void describeMismatch(Object item, Description mismatchDescription) {
+                mismatchDescription.appendText("Could not find attribute " + attribute);
+            }
+        };
+
+        return matcher;
     }
 
 }
