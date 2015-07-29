@@ -41,15 +41,8 @@ public class JedisTest {
 
     @Test
     public void addEntry() {
-        Long index = redisTemplate.opsForList().rightPush("ben", "grohbiel");
+        Long index = redisTemplate.opsForList().rightPush("key", "value");
         assertThat(index, equalTo(1L));
-    }
-
-    @Test
-    public void getEntry() {
-        redisTemplate.opsForList().rightPush("ben", "grohbiel");
-        String s = redisTemplate.opsForValue().get("ben");
-        Assert.assertThat(s, equalTo("grohbiel"));
     }
 
 }
