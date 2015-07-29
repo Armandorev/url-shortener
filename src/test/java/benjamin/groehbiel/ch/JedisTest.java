@@ -1,5 +1,7 @@
 package benjamin.groehbiel.ch;
 
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,6 +24,11 @@ public class JedisTest {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @After
+    public void tearDown() {
+        redisTemplate.getConnectionFactory().getConnection().flushDb();
+    }
+
     @Test
     public void testJedisConnectionFactory() {
         assertNotNull(jedisConnectionFactory);
@@ -28,6 +37,19 @@ public class JedisTest {
     @Test
     public void testRedisTemplate() {
         assertNotNull(redisTemplate);
+    }
+
+    @Test
+    public void addEntry() {
+        Long index = redisTemplate.opsForList().rightPush("ben", "grohbiel");
+        assertThat(index, equalTo(1L));
+    }
+
+    @Test
+    public void getEntry() {
+        redisTemplate.opsForList().rightPush("ben", "grohbiel");
+        String s = redisTemplate.opsForValue().get("ben");
+        Assert.assertThat(s, equalTo("grohbiel"));
     }
 
 }
