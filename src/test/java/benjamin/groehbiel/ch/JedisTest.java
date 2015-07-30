@@ -40,9 +40,9 @@ public class JedisTest {
     }
 
     @Test
-    public void addEntry() {
-        Long index = redisTemplate.opsForList().rightPush("key", "value");
-        assertThat(index, equalTo(1L));
+    public void addAndGetEntry() {
+        redisTemplate.opsForValue().set("key", "value");
+        String value = redisTemplate.opsForValue().get("key");
+        Assert.assertThat(value, equalTo("value"));
     }
-
 }
