@@ -23,8 +23,12 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.2.3.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     compile group: 'org.springframework.data', name: 'spring-data-redis', version: '1.5.2.RELEASE'
     compile group: 'redis.clients', name: 'jedis', version: '2.7.3'
+    compile group: 'io.pivotal.labs', name: 'cf-env', version: '0.0.1'
+
+    runtime group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.2.3.RELEASE'
     testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: '0.10.3'
@@ -79,4 +83,10 @@ sourceSets {
 
 test {
     reports.html.destination = file('build/reports/test')
+}
+
+bootRun {
+    environment = [
+            VCAP_SERVICES : ''
+    ]
 }
