@@ -1,5 +1,5 @@
 
-package benjamin.groehbiel.ch.shortener.word;
+package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.ApplicationTest;
 import benjamin.groehbiel.ch.SpringTest;

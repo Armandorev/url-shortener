@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener.word;
+package benjamin.groehbiel.ch.shortener;
 
 import java.io.File;
 import java.io.IOException;

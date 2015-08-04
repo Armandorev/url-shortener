@@ -1,7 +1,5 @@
-package benjamin.groehbiel.ch.shortener.word;
+package benjamin.groehbiel.ch.shortener;
 
-import benjamin.groehbiel.ch.shortener.ShortenerHandle;
-import benjamin.groehbiel.ch.shortener.ShortenerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -12,10 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class WordRepository implements ShortenerRepository {
+public class WordRepository {
 
     @Autowired
-    private EnglishDictionary words;
+    private EnglishDictionary englishWords;
 
     @Value("${app.domain}")
     public String SHORTENER_HOST;
@@ -28,7 +26,7 @@ public class WordRepository implements ShortenerRepository {
         if (originals.containsKey(originalURI)) {
             return originals.get(originalURI);
         } else {
-            WordDefinition nextWord = words.get();
+            WordDefinition nextWord = englishWords.get();
 
             String word = nextWord.getWord();
             String desc = nextWord.getDescription();

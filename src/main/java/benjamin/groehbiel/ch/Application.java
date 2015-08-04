@@ -1,7 +1,6 @@
 package benjamin.groehbiel.ch;
 
-import benjamin.groehbiel.ch.shortener.ShortenerRepository;
-import benjamin.groehbiel.ch.shortener.word.WordRepository;
+import benjamin.groehbiel.ch.shortener.WordRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +13,7 @@ public class Application {
     }
 
     @Bean
-    public ShortenerRepository shortenerRepository() {
+    public WordRepository shortenerRepository() {
         return new WordRepository();
     }
 

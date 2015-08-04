@@ -1,10 +1,9 @@
 package benjamin.groehbiel.ch.e2e;
 
 import benjamin.groehbiel.ch.ApplicationTest;
-import benjamin.groehbiel.ch.SpringTest;
-import benjamin.groehbiel.ch.shortener.ShortenerRepository;
-import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
-import benjamin.groehbiel.ch.shortener.word.WordDefinition;
+import benjamin.groehbiel.ch.shortener.EnglishDictionary;
+import benjamin.groehbiel.ch.shortener.WordDefinition;
+import benjamin.groehbiel.ch.shortener.WordRepository;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
@@ -34,14 +33,14 @@ import static org.hamcrest.Matchers.*;
 public class LandingPageTest extends FluentTest {
 
     @Autowired
-    private ShortenerRepository shortenerRepository;
+    private WordRepository wordRepository;
 
     @Autowired
     private EnglishDictionary englishDictionary;
 
     @Before
     public void clearRepository() {
-        shortenerRepository.clear();
+        wordRepository.clear();
 
         List<WordDefinition> words = new LinkedList<>();
         words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));

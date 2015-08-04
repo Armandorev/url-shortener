@@ -1,8 +1,8 @@
 package benjamin.groehbiel.ch;
 
-import benjamin.groehbiel.ch.shortener.ShortenerRepository;
-import benjamin.groehbiel.ch.shortener.word.EnglishDictionary;
-import benjamin.groehbiel.ch.shortener.word.WordDefinition;
+import benjamin.groehbiel.ch.shortener.EnglishDictionary;
+import benjamin.groehbiel.ch.shortener.WordDefinition;
+import benjamin.groehbiel.ch.shortener.WordRepository;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,14 +16,14 @@ public class SpringTest {
     private int port;
 
     @Autowired
-    ShortenerRepository shortenerRepository;
+    WordRepository wordRepository;
 
     @Autowired
     private EnglishDictionary englishDictionary;
 
     @Before
     public void clearRepository() {
-        shortenerRepository.clear();
+        wordRepository.clear();
 
         List<WordDefinition> words = new LinkedList<>();
         words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));

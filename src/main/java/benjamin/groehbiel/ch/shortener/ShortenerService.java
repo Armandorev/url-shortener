@@ -11,22 +11,22 @@ import java.util.Map;
 public class ShortenerService {
 
     @Autowired
-    ShortenerRepository shortenerRepository;
+    WordRepository wordRepository;
 
     public ShortenerHandle shorten(URI originalURI) throws URISyntaxException {
-        return shortenerRepository.add(originalURI);
+        return wordRepository.add(originalURI);
     }
 
     public URI expand(String hash) throws URISyntaxException {
-        return shortenerRepository.get(hash);
+        return wordRepository.get(hash);
     }
 
     public Map<URI, ShortenerHandle> getAllUrls() {
-        return shortenerRepository.get();
+        return wordRepository.get();
     }
 
     public Integer getCount() {
-        return shortenerRepository.getCount();
+        return wordRepository.getCount();
     }
 
 }

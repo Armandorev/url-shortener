@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener.word;
+package benjamin.groehbiel.ch.shortener;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
@@ -37,6 +37,7 @@ public class EnglishDictionary {
         File wordNet = new ClassPathResource("WordNet").getFile();
         List<WordDefinition> englishWords = WordNetHelper.load(wordNet.getPath());
         Collections.shuffle(englishWords);
+
         return englishWords;
     }
 }

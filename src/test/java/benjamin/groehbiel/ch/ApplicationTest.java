@@ -1,7 +1,6 @@
 package benjamin.groehbiel.ch;
 
-import benjamin.groehbiel.ch.shortener.ShortenerRepository;
-import benjamin.groehbiel.ch.shortener.word.WordRepository;
+import benjamin.groehbiel.ch.shortener.WordRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -13,7 +12,7 @@ import redis.clients.jedis.JedisPoolConfig;
 public class ApplicationTest {
 
     @Bean
-    public ShortenerRepository shortenerRepository() {
+    public WordRepository wordRepository() {
         return new WordRepository();
     }
 
