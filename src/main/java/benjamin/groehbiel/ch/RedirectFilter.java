@@ -1,5 +1,6 @@
 package benjamin.groehbiel.ch;
 
+import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
@@ -33,9 +33,9 @@ public class RedirectFilter implements Filter {
             String hash = requestURI.substring(1);
             Logger.getLogger("RedirectFilter").info("Resolving hash r" + hash);
             try {
-                URI originalUri = shortenerService.expand(hash);
+                ShortenerHandle shortenerHandle = shortenerService.expand(hash);
                 httpResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-                httpResponse.setHeader("Location", originalUri.toString());
+                httpResponse.setHeader("Location", shortenerHandle.getOriginalURI().toString());
             } catch (URISyntaxException e) {
                 httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }

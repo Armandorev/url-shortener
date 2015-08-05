@@ -1,9 +1,13 @@
 package benjamin.groehbiel.ch.shortener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -12,48 +16,66 @@ import java.util.Map;
 @Repository
 public class WordRepository {
 
+    public static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     @Autowired
     private EnglishDictionary englishWords;
+
+    @Autowired
+    private StringRedisTemplate redis;
 
     @Value("${app.domain}")
     public String SHORTENER_HOST;
 
-    private Map<String, URI> resolver = new HashMap<>();
-    private Map<URI, ShortenerHandle> originals = new HashMap<>();
-    private Long counter = 0L;
+    public ShortenerHandle add(URI originalURI) throws URISyntaxException, IOException {
+        String wordHash = redis.opsForValue().get(originalURI.toString());
 
-    public ShortenerHandle add(URI originalURI) throws URISyntaxException {
-        if (originals.containsKey(originalURI)) {
-            return originals.get(originalURI);
-        } else {
-            WordDefinition nextWord = englishWords.get();
-
-            String word = nextWord.getWord();
-            String desc = nextWord.getDescription();
-            ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(SHORTENER_HOST + word), word, desc, counter++);
-            resolver.put(word, shortenerHandle.getOriginalURI());
-            originals.put(originalURI, shortenerHandle);
-
+        if (wordHash != null) {
+            ShortenerHandle shortenerHandle = deserializeShortenerHandle(wordHash);
             return shortenerHandle;
         }
+
+        ShortenerHandle shortenerHandle = addHash(originalURI);
+        return shortenerHandle;
     }
 
-    public URI get(String hash) {
-        return resolver.get(hash);
+    public ShortenerHandle get(String hash) throws IOException {
+        ShortenerHandle shortenerHandle = deserializeShortenerHandle(hash);
+        return shortenerHandle;
     }
 
     public Map<URI, ShortenerHandle> get() {
-        return originals;
+        //TODO implement
+        return new HashMap<URI, ShortenerHandle>();
     }
 
-    public Integer getCount() {
-        return resolver.size();
+    public Long getCount() {
+        return Long.parseLong(redis.opsForValue().get("$count"));
     }
 
     public void clear() {
-        resolver.clear();
-        originals.clear();
-        counter = 0L;
+        redis.getConnectionFactory().getConnection().flushDb();
+    }
+
+    private ShortenerHandle addHash(URI originalURI) throws URISyntaxException, JsonProcessingException {
+        WordDefinition nextWord = englishWords.get();
+        String word = nextWord.getWord();
+        String desc = nextWord.getDescription();
+        ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(SHORTENER_HOST + word), word, desc);
+
+        redis.opsForValue().set(shortenerHandle.getHash(), serializeShortenerHandle(shortenerHandle));
+        redis.opsForValue().set(shortenerHandle.getOriginalURI().toString(), shortenerHandle.getHash());
+        redis.opsForValue().increment("$count", 1);
+
+        return shortenerHandle;
+    }
+
+    private String serializeShortenerHandle(ShortenerHandle shortenerHandle) throws JsonProcessingException {
+        return OBJECT_MAPPER.writeValueAsString(shortenerHandle);
+    }
+
+    private ShortenerHandle deserializeShortenerHandle(String wordHash) throws IOException {
+        return OBJECT_MAPPER.readValue(redis.opsForValue().get(wordHash), ShortenerHandle.class);
     }
 
 }

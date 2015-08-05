@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,12 +40,12 @@ class ApiController {
 
     @RequestMapping(value = "/stats", method = GET, produces = APPLICATION_JSON_VALUE)
     public ShortenerStats getStats() {
-        int count = shortenerService.getCount();
+        Long count = shortenerService.getCount();
         return new ShortenerStats(count);
     }
 
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ShortenerResponse shortenURL(@RequestBody ShortenerRequest shortenerRequest) throws MalformedURLException, URISyntaxException {
+    public ShortenerResponse shortenURL(@RequestBody ShortenerRequest shortenerRequest) throws IOException, URISyntaxException {
         URI uri = validateURL(shortenerRequest);
         ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
         return ShortenerResponse.summarise(shortenerHandle);

@@ -1,5 +1,8 @@
 package benjamin.groehbiel.ch;
 
+import benjamin.groehbiel.ch.shortener.ShortenerHandle;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,8 +13,11 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,4 +51,26 @@ public class JedisTest {
         String value = redisTemplate.opsForValue().get("key");
         Assert.assertThat(value, equalTo("value"));
     }
+
+    @Test
+    public void redisContains() {
+        String lookup = redisTemplate.opsForValue().get("hello");
+        Assert.assertThat(lookup, isEmptyOrNullString());
+        redisTemplate.opsForValue().set("hello", "wtf");
+        lookup = redisTemplate.opsForValue().get("hello");
+        Assert.assertThat(lookup, not(nullValue()));
+    }
+
+    @Test
+    public void serializePOJO() throws URISyntaxException, IOException {
+        ShortenerHandle shortenerHandle = new ShortenerHandle(new URI("http://www.google.ch"), new URI("http://s.it/a"), "a", "a letter");
+        String serializedPOJO = new ObjectMapper().writeValueAsString(shortenerHandle);
+        redisTemplate.opsForValue().set("a", serializedPOJO);
+
+        String retrievedPOJO = redisTemplate.opsForValue().get("a");
+        ShortenerHandle deserializedPOJO = new ObjectMapper().readValue(retrievedPOJO, ShortenerHandle.class);
+
+        MatcherAssert.assertThat(deserializedPOJO, equalTo(shortenerHandle));
+    }
+
 }

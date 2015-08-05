@@ -7,17 +7,15 @@ public class ShortenerHandle {
     private URI shortenedURI;
     private String hash;
     private String description;
-    private Long nextUniqueId;
 
     protected ShortenerHandle() {
     }
 
-    public ShortenerHandle(URI originalURI, URI shortenedURI, String hash, String desc, Long nextUniqueId) {
+    public ShortenerHandle(URI originalURI, URI shortenedURI, String hash, String desc) {
         this.originalURI = originalURI;
         this.shortenedURI = shortenedURI;
         this.hash = hash;
         this.description = desc;
-        this.nextUniqueId = nextUniqueId;
     }
 
     public URI getOriginalURI() {
@@ -36,7 +34,15 @@ public class ShortenerHandle {
         return description;
     }
 
-    public Long getNextUniqueId() {
-        return nextUniqueId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ShortenerHandle that = (ShortenerHandle) o;
+
+        if (originalURI != null ? !originalURI.equals(that.originalURI) : that.originalURI != null) return false;
+        return !(hash != null ? !hash.equals(that.hash) : that.hash != null);
+
     }
 }
