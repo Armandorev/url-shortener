@@ -3,7 +3,6 @@ build/
 .gradle
 .idea/
 *.iml
-.envrc
 
 .gitignore
 tmp

@@ -84,9 +84,3 @@ sourceSets {
 test {
     reports.html.destination = file('build/reports/test')
 }
-
-bootRun {
-    environment = [
-            VCAP_SERVICES : ''
-    ]
-}
