@@ -1,5 +1,16 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 services:
-  - redis-server
+- redis-server
+deploy:
+  provider:
+    provider: cloudfoundry
+  api: https://api.run.pivotal.io
+  username: bgrohbiel
+  password:
+    secure: iCcaFwkhrPmQitPG2T+d4IzjHgA3iVxAFGqv1zQ8ZzQdRJP/eTXxMUok2N94AHsJXqK1Rpf1KHNbKztQrm/CxMGdOeLjwho/pZ/QbHnKOPL07tFQ+mcHmBo4385T1NNpXbC5DroD7TgxB+lFbozAHvVNwoeeTT+Jvwv0KgIQNepu1kZn9K/k9hkR1OlAVlMsqpDXJL4tBhs9LPMQcOpdm1+w/e2lT/K3pacxZIuEwu95GXmj5ayJbEQ9XhIgfSe4AlFyieQr6+2gBAufksjjXq8qYChGjQB2rv2cvstp2je1uEuydL7UibuiIR2rQ3ze+tLMCIrJgrs52RA6IZ8+i6w/goKxPoMZDysRwFr8vfzhS0eXv6NI8YiHGK2OakPZrr3CVDFgoq+H8bUVqyiVmnw7bm28NtxOG+W65+/nAzeObYiJvBTioVC8valAnVKZ/8o4uLS0zO/K2s15R330ANZa2AlIzvDrxeap3Jc2cC32g8Vxtcpnns3hrrstmdwGQb+ChGdFsN6szvnsXPGJ/xVe5z3pCrpppZfllPjrfsbns6Pn4fjO+Zc01JUaxkS7c8nETTW5DR5ZpifEKrYJ3hoZaIIVk4kejUGTcajcwcAsritJ6+YXKebsNYHheRbii8gSC8Hc3oSzpHfDFQ8X2Q1+qv9q8VBdbwElcjoxcRs=
+  organization: bgrohbiel@pivotal.io
+  space: development
+  on:
+    repo: bengro/url-shortener
