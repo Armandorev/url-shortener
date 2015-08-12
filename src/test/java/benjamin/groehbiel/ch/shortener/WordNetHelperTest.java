@@ -1,7 +1,5 @@
 package benjamin.groehbiel.ch.shortener;
 
-import benjamin.groehbiel.ch.shortener.WordDefinition;
-import benjamin.groehbiel.ch.shortener.WordNetHelper;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
