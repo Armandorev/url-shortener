@@ -3,6 +3,9 @@ jdk:
 - oraclejdk8
 services:
 - redis-server
+branches:
+  only:
+    - master 
 deploy:
   provider:
     provider: cloudfoundry
@@ -14,3 +17,4 @@ deploy:
   space: development
   on:
     repo: bengro/url-shortener
+    branch: master
