@@ -25,7 +25,8 @@
 
         $scope.fetchURLCount = function () {
             $http.get('/api/stats').success(function (data) {
-                $scope.counter = data.counter;
+                $scope.shortenedCount = data.shortenedCount;
+                $scope.remainingCount = data.remainingCount;
             });
         };
 

@@ -27,7 +27,7 @@ describe('ShortenerFormCtrl', function () {
             shortened: shortenedUrl
         });
         $httpBackend.when('GET', '/api/stats').respond(200, {
-            counter: 100
+            shortenedCount: 100
         });
 
         controller();

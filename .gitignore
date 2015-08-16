@@ -10,3 +10,4 @@ tmp
 .DS_Store
 src/main/js/bower_components
 src/main/js/node_modules
+dump.rdb

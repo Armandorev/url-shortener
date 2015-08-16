@@ -46,7 +46,7 @@ public class WordRepositoryTest extends SpringTest {
     @Test
     public void shouldUsePersistenceToLookUpHash() throws URISyntaxException, IOException {
         redisTemplate.opsForValue().set("$count", "0");
-        MatcherAssert.assertThat(shortenerService.getCount(), equalTo(0L));
+        MatcherAssert.assertThat(shortenerService.getShortenedCount(), equalTo(0L));
 
         redisTemplate.opsForValue().set("$count", "1");
         ShortenerHandle shortenerHandleForWater = new ShortenerHandle();

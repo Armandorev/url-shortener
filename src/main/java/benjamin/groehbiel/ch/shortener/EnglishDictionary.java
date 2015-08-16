@@ -17,7 +17,7 @@ public class EnglishDictionary {
         words = load();
     }
 
-    public WordDefinition get() {
+    public WordDefinition getNextWord() {
         return words.remove(0);
     }
 

@@ -40,8 +40,9 @@ class ApiController {
 
     @RequestMapping(value = "/stats", method = GET, produces = APPLICATION_JSON_VALUE)
     public ShortenerStats getStats() {
-        Long count = shortenerService.getCount();
-        return new ShortenerStats(count);
+        Long shortenedCount = shortenerService.getShortenedCount();
+        Long remainingCount = shortenerService.getRemainingCount();
+        return new ShortenerStats(shortenedCount, remainingCount);
     }
 
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

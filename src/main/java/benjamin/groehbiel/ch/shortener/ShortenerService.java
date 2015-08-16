@@ -26,8 +26,11 @@ public class ShortenerService {
         return wordRepository.get();
     }
 
-    public Long getCount() {
+    public Long getShortenedCount() {
         return wordRepository.getCount();
     }
 
+    public Long getRemainingCount() {
+        return Long.valueOf(wordRepository.getRemainingWordsCount());
+    }
 }

@@ -60,6 +60,20 @@ public class ApiApplicationTest extends SpringTest {
     }
 
     @Test
+    public void shouldReturnGeneralStats() throws Exception {
+        Long hashCount = shortenerService.getRemainingCount();
+        MatcherAssert.assertThat(hashCount, equalTo(3L));
+
+        MvcResult mvcResult = mockMvc.perform(get("/api/stats").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>(){});
+        MatcherAssert.assertThat(shortenerStats, equalTo(new ShortenerStats(0L, 3L)));
+    }
+
+    @Test
     @Ignore
     public void shouldExposeAListOfAllShortenedURLs() throws Exception {
         URI urlPivotal = new URI("http://www.pivotal.io");

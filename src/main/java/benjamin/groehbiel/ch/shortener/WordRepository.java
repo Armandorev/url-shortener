@@ -50,7 +50,16 @@ public class WordRepository {
     }
 
     public Long getCount() {
-        return Long.parseLong(redis.opsForValue().get("$count"));
+        String shortenedSoFar = redis.opsForValue().get("$count");
+        if (shortenedSoFar == null) {
+            return 0L;
+        } else {
+            return Long.parseLong(shortenedSoFar);
+        }
+    }
+
+    public int getRemainingWordsCount() {
+        return englishWords.size();
     }
 
     public void clear() {
@@ -58,7 +67,7 @@ public class WordRepository {
     }
 
     private ShortenerHandle addHash(URI originalURI) throws URISyntaxException, JsonProcessingException {
-        WordDefinition nextWord = englishWords.get();
+        WordDefinition nextWord = englishWords.getNextWord();
         String word = nextWord.getWord();
         String desc = nextWord.getDescription();
         ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(SHORTENER_HOST + word), word, desc);
