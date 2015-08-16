@@ -11,7 +11,7 @@ public class ShortenerStats {
         this.setShortenedCount(counter);
         this.setRemainingCount(remainingWords);
     }
-    
+
     public Long getShortenedCount() {
         return shortenedCount;
     }
