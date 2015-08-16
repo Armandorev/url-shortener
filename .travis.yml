@@ -5,7 +5,7 @@ services:
 - redis-server
 branches:
   only:
-    - master 
+    - master
 deploy:
   provider:
     provider: cloudfoundry
@@ -17,4 +17,3 @@ deploy:
   space: development
   on:
     repo: bengro/url-shortener
-    branch: master
