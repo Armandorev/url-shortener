@@ -1,5 +1,6 @@
 package benjamin.groehbiel.ch.api;
 
+import benjamin.groehbiel.ch.UriValidator;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +48,18 @@ class ApiController {
 
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ShortenerResponse shortenURL(@RequestBody ShortenerRequest shortenerRequest) throws IOException, URISyntaxException {
-        URI uri = validateURL(shortenerRequest);
+        URI uri = validatedURL(shortenerRequest);
         ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
         return ShortenerResponse.summarise(shortenerHandle);
     }
 
-    private URI validateURL(ShortenerRequest url) throws URISyntaxException, MalformedURLException {
-        URL validateURL = new URI(url.getUrl()).toURL();
-        return new URI(validateURL.toString());
+    private URI validatedURL(ShortenerRequest url) throws URISyntaxException, MalformedURLException {
+        UriValidator validator = new UriValidator();
+        String uri = url.getUrl();
+        if (!validator.validate(uri)) {
+            throw new MalformedURLException("Invalid URI: " + uri); // TODO: better exception?
+        }
+        return new URI(uri);
     }
 
 }
