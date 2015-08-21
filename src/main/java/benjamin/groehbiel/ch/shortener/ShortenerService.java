@@ -22,7 +22,7 @@ public class ShortenerService {
         return wordRepository.get(hash);
     }
 
-    public Map<URI, ShortenerHandle> getAllUrls() {
+    public Map<URI, ShortenerHandle> getAllUrls() throws IOException {
         return wordRepository.get();
     }
 

@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Repository
 public class WordRepository {
@@ -44,9 +45,17 @@ public class WordRepository {
         return shortenerHandle;
     }
 
-    public Map<URI, ShortenerHandle> get() {
-        //TODO implement
-        return new HashMap<URI, ShortenerHandle>();
+    public Map<URI, ShortenerHandle> get() throws IOException {
+        Set<String> keys = redis.keys("*:\\/\\/*");
+
+        HashMap<URI, ShortenerHandle> shortenedUris = new HashMap<>();
+        for (String key : keys) {
+            String hash = redis.opsForValue().get(key);
+            ShortenerHandle shortenerHandle = get(hash);
+            shortenedUris.put(shortenerHandle.getOriginalURI(), shortenerHandle);
+        }
+
+        return shortenedUris;
     }
 
     public Long getCount() {

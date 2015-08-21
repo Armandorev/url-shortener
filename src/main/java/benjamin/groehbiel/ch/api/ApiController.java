@@ -29,7 +29,7 @@ class ApiController {
     ShortenerService shortenerService;
 
     @RequestMapping(value = "/all", method = GET, produces = APPLICATION_JSON_VALUE)
-    public List<ShortenerResponse> latest() {
+    public List<ShortenerResponse> latest() throws IOException {
         Map<URI, ShortenerHandle> allShortenedURLs = shortenerService.getAllUrls();
 
         return allShortenedURLs.entrySet()
