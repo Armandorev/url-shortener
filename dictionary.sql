@@ -1,4 +1,4 @@
-CREATE DATABASE url_shortener WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'de_CH.UTF-8' LC_CTYPE = 'de_CH.UTF-8';
+CREATE DATABASE url_shortener;
 ALTER DATABASE url_shortener OWNER TO postgres;
 \connect url_shortener
 CREATE SCHEMA public;
