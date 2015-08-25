@@ -6,7 +6,7 @@ services:
 before_install:
 - psql -f dictionary.sql
 env:
-- VCAP_SERVICES="{\"elephantsql\": [{\"credentials\": {\"max_conns\": \"5\", \"uri\": "postgres://postgres:@localhost:5432/url_shortener"},        "label": "elephantsql",        "name": "postgres-db",        "plan": "turtle",        "tags": [         "Data Stores",         "Data Store",         "postgresql",         "PaaS",         "relational",         "New Product",         "IT Management"        ]       }      ],      "redis": [       {        "credentials": {         "host": "localhost",         "password": "",         "port": 6379        },        "label": "redis",        "name": "pcf-redis",        "plan": "dedicated-vm",        "tags": [         "pivotal",         "redis"        ]       }      ]    }"
+- VCAP_SERVICES="test"
 deploy:
   provider: cloudfoundry
   api: https://api.run.pivotal.io
