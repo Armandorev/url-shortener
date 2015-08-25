@@ -4,7 +4,7 @@ jdk:
 services:
 - redis-server
 before_script:
-- psql -f dictionary.sql
+- psql -c 'create database url_shortener;' -U postgres
 env:
 - VCAP_SERVICES="test"
 deploy:
