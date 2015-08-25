@@ -6,7 +6,7 @@ services:
 before_script:
 - psql -f dictionary.sql -U postgres
 env:
-- VCAP_SERVICES="{\"elephantsql\": []}"
+- VCAP_SERVICES='{"elephantsql": []}'
 deploy:
   provider: cloudfoundry
   api: https://api.run.pivotal.io
