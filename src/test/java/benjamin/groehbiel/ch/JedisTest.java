@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class)
+@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
 public class JedisTest {
 
     @Autowired

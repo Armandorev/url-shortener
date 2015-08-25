@@ -10,6 +10,13 @@ Give it a try on on the [development instance](http://bengro-url-shortener.cfapp
 The project backlog can be found [here](https://www.pivotaltracker.com/n/projects/1373074).
 
 ## Development
+The development environment needs to have npm, bower and gulp installed to be able to build the application.
+
+``
+brew install npm
+npm install bower -g
+npm install gulp -g
+``
 
 Run unit tests:
 ``./gradlew test``
@@ -63,7 +70,7 @@ In project root run:
 
 ### Persistence: Redis and Postgres
 
-Install dependencies: ``brew install redis-server posgresql``
+Install dependencies: ``brew install redis posgresql``
 
 Start redis: ``redis-server``
 
@@ -75,3 +82,4 @@ Stop postgres: ``pg_ctl -D /usr/local/var/postgres stop -s -m fast``
 * Install [cf-cli ](https://github.com/cloudfoundry/cli)
 * Change name and war file reference in manifest.yml
 * Run ``./gradlew build && cf push``
+

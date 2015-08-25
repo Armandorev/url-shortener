@@ -15,7 +15,8 @@ public class Application {
                 .run(args);
     }
 
-    @Bean public RedisConnectionFactory redisConnectionFactory(){
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory(){
         JedisConnectionFactory redis = new JedisConnectionFactory();
         redis.setHostName(System.getProperty("spring.redis.host"));
         redis.setPort(Integer.parseInt(System.getProperty("spring.redis.port")));
