@@ -16,13 +16,13 @@ SET client_min_messages = warning;
 DROP DATABASE url_shortener;
 --
 -- TOC entry 2268 (class 1262 OID 16392)
--- Name: url_shortener; Type: DATABASE; Schema: -; Owner: bengro
+-- Name: url_shortener; Type: DATABASE; Schema: -; Owner: postgres
 --
 
 CREATE DATABASE url_shortener WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'de_CH.UTF-8' LC_CTYPE = 'de_CH.UTF-8';
 
 
-ALTER DATABASE url_shortener OWNER TO bengro;
+ALTER DATABASE url_shortener OWNER TO postgres;
 
 \connect url_shortener
 
@@ -35,18 +35,18 @@ SET client_min_messages = warning;
 
 --
 -- TOC entry 5 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: bengro
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA public;
 
 
-ALTER SCHEMA public OWNER TO bengro;
+ALTER SCHEMA public OWNER TO postgres;
 
 --
 -- TOC entry 2269 (class 0 OID 0)
 -- Dependencies: 5
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: bengro
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
 --
 
 COMMENT ON SCHEMA public IS 'standard public schema';
@@ -77,7 +77,7 @@ SET default_with_oids = false;
 
 --
 -- TOC entry 173 (class 1259 OID 16422)
--- Name: dictionary; Type: TABLE; Schema: public; Owner: bengro; Tablespace: 
+-- Name: dictionary; Type: TABLE; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE TABLE dictionary (
@@ -89,11 +89,11 @@ CREATE TABLE dictionary (
 );
 
 
-ALTER TABLE dictionary OWNER TO bengro;
+ALTER TABLE dictionary OWNER TO postgres;
 
 --
 -- TOC entry 172 (class 1259 OID 16420)
--- Name: dictionary_hash_id_seq; Type: SEQUENCE; Schema: public; Owner: bengro
+-- Name: dictionary_hash_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE dictionary_hash_id_seq
@@ -104,12 +104,12 @@ CREATE SEQUENCE dictionary_hash_id_seq
     CACHE 1;
 
 
-ALTER TABLE dictionary_hash_id_seq OWNER TO bengro;
+ALTER TABLE dictionary_hash_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 2272 (class 0 OID 0)
 -- Dependencies: 172
--- Name: dictionary_hash_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bengro
+-- Name: dictionary_hash_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE dictionary_hash_id_seq OWNED BY dictionary.hash_id;
@@ -117,7 +117,7 @@ ALTER SEQUENCE dictionary_hash_id_seq OWNED BY dictionary.hash_id;
 
 --
 -- TOC entry 2149 (class 2604 OID 16433)
--- Name: hash_id; Type: DEFAULT; Schema: public; Owner: bengro
+-- Name: hash_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dictionary ALTER COLUMN hash_id SET DEFAULT nextval('dictionary_hash_id_seq'::regclass);
@@ -126,7 +126,7 @@ ALTER TABLE ONLY dictionary ALTER COLUMN hash_id SET DEFAULT nextval('dictionary
 --
 -- TOC entry 2263 (class 0 OID 16422)
 -- Dependencies: 173
--- Data for Name: dictionary; Type: TABLE DATA; Schema: public; Owner: bengro
+-- Data for Name: dictionary; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY dictionary (hash_id, hash, description, available, language) FROM stdin;
@@ -136,7 +136,7 @@ COPY dictionary (hash_id, hash, description, available, language) FROM stdin;
 --
 -- TOC entry 2273 (class 0 OID 0)
 -- Dependencies: 172
--- Name: dictionary_hash_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bengro
+-- Name: dictionary_hash_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('dictionary_hash_id_seq', 1, false);
@@ -144,7 +144,7 @@ SELECT pg_catalog.setval('dictionary_hash_id_seq', 1, false);
 
 --
 -- TOC entry 2151 (class 2606 OID 16428)
--- Name: dictionary_pkey; Type: CONSTRAINT; Schema: public; Owner: bengro; Tablespace: 
+-- Name: dictionary_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace:
 --
 
 ALTER TABLE ONLY dictionary
@@ -153,7 +153,7 @@ ALTER TABLE ONLY dictionary
 
 --
 -- TOC entry 2152 (class 1259 OID 16432)
--- Name: hash; Type: INDEX; Schema: public; Owner: bengro; Tablespace: 
+-- Name: hash; Type: INDEX; Schema: public; Owner: postgres; Tablespace:
 --
 
 CREATE INDEX hash ON dictionary USING btree (hash);
@@ -162,12 +162,12 @@ CREATE INDEX hash ON dictionary USING btree (hash);
 --
 -- TOC entry 2270 (class 0 OID 0)
 -- Dependencies: 5
--- Name: public; Type: ACL; Schema: -; Owner: bengro
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM bengro;
-GRANT ALL ON SCHEMA public TO bengro;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
