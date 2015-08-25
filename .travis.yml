@@ -3,7 +3,7 @@ jdk:
 - oraclejdk8
 services:
 - redis-server
-before_install:
+before_script:
 - psql -f dictionary.sql
 env:
 - VCAP_SERVICES="test"
