@@ -4,7 +4,7 @@ jdk:
 services:
 - redis-server
 env:
-- VCAP_SERVICES="{"elephantsql":[{"credentials":{"max_conns":"5","uri":"postgres://postgres:@localhost:5432/url_shortener"},"label":"elephantsql","name":"postgres-db","plan":"turtle","tags":["DataStores","DataStore","postgresql","PaaS","relational","NewProduct","ITManagement"]}],"redis":[{"credentials":{"host":"localhost","password":"","port":6379},"label":"redis","name":"pcf-redis","plan":"dedicated-vm","tags":["pivotal","redis"]}]}"
+- VCAP_SERVICES='{"elephantsql":[{"credentials":{"max_conns":"5","uri":"postgres://postgres:@localhost:5432/url_shortener"},"label":"elephantsql","name":"postgres-db","plan":"turtle","tags":["DataStores","DataStore","postgresql","PaaS","relational","NewProduct","ITManagement"]}],"redis":[{"credentials":{"host":"localhost","password":"","port":6379},"label":"redis","name":"pcf-redis","plan":"dedicated-vm","tags":["pivotal","redis"]}]}'
 addons:
   postgresql: "9.4"
 deploy:
@@ -19,3 +19,5 @@ deploy:
     repo: bengro/url-shortener
 before_script:
 - psql -f dictionary.sql -U postgres
+before_install:
+source ./travis-env.sh
