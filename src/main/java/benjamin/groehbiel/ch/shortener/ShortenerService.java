@@ -19,18 +19,18 @@ public class ShortenerService {
     }
 
     public ShortenerHandle expand(String hash) throws URISyntaxException, IOException {
-        return wordRepository.get(hash);
+        return wordRepository.getShortenerHandleFor(hash);
     }
 
-    public Map<URI, ShortenerHandle> getAllUrls() {
-        return wordRepository.get();
+    public Map<URI, ShortenerHandle> getAllUrls() throws IOException {
+        return wordRepository.getAllShortenerHandles();
     }
 
     public Long getShortenedCount() {
-        return wordRepository.getCount();
+        return wordRepository.size();
     }
 
     public Long getRemainingCount() {
-        return Long.valueOf(wordRepository.getRemainingWordsCount());
+        return Long.valueOf(wordRepository.getRemainingHashCount());
     }
 }

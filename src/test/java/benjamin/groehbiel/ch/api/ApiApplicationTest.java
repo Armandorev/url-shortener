@@ -74,7 +74,6 @@ public class ApiApplicationTest extends SpringTest {
     }
 
     @Test
-    @Ignore
     public void shouldExposeAListOfAllShortenedURLs() throws Exception {
         URI urlPivotal = new URI("http://www.pivotal.io");
         URI urlLabs = new URI("http://www.pivotallabs.com");
@@ -87,6 +86,7 @@ public class ApiApplicationTest extends SpringTest {
                 .andReturn();
 
         List<ShortenerResponse> newResponse = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ShortenerResponse>>() {});
+
         MatcherAssert.assertThat(newResponse, hasSize(2));
 
         MatcherAssert.assertThat(newResponse, containsInAnyOrder(

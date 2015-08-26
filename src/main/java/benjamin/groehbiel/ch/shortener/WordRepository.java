@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Repository
 public class WordRepository {
@@ -35,38 +36,11 @@ public class WordRepository {
             return shortenerHandle;
         }
 
-        ShortenerHandle shortenerHandle = addHash(originalURI);
+        ShortenerHandle shortenerHandle = createShortenerHandleFor(originalURI);
         return shortenerHandle;
     }
 
-    public ShortenerHandle get(String hash) throws IOException {
-        ShortenerHandle shortenerHandle = deserializeShortenerHandle(hash);
-        return shortenerHandle;
-    }
-
-    public Map<URI, ShortenerHandle> get() {
-        //TODO implement
-        return new HashMap<URI, ShortenerHandle>();
-    }
-
-    public Long getCount() {
-        String shortenedSoFar = redis.opsForValue().get("$count");
-        if (shortenedSoFar == null) {
-            return 0L;
-        } else {
-            return Long.parseLong(shortenedSoFar);
-        }
-    }
-
-    public int getRemainingWordsCount() {
-        return englishWords.size();
-    }
-
-    public void clear() {
-        redis.getConnectionFactory().getConnection().flushDb();
-    }
-
-    private ShortenerHandle addHash(URI originalURI) throws URISyntaxException, JsonProcessingException {
+    private ShortenerHandle createShortenerHandleFor(URI originalURI) throws URISyntaxException, JsonProcessingException {
         WordDefinition nextWord = englishWords.getNextWord();
         String word = nextWord.getWord();
         String desc = nextWord.getDescription();
@@ -77,6 +51,41 @@ public class WordRepository {
         redis.opsForValue().increment("$count", 1);
 
         return shortenerHandle;
+    }
+
+    public ShortenerHandle getShortenerHandleFor(String hash) throws IOException {
+        ShortenerHandle shortenerHandle = deserializeShortenerHandle(hash);
+        return shortenerHandle;
+    }
+
+    public Map<URI, ShortenerHandle> getAllShortenerHandles() throws IOException {
+        Set<String> uriKeys = redis.keys("*:\\/\\/*");
+
+        HashMap<URI, ShortenerHandle> shortenedUris = new HashMap<>();
+        for (String uriKey : uriKeys) {
+            String hash = redis.opsForValue().get(uriKey);
+            ShortenerHandle shortenerHandle = getShortenerHandleFor(hash);
+            shortenedUris.put(shortenerHandle.getOriginalURI(), shortenerHandle);
+        }
+
+        return shortenedUris;
+    }
+
+    public Long size() {
+        String shortenedSoFar = redis.opsForValue().get("$count");
+        if (shortenedSoFar == null) {
+            return 0L;
+        } else {
+            return Long.parseLong(shortenedSoFar);
+        }
+    }
+
+    public int getRemainingHashCount() {
+        return englishWords.size();
+    }
+
+    public void clear() {
+        redis.getConnectionFactory().getConnection().flushDb();
     }
 
     private String serializeShortenerHandle(ShortenerHandle shortenerHandle) throws JsonProcessingException {
