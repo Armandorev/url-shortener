@@ -36,11 +36,11 @@ public class WordRepositoryTest extends SpringTest {
     public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException, IOException {
         URI inputUri = new URI("http://www.example.org");
         ShortenerHandle shortenerHandle = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), equalTo("http://www.shortener.com/fun"));
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), equalTo("http://localhost:8080/fun"));
 
         URI anotherShortenedUri = new URI("http://www.example2.org");
         shortenerHandle = shortenerService.shorten(anotherShortenedUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), equalTo("http://www.shortener.com/eloquence"));
+        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), equalTo("http://localhost:8080/eloquence"));
     }
 
     @Test

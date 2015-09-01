@@ -52,6 +52,9 @@ public class ApiApplicationTest extends SpringTest {
     @Value("${app.domain}")
     public String SHORTENER_HOST;
 
+    @Value("${app.protocol}")
+    public String SHORTENER_PROTOCOL;
+
     private MockMvc mockMvc;
 
     @Before
@@ -90,8 +93,8 @@ public class ApiApplicationTest extends SpringTest {
         MatcherAssert.assertThat(newResponse, hasSize(2));
 
         MatcherAssert.assertThat(newResponse, containsInAnyOrder(
-                new ShortenerResponse(urlPivotal, new URI(SHORTENER_HOST + "fun")),
-                new ShortenerResponse(urlLabs, new URI(SHORTENER_HOST + "eloquence"))
+                new ShortenerResponse(urlPivotal, new URI(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + "fun")),
+                new ShortenerResponse(urlLabs, new URI(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + "eloquence"))
         ));
     }
 
@@ -108,7 +111,7 @@ public class ApiApplicationTest extends SpringTest {
 
         ShortenerResponse response = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerResponse>() {});
         MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
-        MatcherAssert.assertThat(response.getShortened().toString(), equalTo(SHORTENER_HOST + "fun"));
+        MatcherAssert.assertThat(response.getShortened().toString(), equalTo(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + "fun"));
     }
 
     @Test

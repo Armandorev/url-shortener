@@ -28,6 +28,9 @@ public class WordRepository {
     @Value("${app.domain}")
     public String SHORTENER_HOST;
 
+    @Value("${app.protocol}")
+    public String SHORTENER_PROTOCOL;
+
     public ShortenerHandle add(URI originalURI) throws URISyntaxException, IOException {
         String wordHash = redis.opsForValue().get(originalURI.toString());
 
@@ -44,7 +47,7 @@ public class WordRepository {
         WordDefinition nextWord = englishWords.getNextWord();
         String word = nextWord.getWord();
         String desc = nextWord.getDescription();
-        ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(SHORTENER_HOST + word), word, desc);
+        ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + word), word, desc);
 
         redis.opsForValue().set(shortenerHandle.getHash(), serializeShortenerHandle(shortenerHandle));
         redis.opsForValue().set(shortenerHandle.getOriginalURI().toString(), shortenerHandle.getHash());

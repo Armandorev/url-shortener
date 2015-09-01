@@ -24,6 +24,13 @@ public class PersistenceInitializer implements ApplicationContextInitializer<Con
         CloudFoundryEnvironment environment = new CloudFoundryEnvironment(System::getenv);
         setupRedis(environment);
         setupPostgres(environment);
+        setupEnvironment();
+    }
+
+    private void setupEnvironment() {
+        String shortener_host = System.getenv("SHORTENER_HOST");
+        System.setProperty("app.domain", shortener_host);
+        System.setProperty("app.protocol", "http");
     }
 
     private void setupPostgres(CloudFoundryEnvironment environment) throws URISyntaxException {
