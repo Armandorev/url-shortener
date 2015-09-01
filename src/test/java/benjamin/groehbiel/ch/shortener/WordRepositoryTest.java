@@ -3,6 +3,7 @@ package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.ApplicationTest;
 import benjamin.groehbiel.ch.SpringTest;
+import benjamin.groehbiel.ch.api.ShortenerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
@@ -36,11 +37,11 @@ public class WordRepositoryTest extends SpringTest {
     public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException, IOException {
         URI inputUri = new URI("http://www.example.org");
         ShortenerHandle shortenerHandle = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), equalTo("http://localhost:8080/fun"));
+        MatcherAssert.assertThat(shortenerHandle.getHash(), equalTo("fun"));
 
         URI anotherShortenedUri = new URI("http://www.example2.org");
         shortenerHandle = shortenerService.shorten(anotherShortenedUri);
-        MatcherAssert.assertThat(shortenerHandle.getShortenedURI().toString(), equalTo("http://localhost:8080/eloquence"));
+        MatcherAssert.assertThat(shortenerHandle.getHash(), equalTo("eloquence"));
     }
 
     @Test

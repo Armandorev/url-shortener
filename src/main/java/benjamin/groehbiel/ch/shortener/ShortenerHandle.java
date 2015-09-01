@@ -1,19 +1,21 @@
 package benjamin.groehbiel.ch.shortener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ShortenerHandle {
+
     private URI originalURI;
-    private URI shortenedURI;
     private String hash;
     private String description;
 
     protected ShortenerHandle() {
     }
 
-    public ShortenerHandle(URI originalURI, URI shortenedURI, String hash, String desc) {
+    public ShortenerHandle(URI originalURI, String hash, String desc) {
         this.originalURI = originalURI;
-        this.shortenedURI = shortenedURI;
         this.hash = hash;
         this.description = desc;
     }
@@ -22,8 +24,10 @@ public class ShortenerHandle {
         return originalURI;
     }
 
-    public URI getShortenedURI() {
-        return shortenedURI;
+    @JsonIgnore
+    public URI getShortenedURI() throws URISyntaxException {
+        // TODO: use spring values
+        return new URI(System.getProperty("app.protocol") + "://" + System.getProperty("app.domain") + "/" + this.hash);
     }
 
     public String getHash() {
@@ -43,6 +47,5 @@ public class ShortenerHandle {
 
         if (originalURI != null ? !originalURI.equals(that.originalURI) : that.originalURI != null) return false;
         return !(hash != null ? !hash.equals(that.hash) : that.hash != null);
-
     }
 }

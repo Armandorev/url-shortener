@@ -45,9 +45,9 @@ public class WordRepository {
 
     private ShortenerHandle createShortenerHandleFor(URI originalURI) throws URISyntaxException, JsonProcessingException {
         WordDefinition nextWord = englishWords.getNextWord();
-        String word = nextWord.getWord();
+        String hash = nextWord.getWord();
         String desc = nextWord.getDescription();
-        ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, new URI(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + word), word, desc);
+        ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, hash, desc);
 
         redis.opsForValue().set(shortenerHandle.getHash(), serializeShortenerHandle(shortenerHandle));
         redis.opsForValue().set(shortenerHandle.getOriginalURI().toString(), shortenerHandle.getHash());

@@ -1,6 +1,7 @@
 package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.ApplicationTest;
+import benjamin.groehbiel.ch.PersistenceInitializer;
 import benjamin.groehbiel.ch.SpringTest;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,24 +37,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class)
+@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 public class ApiApplicationTest extends SpringTest {
 
-    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Autowired
-    ShortenerService shortenerService;
+    private ShortenerService shortenerService;
 
     @Autowired
     private WebApplicationContext wac;
 
     @Value("${app.domain}")
-    public String SHORTENER_HOST;
+    private String SHORTENER_HOST;
 
     @Value("${app.protocol}")
-    public String SHORTENER_PROTOCOL;
+    private String SHORTENER_PROTOCOL;
 
     private MockMvc mockMvc;
 
@@ -88,13 +89,13 @@ public class ApiApplicationTest extends SpringTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<ShortenerResponse> newResponse = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ShortenerResponse>>() {});
+        List<ShortenerResponse> responses = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ShortenerResponse>>() {});
 
-        MatcherAssert.assertThat(newResponse, hasSize(2));
+        MatcherAssert.assertThat(responses, hasSize(2));
 
-        MatcherAssert.assertThat(newResponse, containsInAnyOrder(
-                new ShortenerResponse(urlPivotal, new URI(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + "fun")),
-                new ShortenerResponse(urlLabs, new URI(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + "eloquence"))
+        MatcherAssert.assertThat(responses, containsInAnyOrder(
+                new ShortenerResponse(urlPivotal, new URI("xxx"), "fun", ""),
+                new ShortenerResponse(urlLabs, new URI("xxx"), "eloquence", "")
         ));
     }
 
@@ -104,7 +105,8 @@ public class ApiApplicationTest extends SpringTest {
 
         byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(request);
 
-        MvcResult postResponse = mockMvc.perform(post("/api/shorten").content(requestJson).contentType(MediaType.APPLICATION_JSON_VALUE))
+        MvcResult postResponse = mockMvc.perform(post("/api/shorten")
+                .content(requestJson).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType("application/json"))
                 .andReturn();

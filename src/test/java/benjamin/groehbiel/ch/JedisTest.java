@@ -63,7 +63,7 @@ public class JedisTest {
 
     @Test
     public void serializePOJO() throws URISyntaxException, IOException {
-        ShortenerHandle shortenerHandle = new ShortenerHandle(new URI("http://www.google.ch"), new URI("http://s.it/a"), "a", "a letter");
+        ShortenerHandle shortenerHandle = new ShortenerHandle(new URI("http://www.google.ch"), "a", "a letter");
         String serializedPOJO = new ObjectMapper().writeValueAsString(shortenerHandle);
         redisTemplate.opsForValue().set("a", serializedPOJO);
 

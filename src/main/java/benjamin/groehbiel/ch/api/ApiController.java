@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,7 +34,13 @@ class ApiController {
 
         return allShortenedURLs.entrySet()
                 .stream()
-                .map((Entry<URI, ShortenerHandle> entry) -> ShortenerResponse.summarise(entry.getValue()))
+                .map((Entry<URI, ShortenerHandle> entry) -> {
+                    try {
+                        return ShortenerResponse.summarise(entry.getValue());
+                    } catch (URISyntaxException e) {
+                        return null;
+                    }
+                })
                 .collect(Collectors.toList());
     }
 

@@ -3,36 +3,38 @@ package benjamin.groehbiel.ch.api;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ShortenerResponse {
 
-    public static ShortenerResponse summarise(ShortenerHandle shortenerHandle) {
-        return new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI(), shortenerHandle.getDescription());
+    public static ShortenerResponse summarise(ShortenerHandle shortenerHandle) throws URISyntaxException {
+        return new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI(), shortenerHandle.getHash(), shortenerHandle.getDescription());
     }
 
     private URI original;
     private URI shortened;
+    private String hash;
     private String description;
 
-    public ShortenerResponse() {
-    }
+    public ShortenerResponse() {}
 
-    public ShortenerResponse(URI original, URI shortened, String description) {
+    public ShortenerResponse(URI original, URI shortened, String hash, String description) throws URISyntaxException {
         this.original = original;
         this.shortened = shortened;
+        this.hash = hash;
         this.description = description;
-    }
-
-    public ShortenerResponse(URI original, URI uri) {
-        this(original, uri, "");
     }
 
     public URI getOriginal() {
         return original;
     }
 
-    public URI getShortened() {
-        return shortened;
+    public URI getShortened() throws URISyntaxException {
+        return this.shortened;
+    }
+
+    public String getHash() {
+        return hash;
     }
 
     public String getDescription() {
@@ -41,12 +43,20 @@ public class ShortenerResponse {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof ShortenerResponse) {
-            ShortenerResponse that = (ShortenerResponse) o;
-            return original.toString().equals(that.getOriginal().toString()) && shortened.toString().equals(that.getShortened().toString());
-        } else {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ShortenerResponse that = (ShortenerResponse) o;
+
+        if (!original.equals(that.original)) return false;
+        return hash.equals(that.hash);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = original.hashCode();
+        result = 31 * result + hash.hashCode();
+        return result;
     }
 
     @Override
