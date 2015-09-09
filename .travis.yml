@@ -1,23 +1,19 @@
 language: java
-jdk:
-  oraclejdk8
-services:
-  redis-server
-script:
-  env
+jdk: oraclejdk8
+services: redis-server
+script: env
 addons:
-  postgresql: "9.4"
-before_install:
-  source ./.envrc
-before_script:
-  psql -f prepare-db.sql -U postgres
+  postgresql: '9.4'
+before_install: source ./.envrc
+before_script: psql -f prepare-db.sql -U postgres
 deploy:
-  provider: cloudfoundry
+  provider:
+    provider: cloudfoundry
   api: https://api.run.pivotal.io
   username: bgrohbiel@pivotal.io
   password:
-    secure: iCcaFwkhrPmQitPG2T+d4IzjHgA3iVxAFGqv1zQ8ZzQdRJP/eTXxMUok2N94AHsJXqK1Rpf1KHNbKztQrm/CxMGdOeLjwho/pZ/QbHnKOPL07tFQ+mcHmBo4385T1NNpXbC5DroD7TgxB+lFbozAHvVNwoeeTT+Jvwv0KgIQNepu1kZn9K/k9hkR1OlAVlMsqpDXJL4tBhs9LPMQcOpdm1+w/e2lT/K3pacxZIuEwu95GXmj5ayJbEQ9XhIgfSe4AlFyieQr6+2gBAufksjjXq8qYChGjQB2rv2cvstp2je1uEuydL7UibuiIR2rQ3ze+tLMCIrJgrs52RA6IZ8+i6w/goKxPoMZDysRwFr8vfzhS0eXv6NI8YiHGK2OakPZrr3CVDFgoq+H8bUVqyiVmnw7bm28NtxOG+W65+/nAzeObYiJvBTioVC8valAnVKZ/8o4uLS0zO/K2s15R330ANZa2AlIzvDrxeap3Jc2cC32g8Vxtcpnns3hrrstmdwGQb+ChGdFsN6szvnsXPGJ/xVe5z3pCrpppZfllPjrfsbns6Pn4fjO+Zc01JUaxkS7c8nETTW5DR5ZpifEKrYJ3hoZaIIVk4kejUGTcajcwcAsritJ6+YXKebsNYHheRbii8gSC8Hc3oSzpHfDFQ8X2Q1+qv9q8VBdbwElcjoxcRs=
-  organization: bgrohbiel@pivotal.io
+    secure: QBNKi4ppOOCxURHHeUqSES4Biebk9VOT75BSu7jpYqup1Y4wk6e43LLtF46QxAGfwMXb9hRkv0iw0TgDAnA9VGfiyaV3yRNz6jbe6Vm0gzcCWgCpg2i9lMZCqcLxgtiI9sHlVjcs933tBMDNmu9V3wRbL0l/cXH4lv9HcTsLz1VD6CoX2ml6rRtbSeb/AVW5EsbWRNfourB5TMSTlFBBtfeHmlcyu2dH5/xLZ5R/tWbBzxHEaGUO5qj89Dav6TEnrydmWge3NoT5MJEaaOzRjTrctnO9HJpo9DkEWFlJYYb7VDb8TpVlSZmKsyaKmRGKmw0dTavsu1Di96qpSA+3dlhPtxdiYgjYwnB15TiIkTtwPhL5AiMbz8QNSIsOEhxhhnV0TQpCEX2p7+Yw6GQuUqYDfvGHiJH7gGdLE4Y/snnQSbXWWm6UjUHbISV0cqTvWy7JoMCBDtS568KRPGNrKSm439ENnpIWUZd3kA3/KK1uFeiLrKHqdf8ro71kLsRR+CfPvm2UPAoAkHVNrR/vo+Mxp9/b9rjqXIKoXE9TiOAFfBEEkd1fTFhac7BcwTcjWkHK2FhX8FgT/tAllLpwSiMTIqj19j3jDLS9J1HbJA5B1OOvSoBcqhdm8aWJk33dteOoqBbOE1jknE4DjagKfbf2Vx3DYoHsVauE2mKc0gg=
+  organization: bgrohbiel
   space: development
   on:
     repo: bengro/url-shortener
