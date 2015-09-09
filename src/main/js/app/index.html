@@ -18,6 +18,7 @@
     <!-- build:js1 app.js -->
     <script src="main.js"></script>
     <script src="ShortenerForm/ShortenerFormCtrl.js"></script>
+    <script src="ShortenerForm/UrlValidator.js"></script>
     <!-- endbuild -->
 
 </head>
@@ -30,7 +31,7 @@
     <fieldset>
         <p class="error" ng-if="showError">I hate to say, but: {{shortenerResponse.message}} <span>({{shortenerResponse.status}})</span></p>
 
-        <input class="url" type="text" ng-model="url" placeholder="Paste your URL."/>
+        <input class="url" type="text" ng-model="url" ng-change="validify()" placeholder="Paste your URL."/>
 
         <button ng-click="postURL()" type="submit" ng-disabled="disabled"> Shorten!</button>
 

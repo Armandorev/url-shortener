@@ -2,8 +2,12 @@
     'use strict';
 
     var app = angular.module('UrlShortenerApp');
-    app.controller('ShortenerFormCtrl', function ($scope, $http, $timeout) {
+    app.controller('ShortenerFormCtrl', function ($scope, $http, UrlValidator) {
         $scope.shortenerResponse = {};
+
+        $scope.validify = function () {
+          $scope.url = UrlValidator.validify($scope.url);
+        };
 
         $scope.postURL = function () {
             $scope.disabled = true;

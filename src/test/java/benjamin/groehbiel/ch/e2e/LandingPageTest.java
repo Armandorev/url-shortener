@@ -84,6 +84,14 @@ public class LandingPageTest extends FluentTest {
         MatcherAssert.assertThat(searchButton, not(hasAttribute("disabled")));
     }
 
+    @Test
+    public void shouldPrependMissingProtocol() {
+        goTo("http://localhost:" + port);
+        fill("#urlForm .url").with("www.pivotal.io");
+        String modifiedUrl = findFirst(".url").getValue();
+        MatcherAssert.assertThat(modifiedUrl, equalTo("http://www.pivotal.io"));
+    }
+
     private Matcher<? super FluentWebElement> hasAttribute(String attribute) {
         Matcher<FluentWebElement> matcher = new BaseMatcher<FluentWebElement>() {
             @Override

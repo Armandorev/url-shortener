@@ -16,7 +16,6 @@ describe('ShortenerFormCtrl', function () {
                 $scope: $scope
             });
         };
-
     }));
 
     it('should post a url to the shortener REST backend', function () {
