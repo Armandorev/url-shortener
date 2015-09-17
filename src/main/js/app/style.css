@@ -11,6 +11,7 @@ html, body {
 
 body {
     display: flex;
+    display: -webkit-flex;
     align-items: center;
     justify-content: center;
 }
@@ -37,6 +38,7 @@ a {
 
 .control {
     display: flex;
+    display: -webkit-flex;
     padding: 2px;
 }
 
@@ -69,16 +71,25 @@ a {
     -moz-border-radius: 6px;
 }
 
-.control__button[disabled] {
-    background: gainsboro;
+.control__button.disabled {
+    background: #929292;
 }
 
 header {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    -webkit-flex-direction: column;
     font-size: 265%;
     margin: 0 0 30px;
     padding: 0 20px;
     text-align: left;
 }
+
+.title {
+    order: 2;
+}
+
 
 .title__hash {
     color: #BDAEC4;
@@ -99,6 +110,7 @@ header {
     -moz-border-radius: 6px;
     border-radius: 6px;
     position: relative;
+    order: 1;
 }
 .bubble__triangle {
     position: absolute;
@@ -114,4 +126,45 @@ header {
 footer {
     margin: 30px 0;
     color: #DCDCDC;
+}
+
+@media (max-width: 650px) {
+
+    #wordItForm {
+        width: 90%;
+    }
+
+    body {
+        font-size: 80%;
+    }
+
+    .title {
+        order: 1;
+    }
+
+    .bubble {
+        order: 2;
+        margin: 20px 0 0;
+    }
+
+    .bubble__triangle {
+        position: absolute;
+        top: -10px;
+        left: 45%;
+        height: 0;
+        width: 0;
+        border-style: solid;
+        border-width: 0 15px 15px 15px;
+        border-color: transparent transparent #D1A2D2 transparent;
+    }
+
+    .control {
+        flex-direction: column;
+        -webkit-flex-direction: column;
+    }
+
+    .control__input, .control__button {
+        width: 100%;
+    }
+
 }

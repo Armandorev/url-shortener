@@ -6,6 +6,8 @@
 
     <title>w0rd.it | a real-word url shortener</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- build:css style.css -->
     <link rel="stylesheet" href="normalize.css"/>
     <link rel="stylesheet" href="style.css"/>
@@ -23,32 +25,43 @@
 </head>
 
 <body ng-app="WordItApp">
-    <form id="wordItForm" ng-controller="WordItFormController">
-        <header class="title">
-            <div ng-if="submitted" class="bubble">
-                {{ shortener.description }}
-                <div class="bubble__triangle"></div>
-            </div>
+
+<noscript>
+    Word of advice: activate JavaScript.
+</noscript>
+
+<form id="wordItForm" ng-controller="WordItFormController">
+    <header>
+        <div class="bubble" ng-if="submitted">
+            {{ shortener.description }}
+            <div class="bubble__triangle"></div>
+        </div>
+
+        <div class="title">
             <span class="title__name">w0rd.it</span>
             <span class="title__slash">/</span>
             <span class="title__hash">
                 {{ shortener.hash }}
             </span>
-        </header>
+        </div>
+    </header>
 
-        <fieldset class="content">
-            <p class="control__error" ng-if="showError">I hate to say, but: {{shortenerResponse.message}} <span>({{shortenerResponse.status}})</span></p>
-            <div class="control">
-                <input class="control__input" type="text" ng-model="url" ng-change="validify()" placeholder="Paste your URL."/>
-                <button class="control__button" ng-click="postURL()" type="submit">
-                    <span ng-if="!submitted">Word it.</span>
-                    <span ng-if="submitted">Next.</span>
-                </button>
-            </div>
-        </fieldset>
+    <fieldset class="content">
+        <p class="control__error" ng-if="shortener.exception">I hate to say, but: {{shortener.message}} <span>({{shortener.status}})</span>
+        </p>
 
-        <footer>{{ stats.shortenedCount }} shortened URLs. {{ stats.remainingCount }} remaining.</footer>
-    </form>
+        <div class="control">
+            <input class="control__input" type="text" ng-model="url" ng-change="validify()"
+                   placeholder="Paste your URL."/>
+            <button class="control__button" ng-click="postURL()" type="submit" ng-class="{disabled: submitted === true};">
+                <span ng-if="!submitted">Word it.</span>
+                <span ng-if="submitted">Next.</span>
+            </button>
+        </div>
+    </fieldset>
+
+    <footer>{{ stats.shortenedCount }} shortened URLs. {{ stats.remainingCount }} remaining.</footer>
+</form>
 </body>
 
 </html>
