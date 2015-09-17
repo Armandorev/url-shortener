@@ -1,2 +1,5 @@
-name: bengro-url-shortener
-path: build/libs/url-shortener-1.0-SNAPSHOT.war
+---
+applications:
+- name: bengro-url-shortener
+  path: build/libs/url-shortener-1.0-SNAPSHOT.war
+  memory: 512M
