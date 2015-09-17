@@ -4,7 +4,7 @@
 <head lang="en">
     <meta charset="UTF-8">
 
-    <title>URL Shortener</title>
+    <title>w0rd.it | a real-word url shortener</title>
 
     <!-- build:css style.css -->
     <link rel="stylesheet" href="normalize.css"/>
@@ -17,33 +17,38 @@
 
     <!-- build:js1 app.js -->
     <script src="main.js"></script>
-    <script src="ShortenerForm/ShortenerFormCtrl.js"></script>
+    <script src="ShortenerForm/FormController.js"></script>
     <script src="ShortenerForm/UrlValidator.js"></script>
     <!-- endbuild -->
-
 </head>
 
-<body ng-app="UrlShortenerApp">
+<body ng-app="WordItApp">
+    <form id="wordItForm" ng-controller="WordItFormController">
+        <header class="title">
+            <div ng-if="submitted" class="bubble">
+                {{ shortener.description }}
+                <div class="bubble__triangle"></div>
+            </div>
+            <span class="title__name">w0rd.it</span>
+            <span class="title__slash">/</span>
+            <span class="title__hash">
+                {{ shortener.hash }}
+            </span>
+        </header>
 
-<form id="urlForm" ng-controller="ShortenerFormCtrl">
-    <h1 ng-class="{success : showSuccess, error : showError}">w0rd.<span>it</span></h1>
+        <fieldset class="content">
+            <p class="control__error" ng-if="showError">I hate to say, but: {{shortenerResponse.message}} <span>({{shortenerResponse.status}})</span></p>
+            <div class="control">
+                <input class="control__input" type="text" ng-model="url" ng-change="validify()" placeholder="Paste your URL."/>
+                <button class="control__button" ng-click="postURL()" type="submit">
+                    <span ng-if="!submitted">Word it.</span>
+                    <span ng-if="submitted">Next.</span>
+                </button>
+            </div>
+        </fieldset>
 
-    <fieldset>
-        <p class="error" ng-if="showError">I hate to say, but: {{shortenerResponse.message}} <span>({{shortenerResponse.status}})</span></p>
-
-        <input class="url" type="text" ng-model="url" ng-change="validify()" placeholder="Paste your URL."/>
-
-        <button ng-click="postURL()" type="submit" ng-disabled="disabled"> Shorten!</button>
-
-        <p class="success" ng-if="showSuccess">
-            <a href="{{shortenerResponse.shortened}}">{{shortenerResponse.shortened}}</a>
-            <span ng-if="shortenerResponse.description" class="description">{{ shortenerResponse.description }}</span>
-            <a href="#" ng-click="close()" class="close">close</a>
-        </p>
-    </fieldset>
-    <div class="stats">{{ stats.shortenedCount }} shortened URLs. {{ stats.remainingCount }} remaining.</div>
-</form>
-
+        <footer>{{ stats.shortenedCount }} shortened URLs. {{ stats.remainingCount }} remaining.</footer>
+    </form>
 </body>
 
 </html>

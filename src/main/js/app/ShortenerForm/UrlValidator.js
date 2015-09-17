@@ -1,5 +1,5 @@
 (function () {
-  angular.module('UrlShortenerApp').factory('UrlValidator', function () {
+  angular.module('WordItApp').factory('UrlValidator', function () {
 
     function startsWithHttp(url) {
       if (url.indexOf('http') < 0) {

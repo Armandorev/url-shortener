@@ -56,12 +56,12 @@ public class LandingPageTest extends FluentTest {
     @Test
     public void showsSuccessAndWordDescription() {
         goTo("http://localhost:" + port);
-        fill("#urlForm .url").with("http://www.pivotal.io");
-        click("#urlForm button");
+        fill(".control__input").with("http://www.pivotal.io");
+        click(".control__button");
 
         await();
 
-        FluentList<FluentWebElement> descriptions = find(".success .description");
+        FluentList<FluentWebElement> descriptions = find(".bubble");
         MatcherAssert.assertThat(descriptions, hasSize(1));
         MatcherAssert.assertThat(descriptions.get(0).isDisplayed(), equalTo(true));
         MatcherAssert.assertThat(descriptions.get(0).getText(), containsString("enjoyment, amusement, or light-hearted pleasure."));
@@ -70,25 +70,24 @@ public class LandingPageTest extends FluentTest {
     @Test
     public void makeSuccessMessageClosable() {
         goTo("http://localhost:" + port);
-        fill("#urlForm .url").with("http://www.pivotal.io");
-        click("#urlForm button");
+        fill(".control__input").with("http://www.pivotal.io");
+        click(".control__button");
 
         await();
 
-        FluentWebElement searchButton = findFirst("#urlForm button");
-        MatcherAssert.assertThat(searchButton, hasAttribute("disabled"));
+        FluentWebElement searchButton = findFirst(".control__button");
+        MatcherAssert.assertThat(searchButton.getText(), equalTo("Next."));
 
-        FluentWebElement closeIcon = findFirst(".success .close");
-        closeIcon.click();
+        searchButton.click();
 
-        MatcherAssert.assertThat(searchButton, not(hasAttribute("disabled")));
+        MatcherAssert.assertThat(searchButton.getText(), equalTo("Word it."));
     }
 
     @Test
     public void shouldPrependMissingProtocol() {
         goTo("http://localhost:" + port);
-        fill("#urlForm .url").with("www.pivotal.io");
-        String modifiedUrl = findFirst(".url").getValue();
+        fill(".control__input").with("www.pivotal.io");
+        String modifiedUrl = findFirst(".control__input").getValue();
         MatcherAssert.assertThat(modifiedUrl, equalTo("http://www.pivotal.io"));
     }
 

@@ -3,7 +3,7 @@ describe('URLValidator', function () {
 
   var urlValidator;
 
-  beforeEach(module('UrlShortenerApp'));
+  beforeEach(module('WordItApp'));
 
   beforeEach(inject(function (_$rootScope_, _UrlValidator_) {
     urlValidator = _UrlValidator_;
