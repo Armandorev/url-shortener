@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Component
 public class HttpsFilter implements Filter {
@@ -21,20 +22,27 @@ public class HttpsFilter implements Filter {
         HttpServletResponse servletResponse = (HttpServletResponse) response;
         HttpServletRequest servletRequest = (HttpServletRequest) request;
 
-        if (isNotHttps(servletRequest) && ("https".equals(protocol) || enforceHttps)) {
+        if (!isHttps(servletRequest) && isHttpsEnforced()) {
             servletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            servletResponse.setHeader("Location", replaceProtocolToHttps(servletRequest));
+            String forwardedUri = replaceProtocolToHttps(servletRequest);
+            servletResponse.setHeader("Location", forwardedUri);
+            Logger.getLogger("HttpsFilter").info("HTTP Request to " + servletRequest.getRequestURI() + " is being forwarded to " + forwardedUri);
         } else {
             chain.doFilter(request, servletResponse);
         }
+    }
+
+    private boolean isHttpsEnforced() {
+        return "https".equals(protocol) || enforceHttps;
     }
 
     private String replaceProtocolToHttps(HttpServletRequest httpRequest) {
         return "https://" + httpRequest.getHeader("host") + httpRequest.getRequestURI();
     }
 
-    private boolean isNotHttps(HttpServletRequest servletRequest) {
-        return !"https".equals(servletRequest.getProtocol());
+    private boolean isHttps(HttpServletRequest servletRequest) {
+        String forwardedProtocol = servletRequest.getHeader("x-forwarded-proto");
+        return "https".equals(forwardedProtocol);
     }
 
     public void setForceHttps(boolean forceHttps) {

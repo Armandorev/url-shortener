@@ -38,10 +38,10 @@ public class HttpsFilterTest {
     @Test
     public void shouldEnforceHttps() throws IOException {
         httpsFilter.setForceHttps(true);
-        HttpURLConnection connection = getHttpURLConnection("http://localhost:" + port + "/hello");
+        HttpURLConnection connection = getHttpURLConnection("http://localhost:" + port);
 
         assertThat(connection.getResponseCode(), equalTo(HttpServletResponse.SC_MOVED_PERMANENTLY));
-        assertThat(connection.getHeaderField("Location"), equalTo("https://localhost:" + port + "/hello"));
+        assertThat(connection.getHeaderField("Location"), equalTo("https://localhost:" + port + "/"));
     }
 
     @Test
