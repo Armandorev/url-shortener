@@ -50,11 +50,11 @@ public class ApiApplicationTest extends SpringTest {
     @Autowired
     private WebApplicationContext wac;
 
-    @Value("${app.domain}")
-    private String SHORTENER_HOST;
+    @Value("${app.host}")
+    private String host;
 
     @Value("${app.protocol}")
-    private String SHORTENER_PROTOCOL;
+    private String protocol;
 
     private MockMvc mockMvc;
 
@@ -73,7 +73,8 @@ public class ApiApplicationTest extends SpringTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>(){});
+        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>() {
+        });
         MatcherAssert.assertThat(shortenerStats, equalTo(new ShortenerStats(0L, 3L)));
     }
 
@@ -89,7 +90,8 @@ public class ApiApplicationTest extends SpringTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<ShortenerResponse> responses = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ShortenerResponse>>() {});
+        List<ShortenerResponse> responses = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ShortenerResponse>>() {
+        });
 
         MatcherAssert.assertThat(responses, hasSize(2));
 
@@ -111,9 +113,13 @@ public class ApiApplicationTest extends SpringTest {
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
 
-        ShortenerResponse response = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerResponse>() {});
+        ShortenerResponse response = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerResponse>() {
+        });
         MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
-        MatcherAssert.assertThat(response.getShortened().toString(), equalTo(SHORTENER_PROTOCOL + "://" + SHORTENER_HOST + "/" + "fun"));
+
+        String expectedShortenedUrl = protocol + "://" + host + "/" + "fun";
+        String actualShortenedUrl = response.getShortened().toString();
+        MatcherAssert.assertThat(actualShortenedUrl, equalTo(expectedShortenedUrl));
     }
 
     @Test
@@ -128,7 +134,8 @@ public class ApiApplicationTest extends SpringTest {
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
 
-        ShortenerException exception = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerException>() {});
+        ShortenerException exception = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerException>() {
+        });
         MatcherAssert.assertThat(exception.getMessage(), equalTo("Could not parse your URL: unknown protocol: htp"));
     }
 

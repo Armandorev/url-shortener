@@ -1,9 +1,7 @@
 package benjamin.groehbiel.ch;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,10 +24,10 @@ public class UriValidator {
 
     /**
      * The following URIs are local and should not be shortened:
-     *  - Anything on localhost
-     *  - 192.168.*.*
-     *  - 0.0.0.0
-     *  - 127.0.0.1
+     * - Anything on localhost
+     * - 192.168.*.*
+     * - 0.0.0.0
+     * - 127.0.0.1
      *
      * @param uri
      * @return whether the URI is globally accessible

@@ -26,8 +26,8 @@ public class ShortenerHandle {
 
     @JsonIgnore
     public URI getShortenedURI() throws URISyntaxException {
-        // TODO: use spring values
-        return new URI(System.getProperty("app.protocol") + "://" + System.getProperty("app.domain") + "/" + this.hash);
+        // TODO: use spring values, how?
+        return new URI(System.getProperty("app.protocol") + "://" + System.getProperty("app.host") + "/" + this.hash);
     }
 
     public String getHash() {

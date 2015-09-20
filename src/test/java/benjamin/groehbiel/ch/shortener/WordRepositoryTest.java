@@ -1,9 +1,7 @@
-
 package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.ApplicationTest;
 import benjamin.groehbiel.ch.SpringTest;
-import benjamin.groehbiel.ch.api.ShortenerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;

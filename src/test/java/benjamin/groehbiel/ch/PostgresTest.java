@@ -1,7 +1,9 @@
 package benjamin.groehbiel.ch;
 
-import benjamin.groehbiel.ch.shortener.*;
-import org.hamcrest.Matcher;
+import benjamin.groehbiel.ch.shortener.DictionaryHash;
+import benjamin.groehbiel.ch.shortener.DictionaryRepository;
+import benjamin.groehbiel.ch.shortener.WordDefinition;
+import benjamin.groehbiel.ch.shortener.WordNetHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

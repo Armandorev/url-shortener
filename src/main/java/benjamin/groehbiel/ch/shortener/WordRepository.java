@@ -3,7 +3,6 @@ package benjamin.groehbiel.ch.shortener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,12 +23,6 @@ public class WordRepository {
 
     @Autowired
     private StringRedisTemplate redis;
-
-    @Value("${app.domain}")
-    public String SHORTENER_HOST;
-
-    @Value("${app.protocol}")
-    public String SHORTENER_PROTOCOL;
 
     public ShortenerHandle add(URI originalURI) throws URISyntaxException, IOException {
         String wordHash = redis.opsForValue().get(originalURI.toString());

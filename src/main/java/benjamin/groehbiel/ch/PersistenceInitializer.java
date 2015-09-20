@@ -28,9 +28,8 @@ public class PersistenceInitializer implements ApplicationContextInitializer<Con
     }
 
     private void setupEnvironment() {
-        String shortener_host = System.getenv("SHORTENER_HOST");
-        System.setProperty("app.domain", shortener_host);
-        System.setProperty("app.protocol", "http");
+        System.setProperty("app.host", System.getenv("APP_HOST"));
+        System.setProperty("app.protocol", System.getenv("APP_PROTOCOL"));
     }
 
     private void setupPostgres(CloudFoundryEnvironment environment) throws URISyntaxException {
