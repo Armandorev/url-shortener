@@ -13,10 +13,6 @@
       $scope.submitted = false;
     }
 
-    function isSubmitted() {
-      return $scope.submitted
-    }
-
     restoreDefault();
 
     $scope.validify = function () {
@@ -24,11 +20,6 @@
     };
 
     $scope.postURL = function () {
-      if (isSubmitted()) {
-        restoreDefault();
-        return;
-      }
-
       $scope.disabled = true;
       $http.post('/api/shorten', {url: $scope.url})
         .success(function (data) {

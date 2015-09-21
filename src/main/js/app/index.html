@@ -4,7 +4,7 @@
 <head lang="en">
     <meta charset="UTF-8">
 
-    <title>w0rd.it | a real-word url shortener</title>
+    <title>w0rd.it | real-word url shortener</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -44,6 +44,8 @@
                 {{ shortener.hash }}
             </span>
         </div>
+
+        <div class="primer">Get a memorable word for your bad-ass URL.</div>
     </header>
 
     <fieldset class="content">
@@ -53,14 +55,13 @@
         <div class="control">
             <input class="control__input" type="text" ng-model="url" ng-change="validify()"
                    placeholder="Paste your URL."/>
-            <button class="control__button" ng-click="postURL()" type="submit" ng-class="{disabled: submitted === true};">
-                <span ng-if="!submitted">Word it.</span>
-                <span ng-if="submitted">Next.</span>
+            <button class="control__button" ng-click="postURL()" type="submit">
+                <span>Word it</span>
             </button>
         </div>
     </fieldset>
 
-    <footer>{{ stats.shortenedCount }} shortened URLs. {{ stats.remainingCount }} remaining.</footer>
+    <footer>There are {{ stats.remainingCount }} english words remaining.</footer>
 </form>
 </body>
 
