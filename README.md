@@ -1,85 +1,77 @@
 [![Build Status](https://travis-ci.org/bengro/url-shortener.svg?branch=master)](https://travis-ci.org/bengro/url-shortener)
 
-# About url-shortener
-A word-based URL shortener based on Java 8, spring-boot, redis, postgres and Angular 1.4. The url shortener gets its words from open-source WordNet corpora.
-Given an arbitrarily long URL, it will shorten it to for example http://your.domain/dripstone and will tell you that dripstone means *a protective drip that is made of stone*.
+# A word-based url shortener
+This url shortener spits out a real english word for an arbitrary url. It is using **Java 8**, **spring-boot**, **redis**, **postgres** and **Angular 1.4**. 
 
-Give it a try on on the [development instance](http://bengro-url-shortener.cfapps.io/), which is running on [Pivotal Web Services](http://run.pivotal.io/).
+**For an example, check out: [w0rd.it/wave](https://w0rd.it/wave)**. The words are coming from the open-source [WordNet](https://wordnet.princeton.edu/) corpora.
+
+# Development
 
 ## Backlog
 The project backlog can be found [here](https://www.pivotaltracker.com/n/projects/1373074).
 
-## Development
+## Install front-end tools
 The development environment needs to have npm, bower and gulp installed to be able to build the application.
 
-``
-brew install npm
-npm install bower -g
-npm install gulp -g
-``
+    brew install npm
+    npm install bower -g
+    npm install gulp -g
 
-Run unit tests:
-``./gradlew test``
-
-Run end-to-end tests:
-``./gradlew e2e``
-
-Install dependencies:
-``./gradlew build``
-
-Build web app:
-``./gradlew packageJS``
-
-Start server and web server:
-``./gradlew bootRun``
-
-### Environment variables
+## Environment variables
 The application is parametrised with environment variables. direnv can be used, to ease the pain of setting them in different (IDE / gradle):
 
-Install direnv: 
+**Install direnv**: 
 ``brew install direnv``
 
-Create .envrc in prject root:
-
-    export VCAP_SERVICES='
-      {
-        "redis": [
-         {
-          "credentials": {
-           "host": "localhost",
-           "password": "",
-           "port": 6379
-          },
-          "label": "redis",
-          "name": "pcf-redis",
-          "plan": "dedicated-vm",
-          "tags": [
-           "pivotal",
-           "redis"
-          ]
-         }
-        ]
-      }
-    '
-
-Run:
+**Run once**:
 ``echo 'eval "$(direnv hook bash)"' >> ~/.bash_profile``
 
-In project root run:
+**In project root, run**:
 ``direnv allow .`
 
-### Persistence: Redis and Postgres
+*If you need to change the environment variables, see .env in the project root*.
 
-Install dependencies: ``brew install redis posgresql``
+## Persistence 
 
-Start redis: ``redis-server``
+### Redis
+**Install dependencies**: 
 
-Start postgres: ``pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start``
+    brew install redis 
+    brew install posgresql
 
-Stop postgres: ``pg_ctl -D /usr/local/var/postgres stop -s -m fast``
+**Start redis**: ``redis-server``
+
+### Postgres
+**Start postgres**: ``pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start``
+
+**Stop postgres**: ``pg_ctl -D /usr/local/var/postgres stop -s -m fast``
+
+An easy way of creating the database is by running psql from the project root directory:
+
+    psql -f prepare-db.sql
+   
+You need a user *postgres* with an empty string password. 
+pgadmin is a handy tool to manage the database, once the database has been created.
+
+## Build, test, run
+
+**Run unit tests**:
+``./gradlew test``
+
+**Run end-to-end tests**:
+``./gradlew e2e``
+
+**Install dependencies**:
+``./gradlew build``
+
+**Build web app**:
+``./gradlew packageJS``
+
+**Start server and web server**:
+``./gradlew bootRun``
 
 ## Deploy
+
 * Install [cf-cli ](https://github.com/cloudfoundry/cli)
 * Change name and war file reference in manifest.yml
 * Run ``./gradlew build && cf push``
-
