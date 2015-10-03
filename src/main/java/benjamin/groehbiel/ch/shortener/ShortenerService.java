@@ -25,26 +25,20 @@ public class ShortenerService {
     private StringRedisTemplate redis;
 
     public ShortenerHandle shorten(URI originalURI) throws URISyntaxException, IOException {
-        return add(originalURI);
-    }
-
-    public ShortenerHandle add(URI originalURI) throws URISyntaxException, IOException {
         String wordHash = redis.opsForValue().get(originalURI.toString());
 
         if (wordHash != null) {
-            ShortenerHandle shortenerHandle = deserializeShortenerHandle(wordHash);
-            return shortenerHandle;
+            return lookup(wordHash);
+        } else {
+            return createShortenerHandleFor(originalURI);
         }
-
-        ShortenerHandle shortenerHandle = createShortenerHandleFor(originalURI);
-        return shortenerHandle;
     }
 
-    private String serializeShortenerHandle(ShortenerHandle shortenerHandle) throws JsonProcessingException {
+    private String save(ShortenerHandle shortenerHandle) throws JsonProcessingException {
         return OBJECT_MAPPER.writeValueAsString(shortenerHandle);
     }
 
-    private ShortenerHandle deserializeShortenerHandle(String wordHash) throws IOException {
+    private ShortenerHandle lookup(String wordHash) throws IOException {
         return OBJECT_MAPPER.readValue(redis.opsForValue().get(wordHash), ShortenerHandle.class);
     }
 
@@ -54,34 +48,24 @@ public class ShortenerService {
         String desc = nextWord.getDescription();
         ShortenerHandle shortenerHandle = new ShortenerHandle(originalURI, hash, desc);
 
-        redis.opsForValue().set(shortenerHandle.getHash(), serializeShortenerHandle(shortenerHandle));
+        redis.opsForValue().set(shortenerHandle.getHash(), save(shortenerHandle));
         redis.opsForValue().set(shortenerHandle.getOriginalURI().toString(), shortenerHandle.getHash());
         redis.opsForValue().increment("$count", 1);
 
         return shortenerHandle;
     }
 
-
     public ShortenerHandle expand(String hash) throws URISyntaxException, IOException {
-        return getShortenerHandleFor(hash);
-    }
-
-    private ShortenerHandle getShortenerHandleFor(String hash) throws IOException {
-        ShortenerHandle shortenerHandle = deserializeShortenerHandle(hash);
-        return shortenerHandle;
+        return lookup(hash);
     }
 
     public Map<URI, ShortenerHandle> getAllUrls() throws IOException {
-        return getAllShortenerHandles();
-    }
-
-    private Map<URI, ShortenerHandle> getAllShortenerHandles() throws IOException {
         Set<String> uriKeys = redis.keys("*:\\/\\/*");
 
         HashMap<URI, ShortenerHandle> shortenedUris = new HashMap<>();
         for (String uriKey : uriKeys) {
             String hash = redis.opsForValue().get(uriKey);
-            ShortenerHandle shortenerHandle = getShortenerHandleFor(hash);
+            ShortenerHandle shortenerHandle = lookup(hash);
             shortenedUris.put(shortenerHandle.getOriginalURI(), shortenerHandle);
         }
 
@@ -89,10 +73,7 @@ public class ShortenerService {
     }
 
     public Long getShortenedCount() {
-        return size();
-    }
 
-    private Long size() {
         String shortenedSoFar = redis.opsForValue().get("$count");
         if (shortenedSoFar == null) {
             return 0L;
@@ -102,12 +83,7 @@ public class ShortenerService {
     }
 
     public Long getRemainingCount() {
-        return Long.valueOf(getRemainingHashCount());
-    }
-
-
-    private int getRemainingHashCount() {
-        return englishWords.size();
+        return Long.valueOf(englishWords.size());
     }
 
     public void clear() {
