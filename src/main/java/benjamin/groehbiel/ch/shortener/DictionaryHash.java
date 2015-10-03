@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class DictionaryHash {
 
     @Id
-    @Column(name="hash_id")
+    @Column(name = "hash_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hashId;
 

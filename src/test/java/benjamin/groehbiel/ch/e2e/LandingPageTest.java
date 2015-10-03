@@ -4,7 +4,6 @@ import benjamin.groehbiel.ch.ApplicationTest;
 import benjamin.groehbiel.ch.PersistenceInitializer;
 import benjamin.groehbiel.ch.shortener.EnglishDictionary;
 import benjamin.groehbiel.ch.shortener.WordDefinition;
-import benjamin.groehbiel.ch.shortener.WordRepository;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
@@ -34,14 +33,11 @@ import static org.hamcrest.Matchers.*;
 public class LandingPageTest extends FluentTest {
 
     @Autowired
-    private WordRepository wordRepository;
-
-    @Autowired
     private EnglishDictionary englishDictionary;
 
     @Before
     public void clearRepository() {
-        wordRepository.clear();
+        englishDictionary.clear();
 
         List<WordDefinition> words = new LinkedList<>();
         words.add(new WordDefinition("fun", "enjoyment, amusement, or light-hearted pleasure."));
@@ -65,22 +61,6 @@ public class LandingPageTest extends FluentTest {
         MatcherAssert.assertThat(descriptions, hasSize(1));
         MatcherAssert.assertThat(descriptions.get(0).isDisplayed(), equalTo(true));
         MatcherAssert.assertThat(descriptions.get(0).getText(), containsString("enjoyment, amusement, or light-hearted pleasure."));
-    }
-
-    @Test
-    public void makeSuccessMessageClosable() {
-        goTo("http://localhost:" + port);
-        fill(".control__input").with("http://www.pivotal.io");
-        click(".control__button");
-
-        await();
-
-        FluentWebElement searchButton = findFirst(".control__button");
-        MatcherAssert.assertThat(searchButton.getText(), equalTo("Next."));
-
-        searchButton.click();
-
-        MatcherAssert.assertThat(searchButton.getText(), equalTo("Word it."));
     }
 
     @Test

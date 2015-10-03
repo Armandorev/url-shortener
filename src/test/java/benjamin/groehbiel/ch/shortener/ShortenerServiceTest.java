@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.equalTo;
 @SpringApplicationConfiguration(classes = ApplicationTest.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class WordRepositoryTest extends SpringTest {
+public class ShortenerServiceTest extends SpringTest {
 
     @Autowired
     private ShortenerService shortenerService;

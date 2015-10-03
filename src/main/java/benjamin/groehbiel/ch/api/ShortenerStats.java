@@ -5,7 +5,8 @@ public class ShortenerStats {
     private Long shortenedCount;
     private Long remainingCount;
 
-    public ShortenerStats() {}
+    public ShortenerStats() {
+    }
 
     public ShortenerStats(Long counter, Long remainingWords) {
         this.setShortenedCount(counter);
