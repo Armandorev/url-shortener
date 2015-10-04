@@ -7,6 +7,7 @@ addons:
 before_install: source ./.envrc
 before_script: psql -f prepare-db.sql -U postgres
 deploy:
+  edge: true
   provider: cloudfoundry
   api: https://api.run.pivotal.io
   username:
