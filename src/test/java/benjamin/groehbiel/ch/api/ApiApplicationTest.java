@@ -2,7 +2,7 @@ package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.ApplicationTest;
 import benjamin.groehbiel.ch.PersistenceInitializer;
-import benjamin.groehbiel.ch.SpringTest;
+import benjamin.groehbiel.ch.DatabaseTest;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class ApiApplicationTest extends SpringTest {
+public class ApiApplicationTest extends DatabaseTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -59,23 +59,20 @@ public class ApiApplicationTest extends SpringTest {
     private MockMvc mockMvc;
 
     @Before
-    public void setup() {
+    public void initMockMvc() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
     @Test
     public void shouldReturnGeneralStats() throws Exception {
-        Long hashCount = shortenerService.getRemainingCount();
-        MatcherAssert.assertThat(hashCount, equalTo(3L));
-
         MvcResult mvcResult = mockMvc.perform(get("/api/stats").contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>() {
-        });
-        MatcherAssert.assertThat(shortenerStats, equalTo(new ShortenerStats(0L, 3L)));
+        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>() {});
+        MatcherAssert.assertThat(shortenerStats.getRemainingCount(), equalTo(21L));
+        MatcherAssert.assertThat(shortenerStats.getShortenedCount(), equalTo(0L));
     }
 
     @Test
@@ -96,8 +93,8 @@ public class ApiApplicationTest extends SpringTest {
         MatcherAssert.assertThat(responses, hasSize(2));
 
         MatcherAssert.assertThat(responses, containsInAnyOrder(
-                new ShortenerResponse(urlPivotal, new URI("xxx"), "fun", ""),
-                new ShortenerResponse(urlLabs, new URI("xxx"), "eloquence", "")
+                new ShortenerResponse(urlPivotal, new URI("xxx"), "able", ""),
+                new ShortenerResponse(urlLabs, new URI("xxx"), "unable", "")
         ));
     }
 
@@ -113,11 +110,11 @@ public class ApiApplicationTest extends SpringTest {
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
 
-        ShortenerResponse response = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerResponse>() {
-        });
+        String responseAsString = postResponse.getResponse().getContentAsString();
+        ShortenerResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenerResponse>() {});
         MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
 
-        String expectedShortenedUrl = protocol + "://" + host + "/" + "fun";
+        String expectedShortenedUrl = protocol + "://" + host + "/" + "able";
         String actualShortenedUrl = response.getShortened().toString();
         MatcherAssert.assertThat(actualShortenedUrl, equalTo(expectedShortenedUrl));
     }

@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch.shortener.db;
 
 import javax.persistence.*;
 
@@ -14,7 +14,7 @@ public class DictionaryHash {
     private String language;
     private String hash;
     private String description;
-    private Boolean available;
+    private boolean available;
 
     public DictionaryHash() {
     }
@@ -35,14 +35,18 @@ public class DictionaryHash {
     }
 
     public String getHash() {
-        return hash;
+        return hash.trim();
     }
 
     public String getDescription() {
-        return description;
+        return description.trim();
     }
 
     public Boolean getAvailable() {
         return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

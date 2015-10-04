@@ -1,9 +1,15 @@
 package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.ApplicationTest;
-import benjamin.groehbiel.ch.SpringTest;
+import benjamin.groehbiel.ch.PersistenceInitializer;
+import benjamin.groehbiel.ch.DatabaseTest;
+import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
+import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
+import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +22,16 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class)
+@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class ShortenerServiceTest extends SpringTest {
+public class ShortenerServiceTest extends DatabaseTest {
 
     @Autowired
     private ShortenerService shortenerService;
@@ -35,17 +43,17 @@ public class ShortenerServiceTest extends SpringTest {
     public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException, IOException {
         URI inputUri = new URI("http://www.example.org");
         ShortenerHandle shortenerHandle = shortenerService.shorten(inputUri);
-        MatcherAssert.assertThat(shortenerHandle.getHash(), equalTo("fun"));
+        assertThat(shortenerHandle.getHash(), equalTo("able"));
 
         URI anotherShortenedUri = new URI("http://www.example2.org");
         shortenerHandle = shortenerService.shorten(anotherShortenedUri);
-        MatcherAssert.assertThat(shortenerHandle.getHash(), equalTo("eloquence"));
+        assertThat(shortenerHandle.getHash(), equalTo("unable"));
     }
 
     @Test
     public void shouldUsePersistenceToLookUpHash() throws URISyntaxException, IOException {
         redisTemplate.opsForValue().set("$count", "0");
-        MatcherAssert.assertThat(shortenerService.getShortenedCount(), equalTo(0L));
+        assertThat(shortenerService.getShortenedCount(), equalTo(0L));
 
         redisTemplate.opsForValue().set("$count", "1");
         ShortenerHandle shortenerHandleForWater = new ShortenerHandle();
@@ -54,7 +62,17 @@ public class ShortenerServiceTest extends SpringTest {
         redisTemplate.opsForValue().set("water", value);
 
         ShortenerHandle shortenerHandle = shortenerService.expand("water");
-        MatcherAssert.assertThat(shortenerHandle, equalTo(shortenerHandleForWater));
+        assertThat(shortenerHandle, equalTo(shortenerHandleForWater));
+    }
+
+    @Test
+    public void shouldReturnCorrectRemainingCount() {
+        assertThat(shortenerService.getRemainingCount(), equalTo(21L));
+    }
+
+    @Test
+    public void shouldReturnCorrectShortenedCount() {
+        assertThat(shortenerService.getShortenedCount(), equalTo(0L));
     }
 
 }

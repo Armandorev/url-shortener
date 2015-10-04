@@ -1,9 +1,9 @@
-package benjamin.groehbiel.ch;
+package benjamin.groehbiel.ch.shortener.db;
 
-import benjamin.groehbiel.ch.shortener.DictionaryHash;
-import benjamin.groehbiel.ch.shortener.DictionaryRepository;
-import benjamin.groehbiel.ch.shortener.WordDefinition;
-import benjamin.groehbiel.ch.shortener.WordNetHelper;
+import benjamin.groehbiel.ch.ApplicationTest;
+import benjamin.groehbiel.ch.PersistenceInitializer;
+import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
+import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +25,12 @@ import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
-public class PostgresTest {
+public class IDictionaryRepositoryTest {
 
     JdbcTemplate jdbcTemplate;
 
     @Autowired
-    DictionaryRepository dictionaryRepository;
+    IDictionaryRepository IDictionaryRepository;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -40,20 +40,20 @@ public class PostgresTest {
     @After
     @Before
     public void clearDb() {
-        dictionaryRepository.deleteAll();
+        IDictionaryRepository.deleteAll();
         jdbcTemplate.execute("ALTER SEQUENCE dictionary_hash_id_seq RESTART WITH 1;");
     }
 
     @Test
     public void isZeroCountWhenNoInserts() {
-        assertThat(dictionaryRepository.count(), equalTo(0L));
+        assertThat(IDictionaryRepository.count(), equalTo(0L));
     }
 
     @Test
     public void insertHash() {
         DictionaryHash dictionaryItem = new DictionaryHash("water", "en", "blablabla", false);
-        DictionaryHash newDictionaryItem = dictionaryRepository.save(dictionaryItem);
-        assertThat(dictionaryRepository.count(), equalTo(1L));
+        DictionaryHash newDictionaryItem = IDictionaryRepository.save(dictionaryItem);
+        assertThat(IDictionaryRepository.count(), equalTo(1L));
         assertThat(newDictionaryItem.getHashId(), equalTo(1L));
     }
 
@@ -66,9 +66,9 @@ public class PostgresTest {
             return new DictionaryHash(w.getWord(), "en", w.getDescription(), false);
         }).collect(toList());
 
-        dictionaryRepository.save(dictionaryHashes);
+        IDictionaryRepository.save(dictionaryHashes);
 
-        assertThat(dictionaryRepository.count(), equalTo((long) 21));
+        assertThat(IDictionaryRepository.count(), equalTo((long) 21));
     }
 
 }

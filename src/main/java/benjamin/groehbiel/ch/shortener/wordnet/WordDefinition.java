@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch.shortener.wordnet;
 
 public class WordDefinition {
     private final String word;

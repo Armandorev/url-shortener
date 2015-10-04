@@ -1,4 +1,6 @@
-package benjamin.groehbiel.ch.shortener;
+package benjamin.groehbiel.ch.shortener.wordnet;
+
+import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.nio.file.Files.lines;
+import static java.util.stream.Collectors.toList;
 
 public class WordNetHelper {
 
@@ -62,4 +65,11 @@ public class WordNetHelper {
 
         return allWords;
     }
+
+    public static List<DictionaryHash> turnIntoDictionaryHashes(List<WordDefinition> words) {
+        return words.stream().map(w ->
+            new DictionaryHash(w.getWord(), "en", w.getDescription(), true)
+        ).collect(toList());
+    }
+
 }
