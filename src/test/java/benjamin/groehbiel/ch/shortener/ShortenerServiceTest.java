@@ -4,6 +4,7 @@ import benjamin.groehbiel.ch.ApplicationTest;
 import benjamin.groehbiel.ch.PersistenceInitializer;
 import benjamin.groehbiel.ch.DatabaseTest;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
+import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +38,7 @@ public class ShortenerServiceTest extends DatabaseTest {
     private ShortenerService shortenerService;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisManager redisManager;
 
     @Test
     public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException, IOException {
@@ -52,14 +53,15 @@ public class ShortenerServiceTest extends DatabaseTest {
 
     @Test
     public void shouldUsePersistenceToLookUpHash() throws URISyntaxException, IOException {
-        redisTemplate.opsForValue().set("$count", "0");
+        redisManager.setValue("$count", "0");
+
         assertThat(shortenerService.getShortenedCount(), equalTo(0L));
 
-        redisTemplate.opsForValue().set("$count", "1");
+        redisManager.setValue("$count", "1");
         ShortenerHandle shortenerHandleForWater = new ShortenerHandle();
         String value = new ObjectMapper().writeValueAsString(shortenerHandleForWater);
 
-        redisTemplate.opsForValue().set("water", value);
+        redisManager.setValue("water", value);
 
         ShortenerHandle shortenerHandle = shortenerService.expand("water");
         assertThat(shortenerHandle, equalTo(shortenerHandleForWater));
