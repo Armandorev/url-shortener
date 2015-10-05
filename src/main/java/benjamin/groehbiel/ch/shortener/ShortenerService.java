@@ -1,5 +1,6 @@
 package benjamin.groehbiel.ch.shortener;
 
+import benjamin.groehbiel.ch.JsonHelper;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
@@ -19,8 +20,6 @@ import java.util.Set;
 @Service
 public class ShortenerService {
 
-    public static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     @Autowired
     private DictionaryManager dictionaryManager;
 
@@ -32,18 +31,10 @@ public class ShortenerService {
         String wordHash = redisManager.getValue(originalURI.toString());
 
         if (wordHash != null) {
-            return lookup(wordHash);
+            return JsonHelper.unserialize(wordHash);
         } else {
             return createShortenerHandleFor(originalURI);
         }
-    }
-
-    private String serialised(ShortenerHandle shortenerHandle) throws JsonProcessingException {
-        return OBJECT_MAPPER.writeValueAsString(shortenerHandle);
-    }
-
-    private ShortenerHandle lookup(String wordHash) throws IOException {
-        return OBJECT_MAPPER.readValue(redisManager.getValue(wordHash), ShortenerHandle.class);
     }
 
     private ShortenerHandle createShortenerHandleFor(URI url) throws URISyntaxException, JsonProcessingException {
@@ -52,7 +43,7 @@ public class ShortenerService {
         String desc = next.getDescription();
         ShortenerHandle shortenerHandle = new ShortenerHandle(url, hash, desc);
 
-        redisManager.setValue(shortenerHandle.getHash(), serialised(shortenerHandle));
+        redisManager.setValue(shortenerHandle.getHash(), JsonHelper.serialize(shortenerHandle));
         redisManager.setValue(url.toString(), shortenerHandle.getHash());
         redisManager.incrementByOne("$count");
 
@@ -60,7 +51,8 @@ public class ShortenerService {
     }
 
     public ShortenerHandle expand(String hash) throws URISyntaxException, IOException {
-        return lookup(hash);
+        String json = redisManager.getValue(hash);
+        return JsonHelper.unserialize(json);
     }
 
     public Map<URI, ShortenerHandle> getAllUrls() throws IOException {
@@ -69,7 +61,8 @@ public class ShortenerService {
         HashMap<URI, ShortenerHandle> shortenedUris = new HashMap<>();
         for (String uriKey : uriKeys) {
             String hash = redisManager.getValue(uriKey);
-            ShortenerHandle shortenerHandle = lookup(hash);
+            String json = redisManager.getValue(hash);
+            ShortenerHandle shortenerHandle = JsonHelper.unserialize(json);
             shortenedUris.put(shortenerHandle.getOriginalURI(), shortenerHandle);
         }
 
