@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -28,7 +29,12 @@ public class WordNetHelper {
                     Matcher matcher = validLinePattern.matcher(line);
                     if (matcher.find()) {
                         String word = matcher.group(1);
-                        String desc = matcher.group(2);
+
+                        if (word.length() > 20) return null;
+
+                        String description = matcher.group(2);
+                        String desc = (description.length() > 250) ? description.substring(0, 249) : description;
+
                         if ("".equals(word) || "".equals(desc) || word == null || desc == null) return null;
                         return new WordDefinition(word, desc);
                     } else {
@@ -63,12 +69,13 @@ public class WordNetHelper {
             allWords.addAll(wordsInDocument);
         }
 
-        return allWords;
+        int cap = allWords.size() > 15000 ? 15000 : allWords.size();
+        return allWords.subList(0, cap);
     }
 
     public static List<DictionaryHash> turnIntoDictionaryHashes(List<WordDefinition> words) {
         return words.stream().map(w ->
-            new DictionaryHash(w.getWord(), "en", w.getDescription(), true)
+                        new DictionaryHash(w.getWord(), "en", w.getDescription(), true)
         ).collect(toList());
     }
 

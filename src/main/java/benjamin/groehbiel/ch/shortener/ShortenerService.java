@@ -1,19 +1,21 @@
 package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.JsonHelper;
+import benjamin.groehbiel.ch.shortener.admin.AdminShortenerRequest;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
+import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
+import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,22 +28,20 @@ public class ShortenerService {
     @Autowired
     private RedisManager redisManager;
 
-    // TODO: use string as url encoding from here onwards.
     public ShortenerHandle shorten(URI originalURI) throws URISyntaxException, IOException {
         String wordHash = redisManager.getValue(originalURI.toString());
 
         if (wordHash != null) {
-            return JsonHelper.unserialize(wordHash);
+            String json = redisManager.getValue(wordHash);
+            return JsonHelper.unserialize(json);
         } else {
-            return createShortenerHandleFor(originalURI);
+            DictionaryHash nextToken = dictionaryManager.takeNextAvailableWord();
+            return createShortenerHandleFor(originalURI, nextToken);
         }
     }
 
-    private ShortenerHandle createShortenerHandleFor(URI url) throws URISyntaxException, JsonProcessingException {
-        DictionaryHash next = dictionaryManager.takeNextAvailableWord();
-        String hash = next.getHash();
-        String desc = next.getDescription();
-        ShortenerHandle shortenerHandle = new ShortenerHandle(url, hash, desc);
+    private ShortenerHandle createShortenerHandleFor(URI url, DictionaryHash token) throws URISyntaxException, JsonProcessingException {
+        ShortenerHandle shortenerHandle = new ShortenerHandle(url, token.getHash(), token.getDescription());
 
         redisManager.setValue(shortenerHandle.getHash(), JsonHelper.serialize(shortenerHandle));
         redisManager.setValue(url.toString(), shortenerHandle.getHash());
@@ -85,4 +85,22 @@ public class ShortenerService {
     public void clear() {
         redisManager.clear();
     }
+
+    public void reset() {
+        redisManager.clear();
+        dictionaryManager.clear();
+    }
+
+    // TODO tests
+    public void populate() throws IOException {
+        List<WordDefinition> words = WordNetHelper.load("src/main/resources/WordNet/");
+        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words));
+    }
+
+    //TODO to be moved and improved, hack.
+    public void insert(AdminShortenerRequest adminShortenerRequest) throws URISyntaxException, JsonProcessingException {
+//        DictionaryHash dictionaryToken = dictionaryManager.getDictionaryToken(adminShortenerRequest.getHash());
+        createShortenerHandleFor(new URI(adminShortenerRequest.getUrl()), new DictionaryHash(adminShortenerRequest.getHash(), "en", "something...", false));
+    }
+
 }
