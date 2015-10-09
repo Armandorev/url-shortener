@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 public class HttpsFilterTest {

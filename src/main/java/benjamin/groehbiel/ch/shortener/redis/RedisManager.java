@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-@Repository
+@Service
 public class RedisManager {
 
     @Autowired

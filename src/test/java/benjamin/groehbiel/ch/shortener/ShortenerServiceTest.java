@@ -1,44 +1,21 @@
 package benjamin.groehbiel.ch.shortener;
 
-import benjamin.groehbiel.ch.ApplicationTest;
-import benjamin.groehbiel.ch.PersistenceInitializer;
-import benjamin.groehbiel.ch.DatabaseTest;
-import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
-import benjamin.groehbiel.ch.shortener.redis.RedisManager;
-import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
-import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
+import benjamin.groehbiel.ch.TestBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.MatcherAssert;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
-public class ShortenerServiceTest extends DatabaseTest {
+public class ShortenerServiceTest extends TestBase {
 
     @Autowired
     private ShortenerService shortenerService;
-
-    @Autowired
-    private RedisManager redisManager;
 
     @Test
     public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException, IOException {

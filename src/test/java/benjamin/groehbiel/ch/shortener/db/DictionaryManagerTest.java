@@ -1,6 +1,6 @@
 package benjamin.groehbiel.ch.shortener.db;
 
-import benjamin.groehbiel.ch.ApplicationTest;
+import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
 import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 public class DictionaryManagerTest {
 

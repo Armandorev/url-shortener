@@ -1,6 +1,6 @@
 package benjamin.groehbiel.ch.e2e;
 
-import benjamin.groehbiel.ch.ApplicationTest;
+import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
@@ -30,7 +30,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 public class LandingPageTest extends FluentTest {

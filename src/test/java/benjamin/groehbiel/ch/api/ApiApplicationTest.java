@@ -1,8 +1,6 @@
 package benjamin.groehbiel.ch.api;
 
-import benjamin.groehbiel.ch.ApplicationTest;
-import benjamin.groehbiel.ch.PersistenceInitializer;
-import benjamin.groehbiel.ch.DatabaseTest;
+import benjamin.groehbiel.ch.TestBase;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,14 +8,9 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,11 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationTest.class, initializers = PersistenceInitializer.class)
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
-public class ApiApplicationTest extends DatabaseTest {
+public class ApiApplicationTest extends TestBase {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
