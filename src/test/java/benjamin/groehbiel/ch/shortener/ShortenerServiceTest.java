@@ -1,6 +1,7 @@
 package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.TestBase;
+import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,16 @@ public class ShortenerServiceTest extends TestBase {
     }
 
     @Test
-    public void shouldUsePersistenceToLookUpHash() throws URISyntaxException, IOException {
-        redisManager.setValue("$count", "0");
+    public void shouldLookupUrlInRedisGivenAHash() throws URISyntaxException, IOException {
+        redisManager.setUrlAndHash("$count", "0");
 
         assertThat(shortenerService.getShortenedCount(), equalTo(0L));
 
-        redisManager.setValue("$count", "1");
+        redisManager.setUrlAndHash("$count", "1");
         ShortenerHandle shortenerHandleForWater = new ShortenerHandle();
         String value = new ObjectMapper().writeValueAsString(shortenerHandleForWater);
 
-        redisManager.setValue("water", value);
+        redisManager.setUrlAndHash(RedisManager.HASH_PREFIX + "water", value);
 
         ShortenerHandle shortenerHandle = shortenerService.expand("water");
         assertThat(shortenerHandle, equalTo(shortenerHandleForWater));

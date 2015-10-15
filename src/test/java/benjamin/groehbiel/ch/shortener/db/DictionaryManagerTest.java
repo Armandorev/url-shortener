@@ -51,7 +51,7 @@ public class DictionaryManagerTest {
     @Test
     public void shouldGetNextAvailableWord() throws IOException {
         populateTable();
-        DictionaryHash nextWord = dictionaryManager.takeNextAvailableWord();
+        DictionaryHash nextWord = dictionaryManager.nextHash();
 
         assertThat(nextWord.getHash(), containsString("able"));
         assertThat(nextWord.getHashId(), equalTo(1L));
@@ -62,8 +62,8 @@ public class DictionaryManagerTest {
     public void shouldReturnCurrentSizeOfAvailableWords() throws IOException {
         populateTable();
         assertThat(dictionaryManager.getWordsAvailableSize(), equalTo(21L));
-        dictionaryManager.takeNextAvailableWord();
-        dictionaryManager.takeNextAvailableWord();
+        dictionaryManager.nextHash();
+        dictionaryManager.nextHash();
         assertThat(dictionaryManager.getWordsAvailableSize(), equalTo(19L));
     }
 

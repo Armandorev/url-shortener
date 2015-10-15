@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -33,18 +34,27 @@ public class DictionaryManager {
         return repository.save(dictionaryHashs);
     }
 
+    public Iterable<DictionaryHash> fill(List<DictionaryHash> dictionaryHashes, Integer size) {
+        Collections.shuffle(dictionaryHashes);
+        return fill(dictionaryHashes.subList(0, size));
+    }
+
     public DictionaryHash find(Long i) {
         return repository.findOne(i);
     }
 
-    public DictionaryHash takeNextAvailableWord() {
+    public DictionaryHash nextHash() {
         DictionaryHash nextWord = repository.findFirst1ByAvailable(true);
-        nextWord.setAvailable(false);
-        repository.save(nextWord);
+        reserveHash(nextWord);
         return nextWord;
     }
 
     public Long getWordsAvailableSize() {
         return repository.countByAvailable(true);
+    }
+
+    private void reserveHash(DictionaryHash nextWord) {
+        nextWord.setAvailable(false);
+        repository.save(nextWord);
     }
 }

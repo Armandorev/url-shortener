@@ -1,6 +1,5 @@
 package benjamin.groehbiel.ch.shortener;
 
-import benjamin.groehbiel.ch.JsonHelper;
 import benjamin.groehbiel.ch.shortener.admin.AdminShortenerRequest;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
@@ -29,40 +28,31 @@ public class ShortenerService {
     private RedisManager redisManager;
 
     public ShortenerHandle shorten(URI originalURI) throws URISyntaxException, IOException {
-        String wordHash = redisManager.getValue(originalURI.toString());
+        String wordHash = redisManager.getHashFor(originalURI.toString());
 
         if (wordHash != null) {
-            String json = redisManager.getValue(wordHash);
-            return JsonHelper.unserialize(json);
+            return redisManager.getHandleFor(wordHash);
         } else {
-            DictionaryHash nextToken = dictionaryManager.takeNextAvailableWord();
-            return createShortenerHandleFor(originalURI, nextToken);
+            return createShortenerHandleFor(originalURI, dictionaryManager.nextHash());
         }
     }
 
     private ShortenerHandle createShortenerHandleFor(URI url, DictionaryHash token) throws URISyntaxException, JsonProcessingException {
         ShortenerHandle shortenerHandle = new ShortenerHandle(url, token.getHash(), token.getDescription());
-
-        redisManager.setValue(shortenerHandle.getHash(), JsonHelper.serialize(shortenerHandle));
-        redisManager.setValue(url.toString(), shortenerHandle.getHash());
-        redisManager.incrementByOne("$count");
-
+        redisManager.storeHash(shortenerHandle);
         return shortenerHandle;
     }
 
     public ShortenerHandle expand(String hash) throws URISyntaxException, IOException {
-        String json = redisManager.getValue(hash);
-        return JsonHelper.unserialize(json);
+        return redisManager.getHandleFor(hash);
     }
 
     public Map<URI, ShortenerHandle> getAllUrls() throws IOException {
-        Set<String> uriKeys = redisManager.getValuesFor("*:\\/\\/*");
+        Set<String> uriKeys = redisManager.getHashes();
 
         HashMap<URI, ShortenerHandle> shortenedUris = new HashMap<>();
-        for (String uriKey : uriKeys) {
-            String hash = redisManager.getValue(uriKey);
-            String json = redisManager.getValue(hash);
-            ShortenerHandle shortenerHandle = JsonHelper.unserialize(json);
+        for (String hash : uriKeys) {
+            ShortenerHandle shortenerHandle = redisManager.getHandleFor(hash);
             shortenedUris.put(shortenerHandle.getOriginalURI(), shortenerHandle);
         }
 
@@ -70,12 +60,7 @@ public class ShortenerService {
     }
 
     public Long getShortenedCount() {
-        String shortenedSoFar = redisManager.getValue("$count");
-        if (shortenedSoFar == null) {
-            return 0L;
-        } else {
-            return Long.parseLong(shortenedSoFar);
-        }
+        return redisManager.getHashCount();
     }
 
     public Long getRemainingCount() {
@@ -94,7 +79,7 @@ public class ShortenerService {
     // TODO tests
     public void populate() throws IOException {
         List<WordDefinition> words = WordNetHelper.load("src/main/resources/WordNet/");
-        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words));
+        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words), 10000);
     }
 
     //TODO to be moved and improved, hack.
