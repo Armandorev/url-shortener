@@ -31,7 +31,7 @@ public abstract class TestBase {
     @Before
     public void populateTable() throws IOException {
         dictionaryManager.clear();
-        List<WordDefinition> words = WordNetHelper.load("src/test/resources/WordNet/");
+        List<WordDefinition> words = WordNetHelper.loadDirectory("WordNet");
         dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words));
     }
 

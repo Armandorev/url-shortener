@@ -4,12 +4,10 @@ import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -20,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 public class WordNetHelper {
 
-    public static List<WordDefinition> parse(String filename) throws IOException {
+    public static List<WordDefinition> parseFile(String filename) throws IOException {
         Stream<String> lines = lines(Paths.get(filename), Charset.defaultCharset());
         List<WordDefinition> words = lines
                 .map(line -> {
@@ -47,24 +45,13 @@ public class WordNetHelper {
     }
 
 
-    public static List<Path> scan(String wordNetDirectoryPath) throws IOException {
-        File wordNetDirectory = new File(wordNetDirectoryPath);
-
-        ArrayList<Path> dictFiles = new ArrayList<>();
-        for (File f : wordNetDirectory.listFiles()) {
-            dictFiles.add(Paths.get(f.getPath()));
-        }
-
-        return dictFiles;
-    }
-
-
-    public static List<WordDefinition> load(String wordNetDirectory) throws IOException {
+    public static List<WordDefinition> loadDirectory(String wordNetDirectory) throws IOException {
         List<WordDefinition> allWords = new ArrayList<>();
+        URL resource = WordNetHelper.class.getClassLoader().getResource(wordNetDirectory);
+        File[] wordNetFiles = new File(resource.getPath()).listFiles();
 
-        List<Path> wordNetFiles = scan(wordNetDirectory);
-        for (Path dictFile : wordNetFiles) {
-            List<WordDefinition> wordsInDocument = parse(dictFile.toString());
+        for (int i = 0; i < wordNetFiles.length; ++i) {
+            List<WordDefinition> wordsInDocument = parseFile(wordNetFiles[i].toString());
             allWords.addAll(wordsInDocument);
         }
 

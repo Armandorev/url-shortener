@@ -3,36 +3,28 @@ package benjamin.groehbiel.ch.shortener.wordnet;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-
 
 public class WordNetHelperTest {
 
     @Test
     public void shouldReturnAListOfAllWordDefinitions() throws Exception {
-        List<WordDefinition> words = WordNetHelper.load("src/test/resources/WordNet/");
+        List<WordDefinition> words = WordNetHelper.loadDirectory("WordNet");
         MatcherAssert.assertThat(words, hasSize(21));
     }
 
     @Test
-    public void shouldListAllWordNetFilesInResources() throws Exception {
-        List<Path> wordnetFiles = WordNetHelper.scan("src/test/resources/WordNet/");
-        assertThat(wordnetFiles, hasSize(2));
-        assertThat(wordnetFiles, contains(
-                Paths.get("src/test/resources/WordNet/test_data.adj"),
-                Paths.get("src/test/resources/WordNet/test_data2.adj")
-        ));
-    }
-
-    @Test
     public void shouldParseWordNetFileAndReturnDictioary() throws Exception {
-        List<WordDefinition> dict = WordNetHelper.parse("src/test/resources/WordNet/test_data.adj");
+        String filePath = WordNetHelper.class.getClassLoader().getResource("WordNet/test_data.adj").getPath();
+        List<WordDefinition> dict = WordNetHelper.parseFile(filePath);
         assertThat(dict, hasSize(20));
     }
 

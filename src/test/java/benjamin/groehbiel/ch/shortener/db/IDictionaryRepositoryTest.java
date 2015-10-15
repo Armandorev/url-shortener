@@ -57,8 +57,7 @@ public class IDictionaryRepositoryTest {
 
     @Test
     public void addAllHashesToDatabase() throws IOException {
-        File wordNet = new ClassPathResource("WordNet").getFile();
-        List<WordDefinition> englishWords = WordNetHelper.load(wordNet.getPath());
+        List<WordDefinition> englishWords = WordNetHelper.loadDirectory("WordNet");
 
         List<DictionaryHash> dictionaryHashes = englishWords.stream().map(w -> {
             return new DictionaryHash(w.getWord(), "en", w.getDescription(), false);

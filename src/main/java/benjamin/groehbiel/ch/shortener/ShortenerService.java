@@ -78,7 +78,7 @@ public class ShortenerService {
 
     // TODO tests
     public void populate() throws IOException {
-        List<WordDefinition> words = WordNetHelper.load("src/main/resources/WordNet/");
+        List<WordDefinition> words = WordNetHelper.loadDirectory("WordNet");
         dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words), 3000);
     }
 

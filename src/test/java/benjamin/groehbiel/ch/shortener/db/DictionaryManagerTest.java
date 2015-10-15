@@ -66,7 +66,7 @@ public class DictionaryManagerTest {
     }
 
     private void populateTable() throws IOException {
-        List<WordDefinition> words = WordNetHelper.load("src/test/resources/WordNet/");
+        List<WordDefinition> words = WordNetHelper.loadDirectory("WordNet");
         dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words));
     }
 
