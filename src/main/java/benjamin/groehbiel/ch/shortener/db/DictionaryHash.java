@@ -1,20 +1,22 @@
 package benjamin.groehbiel.ch.shortener.db;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "dictionary")
 public class DictionaryHash {
 
     @Id
-    @Column(name = "hash_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hashId;
+    private String hash;
 
     private String language;
-    private String hash;
     private String description;
     private boolean available;
+    private Timestamp indexed;
+    private Timestamp registered;
 
     public DictionaryHash() {
     }
@@ -24,10 +26,6 @@ public class DictionaryHash {
         this.hash = hash;
         this.description = description;
         this.available = available;
-    }
-
-    public Long getHashId() {
-        return hashId;
     }
 
     public String getLanguage() {
@@ -48,5 +46,21 @@ public class DictionaryHash {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public Timestamp getIndexed() {
+        return indexed;
+    }
+
+    public void setIndexed(Timestamp indexed) {
+        this.indexed = indexed;
+    }
+
+    public Timestamp getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(Timestamp registered) {
+        this.registered = registered;
     }
 }

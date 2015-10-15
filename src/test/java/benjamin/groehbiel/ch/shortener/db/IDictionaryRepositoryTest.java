@@ -41,7 +41,6 @@ public class IDictionaryRepositoryTest {
     @Before
     public void clearDb() {
         IDictionaryRepository.deleteAll();
-        jdbcTemplate.execute("ALTER SEQUENCE dictionary_hash_id_seq RESTART WITH 1;");
     }
 
     @Test
@@ -54,7 +53,6 @@ public class IDictionaryRepositoryTest {
         DictionaryHash dictionaryItem = new DictionaryHash("water", "en", "blablabla", false);
         DictionaryHash newDictionaryItem = IDictionaryRepository.save(dictionaryItem);
         assertThat(IDictionaryRepository.count(), equalTo(1L));
-        assertThat(newDictionaryItem.getHashId(), equalTo(1L));
     }
 
     @Test

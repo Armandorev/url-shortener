@@ -1,3 +1,4 @@
+DROP DATABASE url_shortener;
 CREATE DATABASE url_shortener;
 ALTER DATABASE url_shortener OWNER TO postgres;
 \connect url_shortener
@@ -8,24 +9,14 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 SET default_with_oids = false;
 CREATE TABLE dictionary (
-    hash_id bigint NOT NULL,
-    hash character(20) NOT NULL,
+    hash character(20) NOT NULL PRIMARY KEY,
     description character(250),
     available boolean DEFAULT false,
-    language character varying(2)
+    language character varying(2),
+    indexed timestamp default current_timestamp,
+    registered timestamp
 );
 ALTER TABLE dictionary OWNER TO postgres;
-CREATE SEQUENCE dictionary_hash_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-ALTER TABLE dictionary_hash_id_seq OWNER TO postgres;
-ALTER SEQUENCE dictionary_hash_id_seq OWNED BY dictionary.hash_id;
-ALTER TABLE ONLY dictionary ALTER COLUMN hash_id SET DEFAULT nextval('dictionary_hash_id_seq'::regclass);
-SELECT pg_catalog.setval('dictionary_hash_id_seq', 1, false);
-ALTER TABLE ONLY dictionary ADD CONSTRAINT dictionary_pkey PRIMARY KEY (hash_id);
 CREATE INDEX hash ON dictionary USING btree (hash);
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;

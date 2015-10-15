@@ -23,15 +23,14 @@ public class DictionaryManager {
 
     public void clear() {
         repository.deleteAll();
-        jdbcTemplate.execute("ALTER SEQUENCE dictionary_hash_id_seq RESTART WITH 1;");
     }
 
     public long size() {
         return repository.count();
     }
 
-    public Iterable<DictionaryHash> fill(List<DictionaryHash> dictionaryHashs) {
-        return repository.save(dictionaryHashs);
+    public Iterable<DictionaryHash> fill(List<DictionaryHash> dictionaryHashes) {
+        return repository.save(dictionaryHashes);
     }
 
     public Iterable<DictionaryHash> fill(List<DictionaryHash> dictionaryHashes, Integer size) {

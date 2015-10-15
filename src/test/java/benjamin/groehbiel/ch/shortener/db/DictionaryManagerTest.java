@@ -39,7 +39,6 @@ public class DictionaryManagerTest {
     public void shouldResetAndFillTable() throws IOException {
         populateTable();
         assertThat(dictionaryManager.size(), equalTo(21L));
-        assertThat(dictionaryManager.find(1L).getHashId(), equalTo(1L));
     }
 
     @Test
@@ -54,7 +53,6 @@ public class DictionaryManagerTest {
         DictionaryHash nextWord = dictionaryManager.nextHash();
 
         assertThat(nextWord.getHash(), containsString("able"));
-        assertThat(nextWord.getHashId(), equalTo(1L));
         assertThat(nextWord.getAvailable(), equalTo(false));
     }
 
