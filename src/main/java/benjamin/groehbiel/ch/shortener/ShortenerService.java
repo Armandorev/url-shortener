@@ -79,7 +79,7 @@ public class ShortenerService {
     // TODO tests
     public void populate() throws IOException {
         List<WordDefinition> words = WordNetHelper.load("src/main/resources/WordNet/");
-        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words), 10000);
+        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words), 3000);
     }
 
     //TODO to be moved and improved, hack.
