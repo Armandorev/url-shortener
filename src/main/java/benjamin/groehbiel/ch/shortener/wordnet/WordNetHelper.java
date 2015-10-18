@@ -7,20 +7,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.nio.file.Files.lines;
-import static java.util.stream.Collectors.toList;
 
 public class WordNetHelper {
 
-    public static List<WordDefinition> parseFile(String filename) throws IOException {
+    public static List<DictionaryHash> parseFile(String filename) throws IOException {
         Stream<String> lines = lines(Paths.get(filename), Charset.defaultCharset());
-        List<WordDefinition> words = lines
+        List<DictionaryHash> words = lines
                 .map(line -> {
                     Pattern validLinePattern = Pattern.compile("[0-9]{8,8} [^ ]* [^ ]* [^ ]* ([a-z]*).*\\| (.*)$");
                     Matcher matcher = validLinePattern.matcher(line);
@@ -30,10 +31,10 @@ public class WordNetHelper {
                         if (word.length() > 20) return null;
 
                         String description = matcher.group(2);
-                        String desc = (description.length() > 250) ? description.substring(0, 249) : description;
+                        String trimmedDescription = (description.length() > 250) ? description.substring(0, 246) + "..." : description;
 
-                        if ("".equals(word) || "".equals(desc) || word == null || desc == null) return null;
-                        return new WordDefinition(word, desc);
+                        if ("".equals(word) || "".equals(trimmedDescription) || word == null || trimmedDescription == null) return null;
+                        return new DictionaryHash(word, "en", trimmedDescription, true);
                     } else {
                         return null;
                     }
@@ -44,14 +45,12 @@ public class WordNetHelper {
         return words;
     }
 
+    public static List<DictionaryHash> loadDirectory(String wordNetDirectory) throws IOException {
+        File[] wordNetFiles = getFilesInDirectory(wordNetDirectory);
 
-    public static List<WordDefinition> loadDirectory(String wordNetDirectory) throws IOException {
-        List<WordDefinition> allWords = new ArrayList<>();
-        URL resource = WordNetHelper.class.getClassLoader().getResource(wordNetDirectory);
-        File[] wordNetFiles = new File(resource.getPath()).listFiles();
-
+        List<DictionaryHash> allWords = new ArrayList<>();
         for (int i = 0; i < wordNetFiles.length; ++i) {
-            List<WordDefinition> wordsInDocument = parseFile(wordNetFiles[i].toString());
+            List<DictionaryHash> wordsInDocument = parseFile(wordNetFiles[i].toString());
             allWords.addAll(wordsInDocument);
         }
 
@@ -59,10 +58,9 @@ public class WordNetHelper {
         return allWords.subList(0, cap);
     }
 
-    public static List<DictionaryHash> turnIntoDictionaryHashes(List<WordDefinition> words) {
-        return words.stream().map(w ->
-                        new DictionaryHash(w.getWord(), "en", w.getDescription(), true)
-        ).collect(toList());
+    private static File[] getFilesInDirectory(String wordNetDirectory) {
+        URL resource = WordNetHelper.class.getClassLoader().getResource(wordNetDirectory);
+        return new File(resource.getPath()).listFiles();
     }
 
 }

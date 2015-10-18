@@ -2,7 +2,6 @@ package benjamin.groehbiel.ch.shortener.db;
 
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
-import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -66,8 +64,7 @@ public class DictionaryManagerTest {
     }
 
     private void populateTable() throws IOException {
-        List<WordDefinition> words = WordNetHelper.loadDirectory("WordNet");
-        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words));
+        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
     }
 
 }

@@ -2,7 +2,6 @@ package benjamin.groehbiel.ch.shortener.db;
 
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
-import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import org.junit.After;
 import org.junit.Before;
@@ -10,16 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -57,14 +53,8 @@ public class IDictionaryRepositoryTest {
 
     @Test
     public void addAllHashesToDatabase() throws IOException {
-        List<WordDefinition> englishWords = WordNetHelper.loadDirectory("WordNet");
-
-        List<DictionaryHash> dictionaryHashes = englishWords.stream().map(w -> {
-            return new DictionaryHash(w.getWord(), "en", w.getDescription(), false);
-        }).collect(toList());
-
-        IDictionaryRepository.save(dictionaryHashes);
-
+        List<DictionaryHash> englishWords = WordNetHelper.loadDirectory("WordNet");
+        IDictionaryRepository.save(englishWords);
         assertThat(IDictionaryRepository.count(), equalTo((long) 21));
     }
 

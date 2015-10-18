@@ -3,8 +3,6 @@ package benjamin.groehbiel.ch.api;
 import benjamin.groehbiel.ch.UriValidator;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
-import benjamin.groehbiel.ch.shortener.admin.AdminShortenerRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

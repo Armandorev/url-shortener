@@ -4,7 +4,6 @@ import benjamin.groehbiel.ch.shortener.admin.AdminShortenerRequest;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
-import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -78,8 +76,7 @@ public class ShortenerService {
 
     // TODO tests
     public void populate() throws IOException {
-        List<WordDefinition> words = WordNetHelper.loadDirectory("WordNet");
-        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words), 3000);
+        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"), 3000);
     }
 
     //TODO to be moved and improved, hack.

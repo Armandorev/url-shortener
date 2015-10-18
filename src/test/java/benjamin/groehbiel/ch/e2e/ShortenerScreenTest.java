@@ -3,7 +3,6 @@ package benjamin.groehbiel.ch.e2e;
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
-import benjamin.groehbiel.ch.shortener.wordnet.WordDefinition;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
@@ -25,7 +24,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
@@ -47,9 +45,7 @@ public class ShortenerScreenTest extends FluentTest {
 
     @Before
     public void populateTable() throws IOException {
-        List<WordDefinition> words = WordNetHelper.loadDirectory("WordNet");
-        dictionaryManager.fill(WordNetHelper.turnIntoDictionaryHashes(words));
-        System.out.println("Init database " + dictionaryManager.getWordsAvailableSize());
+        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
     }
 
     @After
