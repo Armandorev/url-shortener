@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ApiApplicationTest extends TestBase {
+public class UserApiTest extends TestBase {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

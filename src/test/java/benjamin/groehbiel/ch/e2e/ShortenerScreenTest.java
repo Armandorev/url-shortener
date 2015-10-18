@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.*;
 @SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class LandingPageTest extends FluentTest {
+public class ShortenerScreenTest extends FluentTest {
 
     @Value("${local.server.port}")
     int port;

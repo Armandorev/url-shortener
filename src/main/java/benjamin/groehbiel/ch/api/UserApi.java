@@ -25,7 +25,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 @RequestMapping("/api")
-class ApiController {
+public class UserApi {
 
     @Autowired
     ShortenerService shortenerService;
@@ -58,24 +58,6 @@ class ApiController {
         URI uri = validatedURL(shortenerRequest);
         ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
         return ShortenerResponse.summarise(shortenerHandle);
-    }
-
-    @RequestMapping(value = "/admin/reset", method = POST, produces = APPLICATION_JSON_VALUE)
-    public Map<String, String> resetDictionary() {
-        shortenerService.reset();
-        return null;
-    }
-
-    @RequestMapping(value = "/admin/import", method = POST, produces = APPLICATION_JSON_VALUE)
-    public Map<String, String> importDictionary() throws IOException {
-        shortenerService.populate();
-        return null;
-    }
-
-    @RequestMapping(value = "/admin/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Map<String, String> shorten(@RequestBody AdminShortenerRequest adminShortenerRequest) throws URISyntaxException, JsonProcessingException {
-        shortenerService.insert(adminShortenerRequest);
-        return null;
     }
 
     private URI validatedURL(ShortenerRequest url) throws URISyntaxException, MalformedURLException {
