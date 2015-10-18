@@ -22,6 +22,13 @@ public class UriValidatorTest {
     }
 
     @Test
+    public void testCaseInProtocol() {
+        assertThat(uriValidator.validate("Http://www.google.com"), equalTo(true));
+        assertThat(uriValidator.validate("HttP://www.google.com"), equalTo(true));
+        assertThat(uriValidator.validate("HTTPS://www.google.com"), equalTo(true));
+    }
+
+    @Test
     public void testLocalhostUriFails() {
         assertThat(uriValidator.validate("http://localhost:8000"), equalTo(false));
     }

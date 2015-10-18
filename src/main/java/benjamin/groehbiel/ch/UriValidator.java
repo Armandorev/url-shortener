@@ -43,8 +43,18 @@ public class UriValidator {
         return true;
     }
 
+    /**
+     * Validates the protocol provided in @validProtocols. Normalises protocol, making HTtp, HTTPS, etc. valid.
+     * @param uri
+     * @return whether protocol is valid
+     */
     private boolean validProtocol(String uri) {
-        return validProtocols.stream().anyMatch(uri::startsWith);
+        try {
+            String protocol = new URI(uri).getScheme().toLowerCase();
+            return validProtocols.stream().anyMatch(protocol::equals);
+        } catch (URISyntaxException e) {
+            return false;
+        }
     }
 
 }
