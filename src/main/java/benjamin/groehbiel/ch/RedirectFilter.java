@@ -3,6 +3,8 @@ package benjamin.groehbiel.ch;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -13,6 +15,7 @@ import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE - 2)
 public class RedirectFilter implements Filter {
 
     @Autowired

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.HIGHEST_PRECEDENCE - 1)
 public class SubdomainFilter implements Filter {
 
     @Override

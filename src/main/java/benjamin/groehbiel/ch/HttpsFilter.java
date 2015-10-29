@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class HttpsFilter implements Filter {
 
     @Value("${app.protocol}")
