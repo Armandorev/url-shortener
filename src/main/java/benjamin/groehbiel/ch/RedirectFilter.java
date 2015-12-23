@@ -24,6 +24,12 @@ public class RedirectFilter implements Filter {
     @Autowired
     ShortenerService shortenerService;
 
+    public RedirectFilter() {}
+
+    public RedirectFilter(ShortenerService shortenerService) {
+        this.shortenerService = shortenerService;
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
@@ -31,13 +37,13 @@ public class RedirectFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String requestURI = httpRequest.getRequestURI();
-        boolean isWebAppFileOrApiCall = requestURI.matches("(^$|\\/$|.*\\.(html|js|css|ico)|\\/api\\/.*)");
+        boolean isWebAppFileOrApiCall = requestURI.matches("(^$|\\/$|.*\\.(html|js|css|ico)|\\/api\\/.*|\\/admin(\\/.*)*)");
         if (isWebAppFileOrApiCall) {
             Logger.getLogger("RedirectFilter").info("Request is file or api call " + requestURI);
             chain.doFilter(request, response);
         } else {
             String hash = requestURI.substring(1);
-            Logger.getLogger("RedirectFilter").info("Resolving hash r" + hash);
+            Logger.getLogger("RedirectFilter").info("Resolving hash " + hash);
             try {
                 ShortenerHandle shortenerHandle = shortenerService.expand(hash);
                 httpResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
