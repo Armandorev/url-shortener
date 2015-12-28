@@ -28,22 +28,6 @@ public class UserApi {
     @Autowired
     ShortenerService shortenerService;
 
-    @RequestMapping(value = "/all", method = GET, produces = APPLICATION_JSON_VALUE)
-    public List<ShortenerResponse> latest() throws IOException {
-        Map<URI, ShortenerHandle> allShortenedURLs = shortenerService.getAllUrls();
-
-        return allShortenedURLs.entrySet()
-                .stream()
-                .map((Entry<URI, ShortenerHandle> entry) -> {
-                    try {
-                        return ShortenerResponse.summarise(entry.getValue());
-                    } catch (URISyntaxException e) {
-                        return null;
-                    }
-                })
-                .collect(Collectors.toList());
-    }
-
     @RequestMapping(value = "/stats", method = GET, produces = APPLICATION_JSON_VALUE)
     public ShortenerStats getStats() {
         Long shortenedCount = shortenerService.getShortenedCount();

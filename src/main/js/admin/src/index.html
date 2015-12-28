@@ -1,10 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>w0rd.it admin</title>
-</head>
-<body>
-    <h1>admin panel</h1>
-</body>
+    <head>
+        <meta charset="UTF-8">
+
+        <title>w0rd.it admin</title>
+
+        <!-- build:js admin/vendor.js -->
+        <script src="../bower_components/angular/angular.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js1 admin/app.js -->
+        <script src="main.js"></script>
+
+        <script src="ListController.js"></script>
+        <script src="ResetController.js"></script>
+        <script src="ImportController.js"></script>
+        <script src="CustomShortenerController.js"></script>
+        <!-- endbuild -->
+    </head>
+
+    <body ng-app="WordItAdminApp">
+
+        <noscript>
+            Word of advice: activate JavaScript.
+        </noscript>
+
+        <h1>w0rd.it Admin Panel</h1>
+
+        <div ng-controller="ImportController">
+            <h2>Import hashes</h2>
+
+            <button ng-click="importRandom()">Import</button>
+        </div>
+
+        <div ng-controller="CustomShortenerController">
+            <h2>Shorten URL</h2>
+
+            <form action="post" novalidate>
+                <input type="text" ng-model="url" placeholder="URL"/>
+                <input type="text" ng-model="hash" placeholder="Hash"/>
+                <button type="submit">Shorten</button>
+            </form>
+        </div>
+
+        <div ng-controller="ListController">
+            <h2>Shortened URLs</h2>
+
+            <ul>
+                <li ng-repeat="url in shortenedUrls"><a href="{{url.original}}">{{url.hash}}</a></li>
+            </ul>
+        </div>
+
+        <div ng-controller="ResetController">
+            <h2>Reset all data</h2>
+
+            <button ng-click="reset()">Clear data</button>
+        </div>
+
+    </body>
+
 </html>

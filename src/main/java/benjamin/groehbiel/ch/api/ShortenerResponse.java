@@ -8,7 +8,10 @@ import java.net.URISyntaxException;
 public class ShortenerResponse {
 
     public static ShortenerResponse summarise(ShortenerHandle shortenerHandle) throws URISyntaxException {
-        return new ShortenerResponse(shortenerHandle.getOriginalURI(), shortenerHandle.getShortenedURI(), shortenerHandle.getHash(), shortenerHandle.getDescription());
+        return new ShortenerResponse(shortenerHandle.getOriginalURI(),
+                shortenerHandle.getShortenedURI(),
+                shortenerHandle.getHash(),
+                shortenerHandle.getDescription());
     }
 
     private URI original;
@@ -16,8 +19,7 @@ public class ShortenerResponse {
     private String hash;
     private String description;
 
-    public ShortenerResponse() {
-    }
+    public ShortenerResponse() {}
 
     public ShortenerResponse(URI original, URI shortened, String hash, String description) throws URISyntaxException {
         this.original = original;

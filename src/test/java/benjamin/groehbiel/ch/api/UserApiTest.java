@@ -65,29 +65,6 @@ public class UserApiTest extends TestBase {
     }
 
     @Test
-    public void shouldExposeAListOfAllShortenedURLs() throws Exception {
-        URI urlPivotal = new URI("http://www.pivotal.io");
-        URI urlLabs = new URI("http://www.pivotallabs.com");
-        shortenerService.shorten(urlPivotal);
-        shortenerService.shorten(urlLabs);
-
-        MvcResult mvcResult = mockMvc.perform(get("/api/all").contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<ShortenerResponse> responses = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ShortenerResponse>>() {
-        });
-
-        MatcherAssert.assertThat(responses, hasSize(2));
-
-        MatcherAssert.assertThat(responses, containsInAnyOrder(
-                new ShortenerResponse(urlPivotal, new URI("xxx"), "able", ""),
-                new ShortenerResponse(urlLabs, new URI("xxx"), "unable", "")
-        ));
-    }
-
-    @Test
     public void shouldAddShortenedURLWhenPostedTo() throws Exception {
         ShortenerRequest request = new ShortenerRequest("https://run.pivotal.io/");
 
