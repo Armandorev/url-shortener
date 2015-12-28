@@ -16,6 +16,7 @@
         <script src="ResetController.js"></script>
         <script src="ImportController.js"></script>
         <script src="CustomShortenerController.js"></script>
+        <script src="HeaderController.js"></script>
         <!-- endbuild -->
     </head>
 
@@ -25,7 +26,12 @@
             Word of advice: activate JavaScript.
         </noscript>
 
-        <h1>w0rd.it Admin Panel</h1>
+        <header>
+            <h1>w0rd.it Admin Panel</h1>
+            <div ng-controller="HeaderController">
+                Total hashes: {{ remainingCount }}, Shortened hashes: {{ shortenedCount }}
+            </div>
+        </header>
 
         <div ng-controller="ImportController">
             <h2>Import hashes</h2>
@@ -36,10 +42,10 @@
         <div ng-controller="CustomShortenerController">
             <h2>Shorten URL</h2>
 
-            <form action="post" novalidate>
+            <form novalidate ng-submit="shorten()">
                 <input type="text" ng-model="url" placeholder="URL"/>
                 <input type="text" ng-model="hash" placeholder="Hash"/>
-                <button type="submit">Shorten</button>
+                <button type="submit" >Shorten</button>
             </form>
         </div>
 
