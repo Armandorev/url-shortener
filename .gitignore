@@ -8,6 +8,7 @@ build/
 tmp
 
 .DS_Store
-src/main/js/bower_components
-src/main/js/node_modules
+src/main/js/*/bower_components
+src/main/js/*/node_modules
+src/main/js/*/npm-debug.log
 dump.rdb

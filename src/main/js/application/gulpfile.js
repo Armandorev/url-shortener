@@ -7,7 +7,7 @@ var htmlmin = require('gulp-html-minifier');
 var rev = require('gulp-rev');
 var karma = require('karma').server;
 
-var pathToDistDir = '../../../build/webapp/static';
+var pathToDistDir = '../../../../build/webapp/static';
 
 /********************** PACKAGE */
 gulp.task('package', ['html', 'index.html']);
@@ -18,13 +18,13 @@ gulp.task('clean', function() {
 });
 
 gulp.task('html', function () {
-    return gulp.src(['app/**/*.html', '!app/index.html'])
+    return gulp.src(['src/**/*.html', '!src/index.html'])
         .pipe(htmlmin({collapseWhitespace: false, removeComments: true}))
         .pipe(gulp.dest(pathToDistDir));
 });
 
 gulp.task('index.html', function () {
-    return gulp.src('app/index.html')
+    return gulp.src('src/index.html')
         .pipe(usemin({
             js: [uglify(), rev()],
             html: [htmlmin({collapseWhitespace: false, removeComments: true})]

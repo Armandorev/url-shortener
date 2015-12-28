@@ -49,17 +49,22 @@ task wrapper(type: Wrapper) {
 }
 
 task buildJS(type: Exec) {
-    workingDir 'src/main/js'
+    workingDir 'src/main/js/application'
     commandLine 'sh', 'install.sh'
 }
 
 task testJS(type: Exec) {
-    workingDir 'src/main/js'
+    workingDir 'src/main/js/application'
     commandLine 'gulp', 'test-once'
 }
 
-task packageJS(type: Exec) {
-    workingDir 'src/main/js'
+task buildApp(type: Exec) {
+    workingDir 'src/main/js/application'
+    commandLine 'sh', 'deploy.sh'
+}
+
+task buildAdmin(type: Exec) {
+    workingDir 'src/main/js/admin'
     commandLine 'sh', 'deploy.sh'
 }
 
@@ -67,7 +72,7 @@ task e2e(type: Test) {
     include 'benjamin/groehbiel/ch/e2e/**'
     reports.html.destination = file('build/reports/e2e')
 }
-e2e.dependsOn packageJS;
+e2e.dependsOn buildApp;
 
 // travis runs ./gradlew check to run all tests
 check.doLast {
@@ -77,7 +82,8 @@ check.doLast {
 
 sourceSets {
     main {
-        output.dir("$buildDir/webapp", builtBy: packageJS)
+        output.dir("$buildDir/webapp", builtBy: buildApp)
+        output.dir("$buildDir/webapp", builtBy: buildAdmin)
     }
 }
 

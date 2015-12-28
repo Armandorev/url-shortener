@@ -44,7 +44,7 @@ public class RedirectFilterTest {
 
     @Test
     public void shouldPassAdminRootProject() throws Throwable {
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/static/admin");
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         redirectFilter.doFilter(request, response, filterChain);

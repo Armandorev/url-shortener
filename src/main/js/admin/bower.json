@@ -1,0 +1,19 @@
+{
+  "name": "w0rd.it-admin",
+  "description": "Admin panel for w0rd.it",
+  "main": "/",
+  "authors": [
+    "Benjamin Groehbiel <benjamin.groehbiel@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/bengro/url-shortener",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
