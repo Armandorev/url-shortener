@@ -3,6 +3,10 @@ package benjamin.groehbiel.ch.shortener;
 import benjamin.groehbiel.ch.DataTest;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
+<<<<<<< HEAD
+=======
+import org.junit.Before;
+>>>>>>> Add admin api for listing all available hashes including paging/sorting
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,7 @@ public class ShortenerServiceTest extends DataTest {
         shortenerHandle = shortenerService.shorten(anotherShortenedUri);
         assertThat(shortenerHandle.getHash(), equalTo("unable"));
     }
+
 
     @Test
     public void shouldLookupUrlInRedisGivenAHash() throws URISyntaxException, IOException {
