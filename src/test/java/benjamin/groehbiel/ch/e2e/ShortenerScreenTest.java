@@ -2,7 +2,9 @@ package benjamin.groehbiel.ch.e2e;
 
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
+import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
+import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
@@ -13,6 +15,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,24 +39,21 @@ public class ShortenerScreenTest extends FluentTest {
     @Value("${local.server.port}")
     int port;
 
-    // TODO: reuse DatabaseTest
     @Autowired
     private DictionaryManager dictionaryManager;
 
     @Autowired
-    private StringRedisTemplate redis;
+    private RedisManager redisManager;
 
     @Before
-    public void populateTable() throws IOException {
+    public void setup() throws IOException {
         dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
     }
 
     @After
     public void flushTable() {
-        dictionaryManager.clear();
-        redis.getConnectionFactory().getConnection().flushDb();
+        wipeData();
     }
-    // END TODO
 
     @Test
     public void showsSuccessAndWordDescription() {
@@ -77,30 +77,9 @@ public class ShortenerScreenTest extends FluentTest {
         MatcherAssert.assertThat(modifiedUrl, equalTo("http://www.pivotal.io"));
     }
 
-    private Matcher<? super FluentWebElement> hasAttribute(String attribute) {
-        Matcher<FluentWebElement> matcher = new BaseMatcher<FluentWebElement>() {
-            @Override
-            public void describeTo(Description description) {
-            }
-
-            @Override
-            public boolean matches(Object item) {
-                FluentWebElement button = (FluentWebElement) item;
-                String disabledAttr = button.getAttribute(attribute);
-                if (disabledAttr == null) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            @Override
-            public void describeMismatch(Object item, Description mismatchDescription) {
-                mismatchDescription.appendText("Could not find attribute " + attribute);
-            }
-        };
-
-        return matcher;
+    private void wipeData() {
+        dictionaryManager.clear();
+        redisManager.clear();
     }
 
 }

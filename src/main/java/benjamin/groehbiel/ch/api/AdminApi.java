@@ -1,15 +1,16 @@
-package benjamin.groehbiel.ch.api.admin;
+package benjamin.groehbiel.ch.api;
 
-import benjamin.groehbiel.ch.api.ShortenerResponse;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.admin.AdminShortenerRequest;
+import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
+import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -29,6 +30,9 @@ public class AdminApi {
 
     @Autowired
     ShortenerService shortenerService;
+
+    @Autowired
+    DictionaryManager dictionaryManager;
 
     @RequestMapping(value = "/reset", method = POST, produces = APPLICATION_JSON_VALUE)
     public Map<String, String> resetDictionary() {
@@ -62,6 +66,11 @@ public class AdminApi {
                     }
                 })
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/words", method = GET, produces = APPLICATION_JSON_VALUE)
+    public Iterable<DictionaryHash> words(Pageable pageable) {
+        return dictionaryManager.getWords(pageable);
     }
 
 }

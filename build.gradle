@@ -40,12 +40,12 @@ idea.module {
     testOutputDir = file('.idea/classes/test')
 }
 
-test {
-    exclude 'benjamin/groehbiel/ch/e2e/**'
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
+}
+
+test {
+    exclude 'benjamin/groehbiel/ch/e2e/**'
 }
 
 task buildJS(type: Exec) {
@@ -72,6 +72,7 @@ task e2e(type: Test) {
     include 'benjamin/groehbiel/ch/e2e/**'
     reports.html.destination = file('build/reports/e2e')
 }
+
 e2e.dependsOn buildApp;
 
 // travis runs ./gradlew check to run all tests

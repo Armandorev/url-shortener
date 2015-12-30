@@ -26,8 +26,6 @@ public class DictionaryManagerTest {
     @Autowired
     DictionaryManager dictionaryManager;
 
-    private JdbcTemplate jdbcTemplate;
-
     @Before
     public void setup() {
         dictionaryManager.clear();

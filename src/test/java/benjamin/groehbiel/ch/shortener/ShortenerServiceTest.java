@@ -1,8 +1,9 @@
 package benjamin.groehbiel.ch.shortener;
 
-import benjamin.groehbiel.ch.TestBase;
+import benjamin.groehbiel.ch.DataTest;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,10 +14,14 @@ import java.net.URISyntaxException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class ShortenerServiceTest extends TestBase {
+@Ignore
+public class ShortenerServiceTest extends DataTest {
 
     @Autowired
     private ShortenerService shortenerService;
+
+    @Autowired
+    private RedisManager redisManager;
 
     @Test
     public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException, IOException {

@@ -1,5 +1,6 @@
 package benjamin.groehbiel.ch;
 
+import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
@@ -18,17 +19,19 @@ import java.io.IOException;
 @SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public abstract class TestBase {
+public abstract class DataTest {
 
     @Autowired
     private DictionaryManager dictionaryManager;
 
     @Autowired
-    protected RedisManager redisManager;
+    private RedisManager redisManager;
 
     @Before
-    public void populateTable() throws IOException {
+    public void setup() throws IOException {
         dictionaryManager.clear();
+        redisManager.clear();
+
         dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
     }
 

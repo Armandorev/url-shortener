@@ -1,7 +1,6 @@
 package benjamin.groehbiel.ch.api;
 
-import benjamin.groehbiel.ch.TestBase;
-import benjamin.groehbiel.ch.shortener.ShortenerService;
+import benjamin.groehbiel.ch.DataTest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
@@ -20,8 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.net.URI;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,12 +26,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserApiTest extends TestBase {
+public class UserApiTest extends DataTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-    @Autowired
-    private ShortenerService shortenerService;
 
     @Autowired
     private WebApplicationContext wac;
@@ -79,10 +73,6 @@ public class UserApiTest extends TestBase {
         String responseAsString = postResponse.getResponse().getContentAsString();
         ShortenerResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenerResponse>() {});
         MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
-
-        String expectedShortenedUrl = protocol + "://" + host + "/" + "able";
-        String actualShortenedUrl = response.getShortened().toString();
-        MatcherAssert.assertThat(actualShortenedUrl, equalTo(expectedShortenedUrl));
     }
 
     @Test

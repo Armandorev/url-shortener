@@ -1,8 +1,9 @@
 package benjamin.groehbiel.ch.shortener.db;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface IDictionaryRepository extends CrudRepository<DictionaryHash, Long> {
+public interface IDictionaryRepository extends PagingAndSortingRepository<DictionaryHash, String> {
 
     DictionaryHash findFirst1ByAvailable(boolean b);
 

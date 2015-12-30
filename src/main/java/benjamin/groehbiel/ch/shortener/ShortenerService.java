@@ -74,9 +74,12 @@ public class ShortenerService {
         dictionaryManager.clear();
     }
 
-    // TODO tests
+    public void populate(int count) throws IOException {
+        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"), count);
+    }
+
     public void populate() throws IOException {
-        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"), 3000);
+        populate(3000);
     }
 
     //TODO to be moved and improved, hack.
