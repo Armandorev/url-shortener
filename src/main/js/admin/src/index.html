@@ -17,6 +17,7 @@
         <script src="ImportController.js"></script>
         <script src="CustomShortenerController.js"></script>
         <script src="HeaderController.js"></script>
+        <script src="WordsController.js"></script>
         <!-- endbuild -->
     </head>
 
@@ -61,6 +62,39 @@
             <h2>Reset all data</h2>
 
             <button ng-click="reset()">Clear data</button>
+        </div>
+
+        <div ng-controller="WordsController">
+            <h2>Hashes</h2>
+
+            <ul>
+                <li><a href="" ng-click="prevPage()">Previous page</a></li>
+                <li><a href="" ng-click="nextPage()">Next page</a></li>
+            </ul>
+
+            <table>
+                <thead>
+                    <tr>
+                        <td><a href="" ng-click="sortBy('&sort=hash&hash.dir=asc')">Hash</a></td>
+                        <td><a href="" ng-click="sortBy('&sort=available&available.dir=asc')">Available</a></td>
+                        <td>Language</td>
+                        <td>Indexed</td>
+                        <td>Description</td>
+                        <td>Registered</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="dictionaryHash in dictionaryHashes">
+                        <td>{{ dictionaryHash.hash }}</td>
+                        <td>{{ dictionaryHash.available }}</td>
+                        <td>{{ dictionaryHash.language }}</td>
+                        <td>{{ dictionaryHash.indexed }}</td>
+                        <td>{{ dictionaryHash.description }}</td>
+                        <td>{{ dictionaryHash.registered }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
 
     </body>
