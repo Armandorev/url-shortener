@@ -1,6 +1,5 @@
 package benjamin.groehbiel.ch.shortener.db;
 
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface IDictionaryRepository extends PagingAndSortingRepository<DictionaryHash, String> {
