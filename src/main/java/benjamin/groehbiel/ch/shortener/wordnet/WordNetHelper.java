@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -62,5 +63,23 @@ public class WordNetHelper {
         URL resource = WordNetHelper.class.getClassLoader().getResource(wordNetDirectory);
         return new File(resource.getPath()).listFiles();
     }
+
+    protected static List<DictionaryHash> loadAllWordsMatching(String wordNetDirectory, Predicate predicate) throws IOException {
+        File[] wordNetFiles = getFilesInDirectory(wordNetDirectory);
+
+        List<DictionaryHash> allWords = new ArrayList<>();
+        for (int i = 0; i < wordNetFiles.length; ++i) {
+            List<DictionaryHash> wordsInDocument = parseFile(wordNetFiles[i].toString());
+            for (DictionaryHash dictionaryHash : wordsInDocument) {
+                if (predicate.test(dictionaryHash)) {
+                    allWords.add(dictionaryHash);
+                }
+            }
+        }
+
+        return allWords;
+    }
+
+
 
 }
