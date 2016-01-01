@@ -37,7 +37,9 @@
         <div ng-controller="ImportController">
             <h2>Import hashes</h2>
 
-            <button ng-click="importRandom()">Import</button>
+            <input type="text" ng-model="numberOfWords" placeholder="Number of words" />
+            <input type="text" ng-model="wordLength" placeholder="Word length" />
+            <button ng-click="import()">Import {{ numberOfWords }} fresh words with length {{ wordLength }}</button>
         </div>
 
         <div ng-controller="CustomShortenerController">

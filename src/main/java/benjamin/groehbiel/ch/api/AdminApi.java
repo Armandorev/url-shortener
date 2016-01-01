@@ -79,8 +79,8 @@ public class AdminApi {
     }
 
     @RequestMapping(value = "/words/import", method = POST, produces = APPLICATION_JSON_VALUE)
-    public Integer importWords(@RequestParam Integer numberOfWords, @RequestParam Integer wordLength) throws IOException {
-        return shortenerService.importFreshWordsByWordLength(numberOfWords, wordLength);
+    public Integer importWords(@RequestBody AdminImportRequest importRequest) throws IOException {
+        return shortenerService.importFreshWordsByWordLength(importRequest.getNumberOfWords(), importRequest.getWordLength());
     }
 
 }
