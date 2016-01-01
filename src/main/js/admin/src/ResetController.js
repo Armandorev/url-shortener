@@ -4,9 +4,15 @@
 
     app.controller('ResetController', function ($scope, $http) {
 
-        $scope.reset = function () {
+        $scope.resetAll = function () {
             $http.post('/api/admin/reset').success(function () {
-                console.log('cleared data');
+                console.log('cleared all words');
+            });
+        };
+
+        $scope.resetUnused = function () {
+            $http.post('/api/admin/words/remove_unused').success(function () {
+                console.log('cleared unused words');
             });
         };
 
