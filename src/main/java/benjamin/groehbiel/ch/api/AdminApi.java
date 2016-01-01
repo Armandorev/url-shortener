@@ -8,8 +8,11 @@ import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -70,6 +73,12 @@ public class AdminApi {
     @RequestMapping(value = "/words", method = GET, produces = APPLICATION_JSON_VALUE)
     public Iterable<DictionaryHash> words(Pageable pageable) {
         return dictionaryManager.getWords(pageable);
+    }
+
+    @RequestMapping(value = "/words/remove_unused", method = POST, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity removeUnusedWords() {
+        shortenerService.clearUnused();
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
 }

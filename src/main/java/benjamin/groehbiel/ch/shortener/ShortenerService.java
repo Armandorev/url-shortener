@@ -74,6 +74,10 @@ public class ShortenerService {
         dictionaryManager.clear();
     }
 
+    public void clearUnused() {
+        dictionaryManager.clearUnused();
+    }
+
     public void populate(int count) throws IOException {
         dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"), count);
     }

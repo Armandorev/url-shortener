@@ -22,6 +22,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -119,6 +121,17 @@ public class AdminApiTest {
         List<DictionaryHash> dictionaryHashes = mapResponseStringToDictionaryHashes(mvcResult);
 
         assertThat(dictionaryHashes, Matchers.<DictionaryHash>hasItem(hasProperty("available", equalTo(false))));
+    }
+
+    @Test
+    public void shouldRemoveAllUnusedWords() throws Exception {
+        shortenerService.populate(10);
+        shortenerService.shorten(new URI("http://www.google.com"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/words/remove_unused")).andReturn();
+
+        assertThat(shortenerService.getRemainingCount(), equalTo(0L));
+        assertThat(shortenerService.getShortenedCount(), equalTo(1L));
     }
 
     private List<DictionaryHash> mapResponseStringToDictionaryHashes(MvcResult mvcResult) throws IOException {
