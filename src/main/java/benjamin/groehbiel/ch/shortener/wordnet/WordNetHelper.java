@@ -64,7 +64,7 @@ public class WordNetHelper {
         return new File(resource.getPath()).listFiles();
     }
 
-    protected static List<DictionaryHash> loadAllWordsMatching(String wordNetDirectory, Predicate predicate) throws IOException {
+    public static List<DictionaryHash> loadAllWordsMatching(String wordNetDirectory, Predicate predicate) throws IOException {
         File[] wordNetFiles = getFilesInDirectory(wordNetDirectory);
 
         List<DictionaryHash> allWords = new ArrayList<>();

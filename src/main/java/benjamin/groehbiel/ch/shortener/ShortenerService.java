@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 @Service
 public class ShortenerService {
@@ -92,4 +94,15 @@ public class ShortenerService {
         createShortenerHandleFor(new URI(adminShortenerRequest.getUrl()), new DictionaryHash(adminShortenerRequest.getHash(), "en", "something...", false));
     }
 
+    public Integer importFreshWordsByWordLength(Integer numberOfWords, Integer wordLength) throws IOException {
+        List<DictionaryHash> allHashesMatchingLengthCriteria = WordNetHelper.loadAllWordsMatching("WordNet", new Predicate<DictionaryHash>() {
+            @Override
+            public boolean test(DictionaryHash dictionaryHash) {
+                if (dictionaryHash.getHash().length() <= wordLength) return true;
+                return false;
+            }
+        });
+
+        return dictionaryManager.insertWords(numberOfWords, allHashesMatchingLengthCriteria);
+    }
 }

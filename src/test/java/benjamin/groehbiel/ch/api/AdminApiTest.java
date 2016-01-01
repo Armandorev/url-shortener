@@ -22,7 +22,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -36,6 +38,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -127,10 +130,22 @@ public class AdminApiTest {
         shortenerService.populate(10);
         shortenerService.shorten(new URI("http://www.google.com"));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/words/remove_unused")).andReturn();
+        mockMvc.perform(post("/api/admin/words/remove_unused")).andReturn();
 
         assertThat(shortenerService.getRemainingCount(), equalTo(0L));
         assertThat(shortenerService.getShortenedCount(), equalTo(1L));
+    }
+
+    @Test
+    public void shouldImportFreshWordsGivenAmountAndCriteria() throws Exception {
+        mockMvc.perform(
+                        post("/api/admin/words/import")
+                           .param("numberOfWords", String.valueOf(10))
+                           .param("wordLength", String.valueOf(6)))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andReturn();
+
+        assertThat(shortenerService.getRemainingCount(), equalTo(7L));
     }
 
     private List<DictionaryHash> mapResponseStringToDictionaryHashes(MvcResult mvcResult) throws IOException {

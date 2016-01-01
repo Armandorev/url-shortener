@@ -64,4 +64,19 @@ public class DictionaryManager {
     public Iterable<DictionaryHash> getWords(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    public Integer insertWords(Integer numberOfWords, List<DictionaryHash> words) {
+        int counter = 0;
+
+        for (DictionaryHash dictionaryHash : words) {
+            if (!repository.exists(dictionaryHash.getHash())) {
+                repository.save(dictionaryHash);
+                counter++;
+            }
+
+            if (counter == numberOfWords) return counter;
+        }
+
+        return counter;
+    }
 }
