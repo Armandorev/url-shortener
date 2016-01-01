@@ -16,15 +16,12 @@ public class DictionaryManager {
     @Autowired
     IDictionaryRepository repository;
 
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
     public void clear() {
         repository.deleteAll();
+    }
+
+    public void clearUnused() {
+        repository.deleteByAvailable(true);
     }
 
     public long size() {

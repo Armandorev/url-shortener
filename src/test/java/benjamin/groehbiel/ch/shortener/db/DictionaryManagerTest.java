@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -59,6 +58,16 @@ public class DictionaryManagerTest {
         dictionaryManager.nextHash();
         dictionaryManager.nextHash();
         assertThat(dictionaryManager.getWordsAvailableSize(), equalTo(19L));
+    }
+
+    @Test
+    public void shouldRemoveAllUnusedHashesFromDictionaryTable() throws IOException {
+        populateTable();
+
+        dictionaryManager.nextHash();
+        dictionaryManager.clearUnused();
+
+        assertThat(dictionaryManager.size(), equalTo(1L));
     }
 
     private void populateTable() throws IOException {
