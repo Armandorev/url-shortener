@@ -33,18 +33,6 @@ public class AdminApi {
     @Autowired
     DictionaryManager dictionaryManager;
 
-    @RequestMapping(value = "/reset", method = POST, produces = APPLICATION_JSON_VALUE)
-    public Map<String, String> resetDictionary() {
-        shortenerService.reset();
-        return null;
-    }
-
-    @RequestMapping(value = "/import", method = POST, produces = APPLICATION_JSON_VALUE)
-    public Map<String, String> importDictionary() throws IOException {
-        shortenerService.populate();
-        return null;
-    }
-
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Map<String, String> shorten(@RequestBody AdminShortenerRequest adminShortenerRequest) throws URISyntaxException, JsonProcessingException {
         shortenerService.insert(adminShortenerRequest);
@@ -70,6 +58,12 @@ public class AdminApi {
     @RequestMapping(value = "/words", method = GET, produces = APPLICATION_JSON_VALUE)
     public Iterable<DictionaryHash> words(Pageable pageable) {
         return dictionaryManager.getWords(pageable);
+    }
+
+    @RequestMapping(value = "/reset", method = POST, produces = APPLICATION_JSON_VALUE)
+    public Map<String, String> resetDictionary() {
+        shortenerService.reset();
+        return null;
     }
 
     @RequestMapping(value = "/words/remove_unused", method = POST, produces = APPLICATION_JSON_VALUE)

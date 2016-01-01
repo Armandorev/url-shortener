@@ -22,9 +22,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -138,11 +135,15 @@ public class AdminApiTest {
 
     @Test
     public void shouldImportFreshWordsGivenAmountAndCriteria() throws Exception {
+        AdminImportRequest importRequest = new AdminImportRequest();
+        importRequest.setNumberOfWords(10);
+        importRequest.setWordLength(6);
+        byte[] postJson = OBJECT_MAPPER.writeValueAsBytes(importRequest);
+
         mockMvc.perform(
                         post("/api/admin/words/import")
-                           .param("numberOfWords", String.valueOf(10))
-                           .param("wordLength", String.valueOf(6)))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                                .content(postJson).contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().is2xxSuccessful())
                 .andReturn();
 
         assertThat(shortenerService.getRemainingCount(), equalTo(7L));

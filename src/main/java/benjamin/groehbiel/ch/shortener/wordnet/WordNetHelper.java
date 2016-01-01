@@ -29,7 +29,7 @@ public class WordNetHelper {
                     if (matcher.find()) {
                         String word = matcher.group(1);
 
-                        if (word.length() > 20) return null;
+                        if (word.length() > 20 || word.length() < 2) return null;
 
                         String description = matcher.group(2);
                         String trimmedDescription = (description.length() > 250) ? description.substring(0, 246) + "..." : description;
