@@ -87,7 +87,7 @@ public class AdminApiTest {
 
     @Test
     public void shouldReturnAllAvailableWords() throws Exception {
-        shortenerService.populate(10);
+        shortenerService.populateDictionary(10);
 
         MvcResult mvcResult = mockMvc.perform(get("/api/admin/words")).andReturn();
         List<DictionaryHash> dictionaryHashes = mapResponseStringToDictionaryHashes(mvcResult);
@@ -98,7 +98,7 @@ public class AdminApiTest {
 
     @Test
     public void shouldReturnAllUnavailableWords() throws Exception {
-        shortenerService.populate(10);
+        shortenerService.populateDictionary(10);
         addUrlToRepository("http://www.pivotal.io");
 
         MvcResult mvcResult = mockMvc.perform(get("/api/admin/words")).andReturn();
@@ -109,12 +109,12 @@ public class AdminApiTest {
 
     @Test
     public void shouldNotOverwriteTakenWordsWhenImportingNewWords() throws Exception {
-        shortenerService.populate(10);
+        shortenerService.populateDictionary(10);
         addUrlToRepository("http://www.pivotal.io");
-        shortenerService.populate(10);
-        shortenerService.populate(10);
-        shortenerService.populate(10);
-        shortenerService.populate(10);
+        shortenerService.populateDictionary(10);
+        shortenerService.populateDictionary(10);
+        shortenerService.populateDictionary(10);
+        shortenerService.populateDictionary(10);
 
         MvcResult mvcResult = mockMvc.perform(get("/api/admin/words?size=50")).andReturn();
         List<DictionaryHash> dictionaryHashes = mapResponseStringToDictionaryHashes(mvcResult);
@@ -124,7 +124,7 @@ public class AdminApiTest {
 
     @Test
     public void shouldRemoveAllUnusedWords() throws Exception {
-        shortenerService.populate(10);
+        shortenerService.populateDictionary(10);
         shortenerService.shorten(new URI("http://www.google.com"));
 
         mockMvc.perform(post("/api/admin/words/remove_unused")).andReturn();

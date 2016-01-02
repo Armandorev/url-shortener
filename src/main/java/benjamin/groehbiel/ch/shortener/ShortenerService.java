@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Service
@@ -35,12 +32,6 @@ public class ShortenerService {
         } else {
             return createShortenerHandleFor(originalURI, dictionaryManager.nextHash());
         }
-    }
-
-    private ShortenerHandle createShortenerHandleFor(URI url, DictionaryHash token) throws URISyntaxException, JsonProcessingException {
-        ShortenerHandle shortenerHandle = new ShortenerHandle(url, token.getHash(), token.getDescription());
-        redisManager.storeHash(shortenerHandle);
-        return shortenerHandle;
     }
 
     public ShortenerHandle expand(String hash) throws URISyntaxException, IOException {
@@ -71,21 +62,17 @@ public class ShortenerService {
         redisManager.clear();
     }
 
-    public void reset() {
+    public void resetWordsAndHashes() {
         redisManager.clear();
         dictionaryManager.clear();
     }
 
-    public void clearUnused() {
-        dictionaryManager.clearUnused();
+    public void clearUnusedWords() {
+        dictionaryManager.clearUnusedWords();
     }
 
-    public void populate(int count) throws IOException {
+    public void populateDictionary(int count) throws IOException {
         dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"), count);
-    }
-
-    public void populate() throws IOException {
-        populate(3000);
     }
 
     //TODO to be moved and improved, hack.
@@ -94,7 +81,7 @@ public class ShortenerService {
         createShortenerHandleFor(new URI(adminShortenerRequest.getUrl()), new DictionaryHash(adminShortenerRequest.getHash(), "en", "something...", false));
     }
 
-    public Integer importFreshWordsByWordLength(Integer numberOfWords, Integer wordLength) throws IOException {
+    public Integer importWordsWithLength(Integer numberOfWords, Integer wordLength) throws IOException {
         List<DictionaryHash> allHashesMatchingLengthCriteria = WordNetHelper.loadAllWordsMatching("WordNet", new Predicate<DictionaryHash>() {
             @Override
             public boolean test(DictionaryHash dictionaryHash) {
@@ -103,6 +90,13 @@ public class ShortenerService {
             }
         });
 
-        return dictionaryManager.insertWords(numberOfWords, allHashesMatchingLengthCriteria);
+        Collections.shuffle(allHashesMatchingLengthCriteria);
+        return dictionaryManager.fill(numberOfWords, allHashesMatchingLengthCriteria);
+    }
+
+    private ShortenerHandle createShortenerHandleFor(URI url, DictionaryHash token) throws URISyntaxException, JsonProcessingException {
+        ShortenerHandle shortenerHandle = new ShortenerHandle(url, token.getHash(), token.getDescription());
+        redisManager.storeHash(shortenerHandle);
+        return shortenerHandle;
     }
 }

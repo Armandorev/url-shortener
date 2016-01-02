@@ -20,7 +20,7 @@ public class DictionaryManager {
         repository.deleteAll();
     }
 
-    public void clearUnused() {
+    public void clearUnusedWords() {
         repository.deleteByAvailable(true);
     }
 
@@ -39,6 +39,21 @@ public class DictionaryManager {
         }
 
         return savedHashes;
+    }
+
+    public Integer fill(Integer numberOfWords, List<DictionaryHash> words) {
+        List<DictionaryHash> hashesToBeAdded = new ArrayList<>();
+        for (DictionaryHash dictionaryHash : words) {
+            if (!repository.exists(dictionaryHash.getHash())) {
+                hashesToBeAdded.add(dictionaryHash);
+            }
+
+            if (hashesToBeAdded.size() == numberOfWords) break;
+        }
+
+        repository.save(hashesToBeAdded);
+
+        return hashesToBeAdded.size();
     }
 
     public Iterable<DictionaryHash> fill(List<DictionaryHash> dictionaryHashes, Integer size) {
@@ -65,18 +80,5 @@ public class DictionaryManager {
         return repository.findAll(pageable);
     }
 
-    public Integer insertWords(Integer numberOfWords, List<DictionaryHash> words) {
-        int counter = 0;
 
-        for (DictionaryHash dictionaryHash : words) {
-            if (!repository.exists(dictionaryHash.getHash())) {
-                repository.save(dictionaryHash);
-                counter++;
-            }
-
-            if (counter == numberOfWords) return counter;
-        }
-
-        return counter;
-    }
 }

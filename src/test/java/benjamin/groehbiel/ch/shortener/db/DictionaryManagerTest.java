@@ -65,7 +65,7 @@ public class DictionaryManagerTest {
         populateTable();
 
         dictionaryManager.nextHash();
-        dictionaryManager.clearUnused();
+        dictionaryManager.clearUnusedWords();
 
         assertThat(dictionaryManager.size(), equalTo(1L));
     }

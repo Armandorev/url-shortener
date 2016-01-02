@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URI;
@@ -40,7 +42,7 @@ public class AdminApi {
     }
 
     @RequestMapping(value = "/shortened_urls", method = GET, produces = APPLICATION_JSON_VALUE)
-    public List<ShortenerResponse> list() throws IOException {
+    public List<ShortenerResponse> listShortenedUrls() throws IOException {
         Map<URI, ShortenerHandle> allShortenedURLs = shortenerService.getAllUrls();
 
         return allShortenedURLs.entrySet()
@@ -56,25 +58,25 @@ public class AdminApi {
     }
 
     @RequestMapping(value = "/words", method = GET, produces = APPLICATION_JSON_VALUE)
-    public Iterable<DictionaryHash> words(Pageable pageable) {
+    public Iterable<DictionaryHash> listWordsByPage(Pageable pageable) {
         return dictionaryManager.getWords(pageable);
     }
 
     @RequestMapping(value = "/reset", method = POST, produces = APPLICATION_JSON_VALUE)
-    public Map<String, String> resetDictionary() {
-        shortenerService.reset();
+    public Map<String, String> clearEverything() {
+        shortenerService.resetWordsAndHashes();
         return null;
     }
 
     @RequestMapping(value = "/words/remove_unused", method = POST, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity removeUnusedWords() {
-        shortenerService.clearUnused();
+    public ResponseEntity clearUnusedWords() {
+        shortenerService.clearUnusedWords();
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/words/import", method = POST, produces = APPLICATION_JSON_VALUE)
     public Integer importWords(@RequestBody AdminImportRequest importRequest) throws IOException {
-        return shortenerService.importFreshWordsByWordLength(importRequest.getNumberOfWords(), importRequest.getWordLength());
+        return shortenerService.importWordsWithLength(importRequest.getNumberOfWords(), importRequest.getWordLength());
     }
 
 }
