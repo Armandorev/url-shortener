@@ -45,6 +45,7 @@ public class UriValidator {
 
     /**
      * Validates the protocol provided in @validProtocols. Normalises protocol, making HTtp, HTTPS, etc. valid.
+     *
      * @param uri
      * @return whether protocol is valid
      */

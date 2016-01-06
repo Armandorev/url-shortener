@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
-@JsonIgnoreProperties( { "last", "totalElements", "totalPages", "size", "number", "first", "sort", "numberOfElements" })
+@JsonIgnoreProperties({"last", "totalElements", "totalPages", "size", "number", "first", "sort", "numberOfElements"})
 public class DictionaryHashPage {
 
     private List<DictionaryHash> content;

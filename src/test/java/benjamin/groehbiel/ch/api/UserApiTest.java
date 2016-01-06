@@ -1,9 +1,10 @@
 package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.DataTest;
+import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
+import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,6 +35,13 @@ public class UserApiTest extends DataTest {
     @Autowired
     private WebApplicationContext wac;
 
+    @Autowired
+    protected DictionaryManager dictionaryManager;
+
+    @Autowired
+    protected RedisManager redisManager;
+
+
     @Value("${app.host}")
     private String host;
 
@@ -42,7 +51,7 @@ public class UserApiTest extends DataTest {
     private MockMvc mockMvc;
 
     @Before
-    public void initMockMvc() {
+    public void initMockMvc() throws IOException {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
@@ -53,13 +62,16 @@ public class UserApiTest extends DataTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>() {});
-        MatcherAssert.assertThat(shortenerStats.getRemainingCount(), equalTo(21L));
-        MatcherAssert.assertThat(shortenerStats.getShortenedCount(), equalTo(0L));
+        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>() {
+        });
+        assertThat(shortenerStats.getRemainingCount(), equalTo(21L));
+        assertThat(shortenerStats.getShortenedCount(), equalTo(0L));
     }
 
     @Test
     public void shouldAddShortenedURLWhenPostedTo() throws Exception {
+        assertThat(dictionaryManager.size(), equalTo(21L));
+
         ShortenerRequest request = new ShortenerRequest("https://run.pivotal.io/");
 
         byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(request);
@@ -71,8 +83,9 @@ public class UserApiTest extends DataTest {
                 .andReturn();
 
         String responseAsString = postResponse.getResponse().getContentAsString();
-        ShortenerResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenerResponse>() {});
-        MatcherAssert.assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
+        ShortenerResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenerResponse>() {
+        });
+        assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
     }
 
     @Test
@@ -89,7 +102,7 @@ public class UserApiTest extends DataTest {
 
         ShortenerException exception = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerException>() {
         });
-        MatcherAssert.assertThat(exception.getMessage(), equalTo("Could not parse your URL: unknown protocol: htp"));
+        assertThat(exception.getMessage(), equalTo("Could not parse your URL: unknown protocol: htp"));
     }
 
     public byte[] ojectToBytes(Object o) throws IOException {

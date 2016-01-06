@@ -22,7 +22,7 @@ public class WordNetHelperTest {
 
     @Test
     public void shouldReturnAListOfAllWordsLength8() throws IOException {
-        List<DictionaryHash> words = WordNetHelper.loadAllWordsMatching("WordNet", new Predicate<DictionaryHash>(){
+        List<DictionaryHash> words = WordNetHelper.loadAllWordsMatching("WordNet", new Predicate<DictionaryHash>() {
             @Override
             public boolean test(DictionaryHash dictionaryHash) {
                 String word = dictionaryHash.getHash();

@@ -1,25 +1,16 @@
 package benjamin.groehbiel.ch.api;
 
-import benjamin.groehbiel.ch.Application;
-import benjamin.groehbiel.ch.PersistenceInitializer;
+import benjamin.groehbiel.ch.DataTest;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
-import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
-import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -39,11 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
-public class AdminApiTest {
+public class AdminApiTest extends DataTest {
 
     private MockMvc mockMvc;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -54,22 +41,9 @@ public class AdminApiTest {
     @Autowired
     private WebApplicationContext wac;
 
-    @Autowired
-    private DictionaryManager dictionaryManager;
-
-    @Autowired
-    protected RedisManager redisManager;
-
     @Before
     public void setup() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        dictionaryManager.clear();
-    }
-
-    @After
-    public void flushTable() {
-        dictionaryManager.clear();
-        redisManager.clear();
     }
 
     @Test
@@ -87,6 +61,7 @@ public class AdminApiTest {
 
     @Test
     public void shouldReturnAllAvailableWords() throws Exception {
+        dictionaryManager.clear();
         shortenerService.populateDictionary(10);
 
         MvcResult mvcResult = mockMvc.perform(get("/api/admin/words")).andReturn();
@@ -98,6 +73,7 @@ public class AdminApiTest {
 
     @Test
     public void shouldReturnAllUnavailableWords() throws Exception {
+        dictionaryManager.clear();
         shortenerService.populateDictionary(10);
         addUrlToRepository("http://www.pivotal.io");
 
@@ -109,6 +85,7 @@ public class AdminApiTest {
 
     @Test
     public void shouldNotOverwriteTakenWordsWhenImportingNewWords() throws Exception {
+        dictionaryManager.clear();
         shortenerService.populateDictionary(10);
         addUrlToRepository("http://www.pivotal.io");
         shortenerService.populateDictionary(10);
@@ -124,7 +101,9 @@ public class AdminApiTest {
 
     @Test
     public void shouldRemoveAllUnusedWords() throws Exception {
+        dictionaryManager.clear();
         shortenerService.populateDictionary(10);
+
         shortenerService.shorten(new URI("http://www.google.com"));
 
         mockMvc.perform(post("/api/admin/words/remove_unused")).andReturn();
@@ -135,14 +114,16 @@ public class AdminApiTest {
 
     @Test
     public void shouldImportFreshWordsGivenAmountAndCriteria() throws Exception {
+        dictionaryManager.clear();
+
         AdminImportRequest importRequest = new AdminImportRequest();
         importRequest.setNumberOfWords(10);
         importRequest.setWordLength(6);
         byte[] postJson = OBJECT_MAPPER.writeValueAsBytes(importRequest);
 
         mockMvc.perform(
-                        post("/api/admin/words/import")
-                                .content(postJson).contentType(MediaType.APPLICATION_JSON_VALUE))
+                post("/api/admin/words/import")
+                        .content(postJson).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
 

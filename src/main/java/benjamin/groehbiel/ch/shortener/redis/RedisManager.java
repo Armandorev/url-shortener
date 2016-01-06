@@ -3,9 +3,8 @@ package benjamin.groehbiel.ch.shortener.redis;
 import benjamin.groehbiel.ch.JsonHelper;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,24 +16,29 @@ public class RedisManager {
     public static final String HASH_PREFIX = "hash:";
     public static final String COUNT_FIELD = "$count";
 
-    @Autowired
-    private StringRedisTemplate redis;
+    private Jedis jedis;
 
-    public void clear() {
-        redis.getConnectionFactory().getConnection().flushDb();
+    public RedisManager() {
+        jedis = new Jedis(System.getProperty("redis.host"), Integer.parseInt(System.getProperty("redis.port")));
+        jedis.connect();
     }
 
     public String getHashFor(String key) {
-        return redis.opsForValue().get(key);
+        try {
+            return jedis.get(key);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public void setUrlAndHash(String key, String value) {
-        redis.opsForValue().set(key, value);
+        jedis.set(key, value);
     }
 
     public ShortenerHandle getHandleFor(String hash) throws IOException {
         hash = hash.replace(HASH_PREFIX, "");
-        String json = redis.opsForValue().get(HASH_PREFIX + hash);
+        String json = jedis.get(HASH_PREFIX + hash);
         return JsonHelper.unserialize(json);
     }
 
@@ -46,7 +50,7 @@ public class RedisManager {
     }
 
     public void setHashAndHandle(String hash, ShortenerHandle value) throws JsonProcessingException {
-        redis.opsForValue().set(HASH_PREFIX + hash, JsonHelper.serialize(value));
+        jedis.set(HASH_PREFIX + hash, JsonHelper.serialize(value));
     }
 
     public Set<String> getHashes() {
@@ -54,11 +58,11 @@ public class RedisManager {
     }
 
     public Long incrementByOne(String key) {
-        return redis.opsForValue().increment(key, 1);
+        return jedis.incrBy(key, 1);
     }
 
     public Long getHashCount() {
-        String shortenedSoFar = redis.opsForValue().get(COUNT_FIELD);
+        String shortenedSoFar = jedis.get(COUNT_FIELD);
         if (shortenedSoFar == null) {
             return 0L;
         } else {
@@ -67,6 +71,14 @@ public class RedisManager {
     }
 
     private Set<String> getValuesFor(String regex) {
-        return redis.keys(regex);
+        return jedis.keys(regex);
+    }
+
+    public void clear() {
+        jedis.flushDB();
+    }
+
+    public void close() {
+        jedis.close();
     }
 }

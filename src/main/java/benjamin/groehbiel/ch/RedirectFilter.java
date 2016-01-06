@@ -21,7 +21,8 @@ public class RedirectFilter implements Filter {
     @Autowired
     ShortenerService shortenerService;
 
-    public RedirectFilter() {}
+    public RedirectFilter() {
+    }
 
     public RedirectFilter(ShortenerService shortenerService) {
         this.shortenerService = shortenerService;

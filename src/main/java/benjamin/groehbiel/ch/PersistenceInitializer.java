@@ -55,9 +55,9 @@ public class PersistenceInitializer implements ApplicationContextInitializer<Con
         String redisPassword = (String) redisService.getCredentials().get("password");
         Integer redisPort = (Integer) redisService.getCredentials().get("port");
 
-        System.setProperty("spring.redis.host", redisHost);
-        System.setProperty("spring.redis.password", redisPassword);
-        System.setProperty("spring.redis.port", redisPort.toString());
+        System.setProperty("redis.host", redisHost);
+        System.setProperty("redis.password", redisPassword);
+        System.setProperty("redis.port", redisPort.toString());
     }
 
 }

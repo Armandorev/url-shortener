@@ -1,6 +1,5 @@
 package benjamin.groehbiel.ch;
 
-import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
@@ -22,13 +21,13 @@ import java.io.IOException;
 public abstract class DataTest {
 
     @Autowired
-    private DictionaryManager dictionaryManager;
+    protected DictionaryManager dictionaryManager;
 
     @Autowired
-    private RedisManager redisManager;
+    protected RedisManager redisManager;
 
     @Before
-    public void setup() throws IOException {
+    public void setupData() throws IOException {
         dictionaryManager.clear();
         redisManager.clear();
 
@@ -39,6 +38,7 @@ public abstract class DataTest {
     public void flushTable() {
         dictionaryManager.clear();
         redisManager.clear();
+        redisManager.close();
     }
 
 }

@@ -2,29 +2,22 @@ package benjamin.groehbiel.ch.e2e;
 
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
-import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
 
@@ -32,7 +25,7 @@ import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
-@WebAppConfiguration
+//@WebAppConfiguration
 @IntegrationTest("server.port:0")
 public class ShortenerScreenTest extends FluentTest {
 

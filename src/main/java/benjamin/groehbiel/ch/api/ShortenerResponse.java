@@ -19,7 +19,8 @@ public class ShortenerResponse {
     private String hash;
     private String description;
 
-    public ShortenerResponse() {}
+    public ShortenerResponse() {
+    }
 
     public ShortenerResponse(URI original, URI shortened, String hash, String description) throws URISyntaxException {
         this.original = original;

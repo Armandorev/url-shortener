@@ -34,7 +34,8 @@ public class WordNetHelper {
                         String description = matcher.group(2);
                         String trimmedDescription = (description.length() > 250) ? description.substring(0, 246) + "..." : description;
 
-                        if ("".equals(word) || "".equals(trimmedDescription) || word == null || trimmedDescription == null) return null;
+                        if ("".equals(word) || "".equals(trimmedDescription) || word == null || trimmedDescription == null)
+                            return null;
                         return new DictionaryHash(word, "en", trimmedDescription, true);
                     } else {
                         return null;
@@ -79,7 +80,6 @@ public class WordNetHelper {
 
         return allWords;
     }
-
 
 
 }
