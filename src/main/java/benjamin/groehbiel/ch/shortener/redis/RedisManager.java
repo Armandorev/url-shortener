@@ -20,6 +20,9 @@ public class RedisManager {
 
     public RedisManager() {
         jedis = new Jedis(System.getProperty("redis.host"), Integer.parseInt(System.getProperty("redis.port")));
+        if (!System.getProperty("redis.password").isEmpty()) {
+            jedis.auth(System.getProperty("redis.password"));
+        }
         jedis.connect();
     }
 
