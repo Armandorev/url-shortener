@@ -1,6 +1,7 @@
 package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.DataTest;
+import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
@@ -128,6 +129,20 @@ public class AdminApiTest extends DataTest {
                 .andReturn();
 
         assertThat(shortenerService.getRemainingCount(), equalTo(7L));
+    }
+
+    @Test
+    public void shouldRemoveExistingShortenedUrlAndMakeAvailable() throws IOException, URISyntaxException {
+        ShortenerHandle handle = shortenerService.shorten(URI.create("http://www.example.com"));
+        String hashToDelete = handle.getHash();
+
+        assertThat(dictionaryManager.getWordsAvailableSize(), equalTo(20L));
+        assertThat(shortenerService.getShortenedCount(), equalTo(1L));
+
+        shortenerService.remove(hashToDelete);
+
+        assertThat(dictionaryManager.getWordsAvailableSize(), equalTo(21L));
+        assertThat(shortenerService.getShortenedCount(), equalTo(0L));
     }
 
     private List<DictionaryHash> mapResponseStringToDictionaryHashes(MvcResult mvcResult) throws IOException {

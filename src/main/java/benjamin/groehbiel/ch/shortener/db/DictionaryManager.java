@@ -61,22 +61,27 @@ public class DictionaryManager {
 
     public DictionaryHash nextHash() {
         DictionaryHash nextWord = repository.findFirst1ByAvailable(true);
-        reserveHash(nextWord);
-        return nextWord;
+        DictionaryHash reservedNextWord = reserveHash(nextWord);
+        return reservedNextWord;
     }
 
     public Long getWordsAvailableSize() {
         return repository.countByAvailable(true);
     }
 
-    private void reserveHash(DictionaryHash nextWord) {
+    private DictionaryHash reserveHash(DictionaryHash nextWord) {
         nextWord.setAvailable(false);
         repository.save(nextWord);
+        return nextWord;
     }
 
     public Iterable<DictionaryHash> getWords(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-
+    public void resetHash(String hashToDelete) {
+        DictionaryHash hashEntry = repository.findOne(hashToDelete);
+        hashEntry.setAvailable(true);
+        repository.save(hashEntry);
+    }
 }

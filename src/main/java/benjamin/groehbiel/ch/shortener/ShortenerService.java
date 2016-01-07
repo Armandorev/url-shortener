@@ -99,4 +99,9 @@ public class ShortenerService {
         redisManager.storeHash(shortenerHandle);
         return shortenerHandle;
     }
+
+    public void remove(String hashToDelete) throws IOException {
+        redisManager.removeHash(hashToDelete);
+        dictionaryManager.resetHash(hashToDelete);
+    }
 }

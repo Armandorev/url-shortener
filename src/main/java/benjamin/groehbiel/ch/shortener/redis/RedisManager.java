@@ -84,4 +84,13 @@ public class RedisManager {
     public void close() {
         jedis.close();
     }
+
+    public void removeHash(String hashToDelete) throws IOException {
+        ShortenerHandle hashHandle = getHandleFor(hashToDelete);
+        URI originalURI = hashHandle.getOriginalURI();
+
+        jedis.del(HASH_PREFIX + hashToDelete);
+        jedis.del(originalURI.toString());
+        jedis.decrBy(COUNT_FIELD, 1);
+    }
 }

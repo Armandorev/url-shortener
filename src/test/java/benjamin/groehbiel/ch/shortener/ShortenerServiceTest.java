@@ -34,7 +34,6 @@ public class ShortenerServiceTest extends DataTest {
         assertThat(shortenerHandle.getHash(), equalTo("unable"));
     }
 
-
     @Test
     public void shouldLookupUrlInRedisGivenAHash() throws URISyntaxException, IOException {
         redisManager.setUrlAndHash("$count", "0");
