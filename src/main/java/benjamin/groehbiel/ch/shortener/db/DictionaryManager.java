@@ -39,6 +39,11 @@ public class DictionaryManager {
         return savedHashes;
     }
 
+    public Iterable<DictionaryHash> clearAndFill(List<DictionaryHash> dictionaryHashes) {
+        repository.deleteAll();
+        return repository.save(dictionaryHashes);
+    }
+
     public Integer fill(Integer numberOfWords, List<DictionaryHash> words) {
         List<DictionaryHash> hashesToBeAdded = new ArrayList<>();
         for (DictionaryHash dictionaryHash : words) {
@@ -54,7 +59,7 @@ public class DictionaryManager {
         return hashesToBeAdded.size();
     }
 
-    public Iterable<DictionaryHash> fill(List<DictionaryHash> dictionaryHashes, Integer size) {
+    public Iterable<DictionaryHash> shuffleAndFill(List<DictionaryHash> dictionaryHashes, Integer size) {
         Collections.shuffle(dictionaryHashes);
         return fill(dictionaryHashes.subList(0, size));
     }

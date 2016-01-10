@@ -31,14 +31,13 @@ public abstract class DataTest {
         dictionaryManager.clear();
         redisManager.clear();
 
-        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
+        dictionaryManager.clearAndFill(WordNetHelper.loadDirectory("WordNet"));
     }
 
     @After
     public void flushTable() {
         dictionaryManager.clear();
         redisManager.clear();
-        redisManager.close();
     }
 
 }

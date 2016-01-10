@@ -79,4 +79,9 @@ public class AdminApi {
         return shortenerService.importWordsWithLength(importRequest.getNumberOfWords(), importRequest.getWordLength());
     }
 
+    @RequestMapping(value = "/words/remove", method = POST, produces = APPLICATION_JSON_VALUE)
+    public ShortenerHandle deleteHash(@RequestBody AdminDeleteRequest deleteRequest) throws IOException {
+        return shortenerService.remove(deleteRequest.getHash());
+    }
+
 }

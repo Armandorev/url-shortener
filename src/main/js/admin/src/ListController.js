@@ -9,6 +9,14 @@
             $scope.shortenedUrls = data;
         });
 
+        $scope.remove = function (hash) {
+            $http
+                .post('/api/admin/words/remove', {hash: hash})
+                .success(function (data) {
+                    console.log('Hash removed: ' + data);
+                });
+        };
+
     });
 
 }());

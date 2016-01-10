@@ -5,6 +5,8 @@ import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,18 +18,16 @@ public class RedisManager {
     public static final String HASH_PREFIX = "hash:";
     public static final String COUNT_FIELD = "$count";
 
-    private Jedis jedis;
+    private JedisPool pool;
 
     public RedisManager() {
-        jedis = new Jedis(System.getProperty("redis.host"), Integer.parseInt(System.getProperty("redis.port")));
-        if (!System.getProperty("redis.password").isEmpty()) {
-            jedis.auth(System.getProperty("redis.password"));
-        }
-        jedis.connect();
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(16);
+        pool = new JedisPool(jedisPoolConfig, System.getProperty("redis.host"), Integer.parseInt(System.getProperty("redis.port")));
     }
 
     public String getHashFor(String key) {
-        try {
+        try (Jedis jedis = pool.getResource()) {
             return jedis.get(key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -36,13 +36,19 @@ public class RedisManager {
     }
 
     public void setUrlAndHash(String key, String value) {
-        jedis.set(key, value);
+        try (Jedis jedis = pool.getResource()) {
+            jedis.set(key, value);
+        }
     }
 
     public ShortenerHandle getHandleFor(String hash) throws IOException {
         hash = hash.replace(HASH_PREFIX, "");
-        String json = jedis.get(HASH_PREFIX + hash);
-        return JsonHelper.unserialize(json);
+
+        try (Jedis jedis = pool.getResource()) {
+            String json = jedis.get(HASH_PREFIX + hash);
+            return JsonHelper.unserialize(json);
+        }
+
     }
 
     public void storeHash(ShortenerHandle shortenerHandle) throws JsonProcessingException {
@@ -53,7 +59,9 @@ public class RedisManager {
     }
 
     public void setHashAndHandle(String hash, ShortenerHandle value) throws JsonProcessingException {
-        jedis.set(HASH_PREFIX + hash, JsonHelper.serialize(value));
+        try (Jedis jedis = pool.getResource()) {
+            jedis.set(HASH_PREFIX + hash, JsonHelper.serialize(value));
+        }
     }
 
     public Set<String> getHashes() {
@@ -61,36 +69,47 @@ public class RedisManager {
     }
 
     public Long incrementByOne(String key) {
-        return jedis.incrBy(key, 1);
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.incrBy(key, 1);
+        }
     }
 
     public Long getHashCount() {
-        String shortenedSoFar = jedis.get(COUNT_FIELD);
-        if (shortenedSoFar == null) {
-            return 0L;
-        } else {
-            return Long.parseLong(shortenedSoFar);
+        try (Jedis jedis = pool.getResource()) {
+            String shortenedSoFar = jedis.get(COUNT_FIELD);
+
+            if (shortenedSoFar == null) {
+                return 0L;
+            } else {
+                return Long.parseLong(shortenedSoFar);
+            }
         }
     }
 
     private Set<String> getValuesFor(String regex) {
-        return jedis.keys(regex);
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.keys(regex);
+        }
     }
 
     public void clear() {
-        jedis.flushDB();
+        try (Jedis jedis = pool.getResource()) {
+            jedis.flushAll();
+        }
     }
 
     public void close() {
-        jedis.close();
+        pool.destroy();
     }
 
     public void removeHash(String hashToDelete) throws IOException {
         ShortenerHandle hashHandle = getHandleFor(hashToDelete);
         URI originalURI = hashHandle.getOriginalURI();
 
-        jedis.del(HASH_PREFIX + hashToDelete);
-        jedis.del(originalURI.toString());
-        jedis.decrBy(COUNT_FIELD, 1);
+        try (Jedis jedis = pool.getResource()) {
+            jedis.del(HASH_PREFIX + hashToDelete);
+            jedis.del(originalURI.toString());
+            jedis.decrBy(COUNT_FIELD, 1);
+        }
     }
 }

@@ -56,14 +56,17 @@
             <h2>Shortened URLs</h2>
 
             <ul>
-                <li ng-repeat="url in shortenedUrls"><a href="{{url.original}}">{{url.hash}}</a></li>
+                <li ng-repeat="url in shortenedUrls">
+                    <a href="{{url.original}}">{{url.hash}}</a>
+                    <a href="" ng-click="remove(url.hash)">Remove</a>
+                </li>
             </ul>
         </div>
 
         <div ng-controller="ResetController">
             <h2>Reset all data</h2>
 
-            <button ng-click="resetAll()">Clear all hash</button>
+            <button ng-click="resetAll()">Clear all hashes</button>
             <button ng-click="resetUnused()">Remove unused hashes</button>
         </div>
 

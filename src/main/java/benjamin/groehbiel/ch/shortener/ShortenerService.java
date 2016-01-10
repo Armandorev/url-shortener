@@ -72,7 +72,7 @@ public class ShortenerService {
     }
 
     public void populateDictionary(int count) throws IOException {
-        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"), count);
+        dictionaryManager.shuffleAndFill(WordNetHelper.loadDirectory("WordNet"), count);
     }
 
     //TODO to be moved and improved, hack.
@@ -100,8 +100,10 @@ public class ShortenerService {
         return shortenerHandle;
     }
 
-    public void remove(String hashToDelete) throws IOException {
+    public ShortenerHandle remove(String hashToDelete) throws IOException {
+        ShortenerHandle hashHandle = redisManager.getHandleFor(hashToDelete);
         redisManager.removeHash(hashToDelete);
         dictionaryManager.resetHash(hashToDelete);
+        return hashHandle;
     }
 }

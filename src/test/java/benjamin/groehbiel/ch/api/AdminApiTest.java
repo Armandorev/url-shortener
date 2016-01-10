@@ -132,16 +132,17 @@ public class AdminApiTest extends DataTest {
     }
 
     @Test
-    public void shouldRemoveExistingShortenedUrlAndMakeAvailable() throws IOException, URISyntaxException {
-        ShortenerHandle handle = shortenerService.shorten(URI.create("http://www.example.com"));
-        String hashToDelete = handle.getHash();
+    public void shouldRemoveExistingHash() throws Exception {
+        ShortenerHandle handle = shortenerService.shorten(URI.create("http://www.test.com"));
 
-        assertThat(dictionaryManager.getWordsAvailableSize(), equalTo(20L));
-        assertThat(shortenerService.getShortenedCount(), equalTo(1L));
+        AdminDeleteRequest deleteRequest = new AdminDeleteRequest();
+        deleteRequest.setHash(handle.getHash());
+        byte[] postJson = OBJECT_MAPPER.writeValueAsBytes(deleteRequest);
 
-        shortenerService.remove(hashToDelete);
+        mockMvc.perform(
+                post("/api/admin/words/remove").content(postJson).contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
 
-        assertThat(dictionaryManager.getWordsAvailableSize(), equalTo(21L));
         assertThat(shortenerService.getShortenedCount(), equalTo(0L));
     }
 

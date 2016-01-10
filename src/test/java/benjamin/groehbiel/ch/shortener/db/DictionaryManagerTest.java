@@ -26,7 +26,7 @@ public class DictionaryManagerTest {
     DictionaryManager dictionaryManager;
 
     @Before
-    public void setup() {
+    public void removeAllData() {
         dictionaryManager.clear();
     }
 
@@ -71,7 +71,7 @@ public class DictionaryManagerTest {
     }
 
     private void populateTable() throws IOException {
-        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
+        dictionaryManager.clearAndFill(WordNetHelper.loadDirectory("WordNet"));
     }
 
 }

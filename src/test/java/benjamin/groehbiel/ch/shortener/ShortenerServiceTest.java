@@ -3,6 +3,7 @@ package benjamin.groehbiel.ch.shortener;
 import benjamin.groehbiel.ch.DataTest;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.core.IsEqual;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,10 @@ import java.net.URISyntaxException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@Ignore
 public class ShortenerServiceTest extends DataTest {
 
     @Autowired
     private ShortenerService shortenerService;
-
-    @Autowired
-    private RedisManager redisManager;
 
     @Test
     public void shouldReturnARealWordAsHashInShortenedUrl() throws URISyntaxException, IOException {
@@ -60,4 +57,19 @@ public class ShortenerServiceTest extends DataTest {
         assertThat(shortenerService.getShortenedCount(), equalTo(0L));
     }
 
+    @Test
+    public void shouldRemoveExistingShortenedUrlAndMakeAvailable() throws IOException, URISyntaxException {
+
+
+        ShortenerHandle handle = shortenerService.shorten(URI.create("http://www.example.com"));
+        String hashToDelete = handle.getHash();
+
+        assertThat(dictionaryManager.getWordsAvailableSize(), IsEqual.equalTo(20L));
+        assertThat(shortenerService.getShortenedCount(), IsEqual.equalTo(1L));
+
+        shortenerService.remove(hashToDelete);
+
+        assertThat(dictionaryManager.getWordsAvailableSize(), IsEqual.equalTo(21L));
+        assertThat(shortenerService.getShortenedCount(), IsEqual.equalTo(0L));
+    }
 }
