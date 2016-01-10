@@ -23,7 +23,12 @@ public class RedisManager {
     public RedisManager() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(16);
-        pool = new JedisPool(jedisPoolConfig, System.getProperty("redis.host"), Integer.parseInt(System.getProperty("redis.port")));
+
+        if (System.getProperty("redis.password").isEmpty()) {
+            pool = createJedisPoolForTestEnv(jedisPoolConfig);
+        } else {
+            pool = createJedisPoolForProdEnv(jedisPoolConfig);
+        }
     }
 
     public String getHashFor(String key) {
@@ -98,10 +103,6 @@ public class RedisManager {
         }
     }
 
-    public void close() {
-        pool.destroy();
-    }
-
     public void removeHash(String hashToDelete) throws IOException {
         ShortenerHandle hashHandle = getHandleFor(hashToDelete);
         URI originalURI = hashHandle.getOriginalURI();
@@ -112,4 +113,13 @@ public class RedisManager {
             jedis.decrBy(COUNT_FIELD, 1);
         }
     }
+
+    private JedisPool createJedisPoolForProdEnv(JedisPoolConfig jedisPoolConfig) {
+        return new JedisPool(jedisPoolConfig, System.getProperty("redis.host"), Integer.parseInt(System.getProperty("redis.port")), 2000, System.getProperty("redis.password"));
+    }
+
+    private JedisPool createJedisPoolForTestEnv(JedisPoolConfig jedisPoolConfig) {
+        return new JedisPool(jedisPoolConfig, System.getProperty("redis.host"), Integer.parseInt(System.getProperty("redis.port")));
+    }
+
 }
