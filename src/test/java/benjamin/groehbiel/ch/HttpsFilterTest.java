@@ -1,6 +1,7 @@
 package benjamin.groehbiel.ch;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
+@Ignore
 public class HttpsFilterTest {
 
     @Value("${local.server.port}")

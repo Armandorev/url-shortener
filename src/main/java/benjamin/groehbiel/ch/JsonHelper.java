@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+// TODO: replace OBJECT_MAPPER instances and use this instead
 public class JsonHelper {
 
     public static ObjectMapper OBJECT_MAPPER = new ObjectMapper();

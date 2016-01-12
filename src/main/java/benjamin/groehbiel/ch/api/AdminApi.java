@@ -41,6 +41,8 @@ public class AdminApi {
         return null;
     }
 
+    // TODO: This does not scale, paging of shortened urls will be necessary to make scalable.
+    // Redis does not support paging out of the box and needs to be implemented by hand.
     @RequestMapping(value = "/shortened_urls", method = GET, produces = APPLICATION_JSON_VALUE)
     public List<ShortenerResponse> listShortenedUrls() throws IOException {
         Map<URI, ShortenerHandle> allShortenedURLs = shortenerService.getAllUrls();
