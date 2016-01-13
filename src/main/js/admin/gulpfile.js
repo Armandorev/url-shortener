@@ -33,15 +33,15 @@ gulp.task('index.html', function () {
 });
 
 /********************** TEST */
-//gulp.task('test', function (done) {
-//  karma.start({
-//    configFile: __dirname + '/karma.conf.js'
-//  }, done);
-//});
-//
-//gulp.task('test-once', function (done) {
-//  karma.start({
-//    configFile: __dirname + '/karma.conf.js',
-//    singleRun: true
-//  }, done);
-//});
+gulp.task('test', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js'
+  }, done);
+});
+
+gulp.task('test-once', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done);
+});
