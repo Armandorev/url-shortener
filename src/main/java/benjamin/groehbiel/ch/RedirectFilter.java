@@ -46,7 +46,8 @@ public class RedirectFilter implements Filter {
                 ShortenerHandle shortenerHandle = shortenerService.expand(hash);
                 httpResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 httpResponse.setHeader("Location", shortenerHandle.getOriginalURI().toString());
-            } catch (URISyntaxException e) {
+            } catch (Exception ex) {
+                httpResponse.sendRedirect("404.html?hash=" + hash);
                 httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }

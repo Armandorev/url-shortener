@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
@@ -75,6 +77,17 @@ public class RedirectFilterTest {
 
         Mockito.verify(filterChain, times(0))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
+    }
+
+    @Test
+    public void shouldRedirectTo404IfHashNotExistent() throws IOException, ServletException {
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/wave");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        redirectFilter.doFilter(request, response, filterChain);
+
+        assertThat(response.getRedirectedUrl(), equalTo("404.html?hash=wave"));
+        //TODO: enforce 404 error code instead of 302
     }
 
 }
