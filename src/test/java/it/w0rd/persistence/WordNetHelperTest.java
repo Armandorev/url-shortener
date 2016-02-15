@@ -16,7 +16,7 @@ public class WordNetHelperTest {
 
     @Test
     public void shouldReturnAListOfAllWordDefinitions() throws Exception {
-        List<DictionaryHash> words = WordNetHelper.loadDirectory("WordNet");
+        List<DictionaryHash> words = WordNetHelper.loadDirectoryForTests("WordNet");
         MatcherAssert.assertThat(words, hasSize(21));
     }
 

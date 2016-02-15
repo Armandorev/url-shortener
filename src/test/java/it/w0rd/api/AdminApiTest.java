@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.w0rd.DataTest;
 import it.w0rd.api.requests.AdminDeleteRequest;
 import it.w0rd.api.requests.AdminImportRequest;
-import it.w0rd.persistence.WordNetHelper;
 import it.w0rd.persistence.db.DictionaryHash;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -26,6 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -49,64 +49,46 @@ public class AdminApiTest extends DataTest {
 
     @Test
     public void shouldReturnAllShortenedUrls() throws Exception {
-        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
+        shortenUrl("http://www.pivotal.io");
+        shortenUrl("http://www.pivotallabs.com");
 
-        addUrlToRepository("http://www.pivotal.io");
-        addUrlToRepository("http://www.pivotallabs.com");
-
-        MvcResult mvcResult = getMvcResultForSuccessfulGet("/api/admin/shortened_urls");
-        List<ShortenerResponse> responses = mapResponseStringToShortenerResponses(mvcResult);
+        List<ShortenerResponse> responses = performGetAndUnserialize("/api/admin/shortened_urls");
 
         assertThat(responses, hasSize(2));
     }
 
     @Test
     public void shouldReturnAllAvailableWords() throws Exception {
-        dictionaryManager.clear();
-        shortenerService.populateDictionary(10);
+        List<DictionaryHash> dictionaryHashes = mapToDictionaryHashes(mockMvc.perform(get("/api/admin/words")).andReturn());
 
-        MvcResult mvcResult = mockMvc.perform(get("/api/admin/words")).andReturn();
-        List<DictionaryHash> dictionaryHashes = mapResponseStringToDictionaryHashes(mvcResult);
-
-        assertThat(dictionaryHashes.size(), equalTo(10));
+        assertThat(dictionaryHashes.size(), equalTo(20));
         assertThat(dictionaryHashes, Matchers.<DictionaryHash>everyItem(hasProperty("available", equalTo(true))));
     }
 
     @Test
     public void shouldReturnAllUnavailableWords() throws Exception {
-        dictionaryManager.clear();
-        shortenerService.populateDictionary(10);
-        addUrlToRepository("http://www.pivotal.io");
-
-        MvcResult mvcResult = mockMvc.perform(get("/api/admin/words")).andReturn();
-        List<DictionaryHash> dictionaryHashes = mapResponseStringToDictionaryHashes(mvcResult);
+        shortenUrl("http://www.pivotal.io");
+        List<DictionaryHash> dictionaryHashes = mapToDictionaryHashes(mockMvc.perform(get("/api/admin/words")).andReturn());
 
         assertThat(dictionaryHashes, Matchers.<DictionaryHash>hasItem(hasProperty("available", equalTo(false))));
     }
 
     @Test
     public void shouldNotOverwriteTakenWordsWhenImportingNewWords() throws Exception {
-        dictionaryManager.clear();
-        shortenerService.populateDictionary(10);
-        addUrlToRepository("http://www.pivotal.io");
+        shortenUrl("http://www.pivotal.io");
         shortenerService.populateDictionary(10);
         shortenerService.populateDictionary(10);
         shortenerService.populateDictionary(10);
         shortenerService.populateDictionary(10);
 
-        MvcResult mvcResult = mockMvc.perform(get("/api/admin/words?size=50")).andReturn();
-        List<DictionaryHash> dictionaryHashes = mapResponseStringToDictionaryHashes(mvcResult);
+        List<DictionaryHash> dictionaryHashes = mapToDictionaryHashes(mockMvc.perform(get("/api/admin/words?size=50")).andReturn());
 
         assertThat(dictionaryHashes, Matchers.<DictionaryHash>hasItem(hasProperty("available", equalTo(false))));
     }
 
     @Test
     public void shouldRemoveAllUnusedWords() throws Exception {
-        dictionaryManager.clear();
-        shortenerService.populateDictionary(10);
-
-        shortenerService.shorten(new URI("http://www.google.com"));
-
+        shortenUrl("http://www.pivotal.io");
         mockMvc.perform(post("/api/admin/words/remove_unused")).andReturn();
 
         assertThat(shortenerService.getRemainingCount(), equalTo(0L));
@@ -133,42 +115,41 @@ public class AdminApiTest extends DataTest {
 
     @Test
     public void shouldRemoveExistingHash() throws Exception {
-        ShortenerHandle handle = shortenerService.shorten(URI.create("http://www.test.com"));
+        ShortenerHandle handle = shortenUrl("http://www.test.com");
+        AdminDeleteRequest deleteRequest = new AdminDeleteRequest(handle.getHash());
 
-        AdminDeleteRequest deleteRequest = new AdminDeleteRequest();
-        deleteRequest.setHash(handle.getHash());
         byte[] postJson = OBJECT_MAPPER.writeValueAsBytes(deleteRequest);
 
-        mockMvc.perform(
-                post("/api/admin/words/remove").content(postJson).contentType(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(post("/api/admin/words/remove").content(postJson).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
 
         assertThat(shortenerService.getShortenedCount(), equalTo(0L));
     }
 
-    private List<DictionaryHash> mapResponseStringToDictionaryHashes(MvcResult mvcResult) throws IOException {
+    private List<ShortenerResponse> performGetAndUnserialize(String path) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get(path).contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        return mapToShortenerResponses(mvcResult);
+    }
+
+    private List<DictionaryHash> mapToDictionaryHashes(MvcResult mvcResult) throws IOException {
         String bodyContent = mvcResult.getResponse().getContentAsString();
         DictionaryHashPage o = OBJECT_MAPPER.readValue(bodyContent, new TypeReference<DictionaryHashPage>() {
         });
         return o.getContent();
     }
 
-    private List<ShortenerResponse> mapResponseStringToShortenerResponses(MvcResult mvcResult) throws IOException {
+    private List<ShortenerResponse> mapToShortenerResponses(MvcResult mvcResult) throws IOException {
         String bodyString = mvcResult.getResponse().getContentAsString();
         return OBJECT_MAPPER.readValue(bodyString, new TypeReference<List<ShortenerResponse>>() {
         });
     }
 
-    private MvcResult getMvcResultForSuccessfulGet(String path) throws Exception {
-        return mockMvc.perform(get(path).contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-    }
-
-    private void addUrlToRepository(String url) throws URISyntaxException, IOException {
-        URI urlPivotal = new URI(url);
-        shortenerService.shorten(urlPivotal);
+    private ShortenerHandle shortenUrl(String url) throws URISyntaxException, IOException {
+        return shortenerService.shorten(new URI(url));
     }
 
 }

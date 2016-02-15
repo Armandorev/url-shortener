@@ -41,7 +41,7 @@ public class ShortenerScreenTest extends FluentTest {
 
     @Before
     public void setup() throws IOException {
-        dictionaryManager.fill(WordNetHelper.loadDirectory("WordNet"));
+        dictionaryManager.fill(WordNetHelper.loadDirectoryForTests("WordNet"));
     }
 
     @After

@@ -29,10 +29,8 @@ public abstract class DataTest {
 
     @Before
     public void setupData() throws IOException {
-        dictionaryManager.clear();
-        redisManager.clear();
-
-        dictionaryManager.clearAndFill(WordNetHelper.loadDirectory("WordNet"));
+        flushTable();
+        dictionaryManager.clearAndFill(WordNetHelper.loadDirectoryForTests("WordNet"));
     }
 
     @After

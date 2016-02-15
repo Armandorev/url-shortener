@@ -71,7 +71,7 @@ public class DictionaryManagerTest {
     }
 
     private void populateTable() throws IOException {
-        dictionaryManager.clearAndFill(WordNetHelper.loadDirectory("WordNet"));
+        dictionaryManager.clearAndFill(WordNetHelper.loadDirectoryForTests("WordNet"));
     }
 
 }

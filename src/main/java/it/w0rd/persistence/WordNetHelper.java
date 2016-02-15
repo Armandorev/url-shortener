@@ -47,19 +47,6 @@ public class WordNetHelper {
         return words;
     }
 
-    public static List<DictionaryHash> loadDirectory(String wordNetDirectory) throws IOException {
-        File[] wordNetFiles = getFilesInDirectory(wordNetDirectory);
-
-        List<DictionaryHash> allWords = new ArrayList<>();
-        for (int i = 0; i < wordNetFiles.length; ++i) {
-            List<DictionaryHash> wordsInDocument = parseFile(wordNetFiles[i].toString());
-            allWords.addAll(wordsInDocument);
-        }
-
-        int cap = allWords.size() > 15000 ? 15000 : allWords.size();
-        return allWords.subList(0, cap);
-    }
-
     private static File[] getFilesInDirectory(String wordNetDirectory) {
         URL resource = WordNetHelper.class.getClassLoader().getResource(wordNetDirectory);
         return new File(resource.getPath()).listFiles();
@@ -81,5 +68,17 @@ public class WordNetHelper {
         return allWords;
     }
 
+    public static List<DictionaryHash> loadDirectoryForTests(String wordNetDirectory) throws IOException {
+        File[] wordNetFiles = getFilesInDirectory(wordNetDirectory);
+
+        List<DictionaryHash> allWords = new ArrayList<>();
+        for (int i = 0; i < wordNetFiles.length; ++i) {
+            List<DictionaryHash> wordsInDocument = parseFile(wordNetFiles[i].toString());
+            allWords.addAll(wordsInDocument);
+        }
+
+        int cap = allWords.size() > 15000 ? 15000 : allWords.size();
+        return allWords.subList(0, cap);
+    }
 
 }
