@@ -42,16 +42,26 @@ The application is parametrised with environment variables. direnv can be used, 
 **Start redis**: ``redis-server``
 
 ### Postgres
-**Start postgres**: ``pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start``
 
-**Stop postgres**: ``pg_ctl -D /usr/local/var/postgres stop -s -m fast``
+**Install and initialise postgres** and the user:
+
+    brew install postgresql
+    initdb /usr/local/var/$version -E utf8
+    createdb
+    createuser postgres
+
+**Start postgres**: ``pg_ctl -D /usr/local/var/$version -l /usr/local/var/postgres/server.log start``
+
+**Stop postgres**: ``pg_ctl -D /usr/local/var/$version stop -s -m fast``
+
+Depending on the version of postgres you installed, the directory name for it will be slightly different. Therefore, replace $version with the directory name that was installed.
 
 An easy way of creating the database is by running psql from the project root directory:
 
     psql -f prepare-db.sql
    
-You need a user *postgres* with an empty string password. 
-pgadmin is a handy tool to manage the database, once the database has been created.
+In order to run this, you need a user *postgres* with an *empty string* password.
+Note: pgadmin is a handy tool to manage the database, once the database has been created.
 
 ## Build, test, run
 
