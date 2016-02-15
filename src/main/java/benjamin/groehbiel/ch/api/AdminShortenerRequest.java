@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener.admin;
+package benjamin.groehbiel.ch.api;
 
 import java.io.Serializable;
 

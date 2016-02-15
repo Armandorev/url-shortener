@@ -2,7 +2,6 @@ package benjamin.groehbiel.ch.api;
 
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
-import benjamin.groehbiel.ch.shortener.admin.AdminShortenerRequest;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import com.fasterxml.jackson.core.JsonProcessingException;

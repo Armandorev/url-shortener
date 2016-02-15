@@ -1,6 +1,6 @@
 package benjamin.groehbiel.ch.shortener;
 
-import benjamin.groehbiel.ch.shortener.admin.AdminShortenerRequest;
+import benjamin.groehbiel.ch.api.AdminShortenerRequest;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
