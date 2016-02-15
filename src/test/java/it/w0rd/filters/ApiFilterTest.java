@@ -20,16 +20,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
-public class RedirectFilterTest {
+public class ApiFilterTest {
 
     ShortenerService shortenerService;
-    RedirectFilter redirectFilter;
+    ApiFilter apiFilter;
     FilterChain filterChain;
 
     @Before
     public void setUp() throws IOException, ServletException {
         shortenerService = mock(ShortenerService.class);
-        redirectFilter = new RedirectFilter(shortenerService);
+        apiFilter = new ApiFilter(shortenerService);
         filterChain = mock(FilterChain.class);
     }
 
@@ -38,7 +38,7 @@ public class RedirectFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/all");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        redirectFilter.doFilter(request, response, filterChain);
+        apiFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -49,7 +49,7 @@ public class RedirectFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        redirectFilter.doFilter(request, response, filterChain);
+        apiFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -60,7 +60,7 @@ public class RedirectFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/static/admin/index.html");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        redirectFilter.doFilter(request, response, filterChain);
+        apiFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -73,7 +73,7 @@ public class RedirectFilterTest {
 
         Mockito.when(shortenerService.expand("wave")).thenReturn(new ShortenerHandle(new URI("http://www.test.com"), "wave", "Description"));
 
-        redirectFilter.doFilter(request, response, filterChain);
+        apiFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(0))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -84,7 +84,7 @@ public class RedirectFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/wave");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        redirectFilter.doFilter(request, response, filterChain);
+        apiFilter.doFilter(request, response, filterChain);
 
         assertThat(response.getRedirectedUrl(), equalTo("404.html?hash=wave"));
         //TODO: enforce 404 error code instead of 302

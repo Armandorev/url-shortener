@@ -5,7 +5,7 @@ public class AdminImportRequest {
     private Integer numberOfWords;
     private Integer wordLength;
 
-    protected AdminImportRequest() {
+    public AdminImportRequest() {
     }
 
     public Integer getNumberOfWords() {
