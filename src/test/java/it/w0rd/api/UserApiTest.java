@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -35,20 +36,7 @@ public class UserApiTest extends DataTest {
 
     @Autowired
     private WebApplicationContext wac;
-
-    @Autowired
-    protected DictionaryManager dictionaryManager;
-
-    @Autowired
-    protected RedisManager redisManager;
-
-
-    @Value("${app.host}")
-    private String host;
-
-    @Value("${app.protocol}")
-    private String protocol;
-
+    
     private MockMvc mockMvc;
 
     @Before
@@ -65,17 +53,14 @@ public class UserApiTest extends DataTest {
 
         ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>() {
         });
+
         assertThat(shortenerStats.getRemainingCount(), equalTo(21L));
         assertThat(shortenerStats.getShortenedCount(), equalTo(0L));
     }
 
     @Test
     public void shouldAddShortenedURLWhenPostedTo() throws Exception {
-        assertThat(dictionaryManager.size(), equalTo(21L));
-
-        ShortenerRequest request = new ShortenerRequest("https://run.pivotal.io/");
-
-        byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(request);
+        byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(new ShortenerRequest("https://run.pivotal.io/"));
 
         MvcResult postResponse = mockMvc.perform(post("/api/shorten")
                 .content(requestJson).contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -86,27 +71,23 @@ public class UserApiTest extends DataTest {
         String responseAsString = postResponse.getResponse().getContentAsString();
         ShortenerResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenerResponse>() {
         });
-        assertThat(response.getOriginal().toString(), equalTo(request.getUrl()));
+
+        assertThat(response.getOriginal().toString(), equalTo(new ShortenerRequest("https://run.pivotal.io/").getUrl()));
     }
 
-    @Test
-    @Ignore
+    @Test(expected = MalformedURLException.class)
     public void shouldGetErrorMessageWhenSubmittingAnInvalidURL() throws Exception {
         ShortenerRequest request = new ShortenerRequest("htp://invalid.url");
 
         byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(request);
 
-        MvcResult postResponse = mockMvc.perform(post("/api/shorten").content(requestJson).contentType(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(post("/api/shorten").content(requestJson).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().is(400))
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
-
-        ShortenerException exception = OBJECT_MAPPER.readValue(postResponse.getResponse().getContentAsString(), new TypeReference<ShortenerException>() {
-        });
-        assertThat(exception.getMessage(), equalTo("Could not parse your URL: unknown protocol: htp"));
     }
 
-    public byte[] ojectToBytes(Object o) throws IOException {
+    public byte[] objectToBytes(Object o) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out;
         out = new ObjectOutputStream(bos);
