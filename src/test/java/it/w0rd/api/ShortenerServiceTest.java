@@ -1,8 +1,6 @@
 package it.w0rd.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import it.w0rd.DataTest;
-import it.w0rd.persistence.redis.RedisManager;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
@@ -24,15 +22,6 @@ public class ShortenerServiceTest extends DataTest {
     public void shouldShortenUrl() throws URISyntaxException, IOException {
         ShortenerHandle shortenerHandle = shortenUrl("http://www.example.org");
         assertThat(shortenerHandle.getHash(), equalTo("able"));
-    }
-
-    @Test
-    public void shouldLookupHash() throws URISyntaxException, IOException {
-        String value = new ObjectMapper().writeValueAsString(new ShortenerHandle());
-        redisManager.setUrlAndHash(RedisManager.HASH_PREFIX + "water", value);
-
-        ShortenerHandle shortenerHandle = shortenerService.expand("water");
-        assertThat(shortenerHandle, equalTo(new ShortenerHandle()));
     }
 
     @Test

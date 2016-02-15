@@ -39,12 +39,6 @@ public class RedisManager {
         }
     }
 
-    public void setUrlAndHash(String key, String value) {
-        try (Jedis jedis = pool.getResource()) {
-            jedis.set(key, value);
-        }
-    }
-
     public ShortenerHandle getHandleFor(String hash) throws IOException {
         hash = hash.replace(HASH_PREFIX, "");
 
@@ -52,30 +46,20 @@ public class RedisManager {
             String json = jedis.get(HASH_PREFIX + hash);
             return JsonHelper.unserialize(json);
         }
-
     }
 
     public void storeHash(ShortenerHandle shortenerHandle) throws JsonProcessingException {
         URI url = shortenerHandle.getOriginalURI();
-        setHashAndHandle(shortenerHandle.getHash(), shortenerHandle);
-        setUrlAndHash(url.toString(), shortenerHandle.getHash());
-        incrementByOne(COUNT_FIELD);
-    }
 
-    public void setHashAndHandle(String hash, ShortenerHandle value) throws JsonProcessingException {
         try (Jedis jedis = pool.getResource()) {
-            jedis.set(HASH_PREFIX + hash, JsonHelper.serialize(value));
+            jedis.set(HASH_PREFIX + shortenerHandle.getHash(), JsonHelper.serialize(shortenerHandle));
+            jedis.set(url.toString(), shortenerHandle.getHash());
+            jedis.incrBy(COUNT_FIELD, 1);
         }
     }
 
     public Set<String> getHashes() {
         return getValuesFor(HASH_PREFIX + "*");
-    }
-
-    public Long incrementByOne(String key) {
-        try (Jedis jedis = pool.getResource()) {
-            return jedis.incrBy(key, 1);
-        }
     }
 
     public Long getHashCount() {
@@ -87,12 +71,6 @@ public class RedisManager {
             } else {
                 return Long.parseLong(shortenedSoFar);
             }
-        }
-    }
-
-    private Set<String> getValuesFor(String regex) {
-        try (Jedis jedis = pool.getResource()) {
-            return jedis.keys(regex);
         }
     }
 
@@ -110,6 +88,12 @@ public class RedisManager {
             jedis.del(HASH_PREFIX + hashToDelete);
             jedis.del(originalURI.toString());
             jedis.decrBy(COUNT_FIELD, 1);
+        }
+    }
+
+    private Set<String> getValuesFor(String regex) {
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.keys(regex);
         }
     }
 
