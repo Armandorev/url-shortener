@@ -4,7 +4,7 @@ import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
-import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
+import benjamin.groehbiel.ch.shortener.WordNetHelper;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;

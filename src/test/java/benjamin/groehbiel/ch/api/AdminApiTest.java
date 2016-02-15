@@ -4,7 +4,7 @@ import benjamin.groehbiel.ch.DataTest;
 import benjamin.groehbiel.ch.shortener.ShortenerHandle;
 import benjamin.groehbiel.ch.shortener.ShortenerService;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
-import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
+import benjamin.groehbiel.ch.shortener.WordNetHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;

@@ -4,7 +4,6 @@ import benjamin.groehbiel.ch.api.AdminShortenerRequest;
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
-import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

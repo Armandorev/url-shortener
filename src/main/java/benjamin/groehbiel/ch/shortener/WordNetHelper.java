@@ -1,4 +1,4 @@
-package benjamin.groehbiel.ch.shortener.wordnet;
+package benjamin.groehbiel.ch.shortener;
 
 import benjamin.groehbiel.ch.shortener.db.DictionaryHash;
 

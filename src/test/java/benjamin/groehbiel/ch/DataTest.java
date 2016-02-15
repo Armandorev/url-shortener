@@ -2,7 +2,7 @@ package benjamin.groehbiel.ch;
 
 import benjamin.groehbiel.ch.shortener.db.DictionaryManager;
 import benjamin.groehbiel.ch.shortener.redis.RedisManager;
-import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
+import benjamin.groehbiel.ch.shortener.WordNetHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;

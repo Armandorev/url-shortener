@@ -2,7 +2,7 @@ package benjamin.groehbiel.ch.shortener.db;
 
 import benjamin.groehbiel.ch.Application;
 import benjamin.groehbiel.ch.PersistenceInitializer;
-import benjamin.groehbiel.ch.shortener.wordnet.WordNetHelper;
+import benjamin.groehbiel.ch.shortener.WordNetHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
