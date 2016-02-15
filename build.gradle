@@ -45,7 +45,7 @@ task wrapper(type: Wrapper) {
 }
 
 test {
-    exclude 'benjamin/groehbiel/ch/e2e/**'
+    exclude 'it/w0rd/e2e/**'
 }
 
 task buildJS(type: Exec) {
@@ -69,7 +69,7 @@ task buildAdmin(type: Exec) {
 }
 
 task e2e(type: Test) {
-    include 'benjamin/groehbiel/ch/e2e/**'
+    include 'it/w0rd/e2e/**'
     reports.html.destination = file('build/reports/e2e')
 }
 
