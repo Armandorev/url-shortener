@@ -1,4 +1,4 @@
-package it.w0rd.persistence;
+package it.w0rd.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

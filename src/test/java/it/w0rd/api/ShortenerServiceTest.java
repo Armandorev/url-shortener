@@ -1,8 +1,8 @@
-package it.w0rd.persistence;
+package it.w0rd.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.w0rd.DataTest;
 import it.w0rd.persistence.redis.RedisManager;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
@@ -59,8 +59,6 @@ public class ShortenerServiceTest extends DataTest {
 
     @Test
     public void shouldRemoveExistingShortenedUrlAndMakeAvailable() throws IOException, URISyntaxException {
-
-
         ShortenerHandle handle = shortenerService.shorten(URI.create("http://www.example.com"));
         String hashToDelete = handle.getHash();
 

@@ -1,8 +1,9 @@
 package it.w0rd;
 
+import it.w0rd.persistence.PersistenceInitializer;
+import it.w0rd.persistence.WordNetHelper;
 import it.w0rd.persistence.db.DictionaryManager;
 import it.w0rd.persistence.redis.RedisManager;
-import it.w0rd.persistence.WordNetHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;

@@ -1,10 +1,11 @@
 package it.w0rd.api;
 
-import it.w0rd.DataTest;
-import it.w0rd.persistence.db.DictionaryManager;
-import it.w0rd.persistence.redis.RedisManager;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.w0rd.DataTest;
+import it.w0rd.api.requests.ShortenerRequest;
+import it.w0rd.persistence.db.DictionaryManager;
+import it.w0rd.persistence.redis.RedisManager;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package it.w0rd;
+package it.w0rd.persistence;
 
 import io.pivotal.labs.cfenv.CloudFoundryEnvironment;
 import io.pivotal.labs.cfenv.CloudFoundryEnvironmentException;

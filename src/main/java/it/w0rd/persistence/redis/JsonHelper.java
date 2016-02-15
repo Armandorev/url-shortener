@@ -1,8 +1,8 @@
-package it.w0rd;
+package it.w0rd.persistence.redis;
 
-import it.w0rd.persistence.ShortenerHandle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.w0rd.api.ShortenerHandle;
 
 import java.io.IOException;
 

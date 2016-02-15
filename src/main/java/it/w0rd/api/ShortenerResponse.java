@@ -1,7 +1,5 @@
 package it.w0rd.api;
 
-import it.w0rd.persistence.ShortenerHandle;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 

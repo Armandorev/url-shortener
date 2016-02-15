@@ -1,7 +1,7 @@
 package it.w0rd.persistence.db;
 
 import it.w0rd.Application;
-import it.w0rd.PersistenceInitializer;
+import it.w0rd.persistence.PersistenceInitializer;
 import it.w0rd.persistence.WordNetHelper;
 import org.junit.Before;
 import org.junit.Test;

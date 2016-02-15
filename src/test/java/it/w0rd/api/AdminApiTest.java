@@ -1,12 +1,12 @@
 package it.w0rd.api;
 
-import it.w0rd.DataTest;
-import it.w0rd.persistence.ShortenerHandle;
-import it.w0rd.persistence.ShortenerService;
-import it.w0rd.persistence.db.DictionaryHash;
-import it.w0rd.persistence.WordNetHelper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.w0rd.DataTest;
+import it.w0rd.api.requests.AdminDeleteRequest;
+import it.w0rd.api.requests.AdminImportRequest;
+import it.w0rd.persistence.WordNetHelper;
+import it.w0rd.persistence.db.DictionaryHash;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;

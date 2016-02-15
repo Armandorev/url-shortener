@@ -1,10 +1,11 @@
-package it.w0rd.persistence;
+package it.w0rd.api;
 
-import it.w0rd.api.AdminShortenerRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import it.w0rd.api.requests.AdminShortenerRequest;
+import it.w0rd.persistence.WordNetHelper;
 import it.w0rd.persistence.db.DictionaryHash;
 import it.w0rd.persistence.db.DictionaryManager;
 import it.w0rd.persistence.redis.RedisManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

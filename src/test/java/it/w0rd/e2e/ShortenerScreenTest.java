@@ -1,10 +1,10 @@
 package it.w0rd.e2e;
 
 import it.w0rd.Application;
-import it.w0rd.PersistenceInitializer;
+import it.w0rd.persistence.PersistenceInitializer;
+import it.w0rd.persistence.WordNetHelper;
 import it.w0rd.persistence.db.DictionaryManager;
 import it.w0rd.persistence.redis.RedisManager;
-import it.w0rd.persistence.WordNetHelper;
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;

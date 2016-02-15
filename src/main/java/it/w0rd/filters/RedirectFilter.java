@@ -1,7 +1,7 @@
 package it.w0rd.filters;
 
-import it.w0rd.persistence.ShortenerHandle;
-import it.w0rd.persistence.ShortenerService;
+import it.w0rd.api.ShortenerHandle;
+import it.w0rd.api.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

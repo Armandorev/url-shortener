@@ -1,8 +1,7 @@
 package it.w0rd.filters;
 
-import it.w0rd.filters.RedirectFilter;
-import it.w0rd.persistence.ShortenerHandle;
-import it.w0rd.persistence.ShortenerService;
+import it.w0rd.api.ShortenerHandle;
+import it.w0rd.api.ShortenerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

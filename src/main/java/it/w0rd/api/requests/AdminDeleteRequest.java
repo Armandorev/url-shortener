@@ -1,4 +1,4 @@
-package it.w0rd.api;
+package it.w0rd.api.requests;
 
 public class AdminDeleteRequest {
     String hash;

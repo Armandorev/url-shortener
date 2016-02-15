@@ -1,4 +1,4 @@
-package it.w0rd;
+package it.w0rd.api;
 
 import java.net.URI;
 import java.net.URISyntaxException;

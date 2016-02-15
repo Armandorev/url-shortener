@@ -1,7 +1,7 @@
 package it.w0rd.api;
 
-import it.w0rd.persistence.db.DictionaryHash;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import it.w0rd.persistence.db.DictionaryHash;
 
 import java.util.List;
 

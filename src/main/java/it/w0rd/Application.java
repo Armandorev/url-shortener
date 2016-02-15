@@ -1,5 +1,6 @@
 package it.w0rd;
 
+import it.w0rd.persistence.PersistenceInitializer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 

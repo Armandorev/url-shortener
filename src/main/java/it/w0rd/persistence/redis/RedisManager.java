@@ -1,8 +1,7 @@
 package it.w0rd.persistence.redis;
 
-import it.w0rd.JsonHelper;
-import it.w0rd.persistence.ShortenerHandle;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import it.w0rd.api.ShortenerHandle;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

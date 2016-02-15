@@ -1,8 +1,6 @@
 package it.w0rd.api;
 
-import it.w0rd.UriValidator;
-import it.w0rd.persistence.ShortenerHandle;
-import it.w0rd.persistence.ShortenerService;
+import it.w0rd.api.requests.ShortenerRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
