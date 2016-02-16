@@ -2,6 +2,7 @@ package it.w0rd.filters;
 
 import it.w0rd.api.ShortenerHandle;
 import it.w0rd.api.ShortenerService;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,6 +18,8 @@ import java.net.URI;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
@@ -86,8 +89,7 @@ public class ApiFilterTest {
 
         apiFilter.doFilter(request, response, filterChain);
 
-        assertThat(response.getRedirectedUrl(), equalTo("404.html?hash=wave"));
-        //TODO: enforce 404 error code instead of 302
+        assertThat(request.getAttribute("hashNotFound"), not(nullValue()));
     }
 
 }

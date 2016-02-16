@@ -29,7 +29,6 @@ public class ApiFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
@@ -45,9 +44,11 @@ public class ApiFilter implements Filter {
                 ShortenerHandle shortenerHandle = shortenerService.expand(hash);
                 httpResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 httpResponse.setHeader("Location", shortenerHandle.getOriginalURI().toString());
+                Logger.getLogger("RedirectFilter").info("Hash found, redirect to url for hash: " + hash);
             } catch (Exception ex) {
-                httpResponse.sendRedirect("404.html?hash=" + hash);
-                httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpRequest.setAttribute("hashNotFound", hash);
+                Logger.getLogger("RedirectFilter").info("No hash found for hash: " + hash);
+                chain.doFilter(httpRequest, httpResponse);
             }
         }
     }
