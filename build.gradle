@@ -13,7 +13,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.2.6.RELEASE'
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.3.2.RELEASE'
     }
 }
 
@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.2.6.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.3.2.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     compile group: 'org.springframework.data', name: 'spring-data-redis', version: '1.6.0.RELEASE'
     compile group: 'redis.clients', name: 'jedis', version: '2.7.3'
@@ -30,7 +30,7 @@ dependencies {
 
     runtime group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41'
 
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.2.6.RELEASE'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.3.2.RELEASE'
     testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: '0.10.3'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '2.45.0'
 }
