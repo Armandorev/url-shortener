@@ -1,7 +1,7 @@
 package it.w0rd.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import it.w0rd.api.requests.AdminShortenerRequest;
+import it.w0rd.api.requests.admin.CreateRequest;
 import it.w0rd.persistence.WordNetHelper;
 import it.w0rd.persistence.db.DictionaryHash;
 import it.w0rd.persistence.db.DictionaryManager;
@@ -76,8 +76,8 @@ public class ShortenerService {
     }
 
     // TODO to be moved and improved, hack.
-    public void insert(AdminShortenerRequest adminShortenerRequest) throws URISyntaxException, JsonProcessingException {
-        createShortenedUrl(new URI(adminShortenerRequest.getUrl()), new DictionaryHash(adminShortenerRequest.getHash(), "en", "something...", false));
+    public void insert(CreateRequest createRequest) throws URISyntaxException, JsonProcessingException {
+        createShortenedUrl(new URI(createRequest.getUrl()), new DictionaryHash(createRequest.getHash(), "en", "something...", false));
     }
 
     public Integer importWordsWithLength(Integer numberOfWords, Integer wordLength) throws IOException {

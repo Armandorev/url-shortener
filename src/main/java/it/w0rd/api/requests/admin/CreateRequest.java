@@ -1,13 +1,13 @@
-package it.w0rd.api.requests;
+package it.w0rd.api.requests.admin;
 
 import java.io.Serializable;
 
-public class AdminShortenerRequest implements Serializable {
+public class CreateRequest implements Serializable {
 
     private String url;
     private String hash;
 
-    protected AdminShortenerRequest() {
+    protected CreateRequest() {
     }
 
     public String getUrl() {

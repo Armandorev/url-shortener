@@ -3,8 +3,8 @@ package it.w0rd.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.w0rd.DataTest;
-import it.w0rd.api.requests.AdminDeleteRequest;
-import it.w0rd.api.requests.AdminImportRequest;
+import it.w0rd.api.requests.admin.DeleteRequest;
+import it.w0rd.api.requests.admin.ImportRequest;
 import it.w0rd.persistence.db.DictionaryHash;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -99,7 +99,7 @@ public class AdminApiTest extends DataTest {
     public void shouldImportFreshWordsGivenAmountAndCriteria() throws Exception {
         dictionaryManager.clear();
 
-        AdminImportRequest importRequest = new AdminImportRequest();
+        ImportRequest importRequest = new ImportRequest();
         importRequest.setNumberOfWords(10);
         importRequest.setWordLength(6);
         byte[] postJson = OBJECT_MAPPER.writeValueAsBytes(importRequest);
@@ -116,7 +116,7 @@ public class AdminApiTest extends DataTest {
     @Test
     public void shouldRemoveExistingHash() throws Exception {
         ShortenedUrl handle = shortenUrl("http://www.test.com");
-        AdminDeleteRequest deleteRequest = new AdminDeleteRequest(handle.getHash());
+        DeleteRequest deleteRequest = new DeleteRequest(handle.getHash());
 
         byte[] postJson = OBJECT_MAPPER.writeValueAsBytes(deleteRequest);
 

@@ -1,11 +1,11 @@
-package it.w0rd.api.requests;
+package it.w0rd.api.requests.admin;
 
-public class AdminImportRequest {
+public class ImportRequest {
 
     private Integer numberOfWords;
     private Integer wordLength;
 
-    public AdminImportRequest() {
+    public ImportRequest() {
     }
 
     public Integer getNumberOfWords() {

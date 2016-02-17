@@ -1,9 +1,9 @@
 package it.w0rd.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import it.w0rd.api.requests.AdminDeleteRequest;
-import it.w0rd.api.requests.AdminImportRequest;
-import it.w0rd.api.requests.AdminShortenerRequest;
+import it.w0rd.api.requests.admin.DeleteRequest;
+import it.w0rd.api.requests.admin.ImportRequest;
+import it.w0rd.api.requests.admin.CreateRequest;
 import it.w0rd.persistence.db.DictionaryHash;
 import it.w0rd.persistence.db.DictionaryManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,8 @@ public class AdminApi {
     DictionaryManager dictionaryManager;
 
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Map<String, String> shorten(@RequestBody AdminShortenerRequest adminShortenerRequest) throws URISyntaxException, JsonProcessingException {
-        shortenerService.insert(adminShortenerRequest);
+    public Map<String, String> shorten(@RequestBody CreateRequest createRequest) throws URISyntaxException, JsonProcessingException {
+        shortenerService.insert(createRequest);
         return null;
     }
 
@@ -77,12 +77,12 @@ public class AdminApi {
     }
 
     @RequestMapping(value = "/words/import", method = POST, produces = APPLICATION_JSON_VALUE)
-    public Integer importWords(@RequestBody AdminImportRequest importRequest) throws IOException {
+    public Integer importWords(@RequestBody ImportRequest importRequest) throws IOException {
         return shortenerService.importWordsWithLength(importRequest.getNumberOfWords(), importRequest.getWordLength());
     }
 
     @RequestMapping(value = "/words/remove", method = POST, produces = APPLICATION_JSON_VALUE)
-    public ShortenedUrl deleteHash(@RequestBody AdminDeleteRequest deleteRequest) throws IOException {
+    public ShortenedUrl deleteHash(@RequestBody DeleteRequest deleteRequest) throws IOException {
         return shortenerService.remove(deleteRequest.getHash());
     }
 

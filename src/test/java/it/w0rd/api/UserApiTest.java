@@ -3,14 +3,10 @@ package it.w0rd.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.w0rd.DataTest;
-import it.w0rd.api.requests.ShortenerRequest;
-import it.w0rd.persistence.db.DictionaryManager;
-import it.w0rd.persistence.redis.RedisManager;
+import it.w0rd.api.requests.user.CreateRequest;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -60,7 +56,7 @@ public class UserApiTest extends DataTest {
 
     @Test
     public void shouldAddShortenedURLWhenPostedTo() throws Exception {
-        byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(new ShortenerRequest("https://run.pivotal.io/"));
+        byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(new CreateRequest("https://run.pivotal.io/"));
 
         MvcResult postResponse = mockMvc.perform(post("/api/shorten")
                 .content(requestJson).contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -72,12 +68,12 @@ public class UserApiTest extends DataTest {
         ShortenerResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenerResponse>() {
         });
 
-        assertThat(response.getOriginal().toString(), equalTo(new ShortenerRequest("https://run.pivotal.io/").getUrl()));
+        assertThat(response.getOriginal().toString(), equalTo(new CreateRequest("https://run.pivotal.io/").getUrl()));
     }
 
     @Test(expected = MalformedURLException.class)
     public void shouldGetErrorMessageWhenSubmittingAnInvalidURL() throws Exception {
-        ShortenerRequest request = new ShortenerRequest("htp://invalid.url");
+        CreateRequest request = new CreateRequest("htp://invalid.url");
 
         byte[] requestJson = OBJECT_MAPPER.writeValueAsBytes(request);
 

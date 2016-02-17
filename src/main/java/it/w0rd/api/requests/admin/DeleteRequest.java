@@ -1,12 +1,12 @@
-package it.w0rd.api.requests;
+package it.w0rd.api.requests.admin;
 
-public class AdminDeleteRequest {
+public class DeleteRequest {
     String hash;
 
-    public AdminDeleteRequest() {
+    public DeleteRequest() {
     }
 
-    public AdminDeleteRequest(String hash) {
+    public DeleteRequest(String hash) {
         this.hash = hash;
     }
 

@@ -1,6 +1,6 @@
 package it.w0rd.api;
 
-import it.w0rd.api.requests.ShortenerRequest;
+import it.w0rd.api.requests.user.CreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,13 +30,13 @@ public class UserApi {
     }
 
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ShortenerResponse shortenURL(@RequestBody ShortenerRequest shortenerRequest) throws IOException, URISyntaxException {
-        URI uri = validatedURL(shortenerRequest);
+    public ShortenerResponse shortenURL(@RequestBody CreateRequest createRequest) throws IOException, URISyntaxException {
+        URI uri = validatedURL(createRequest);
         ShortenedUrl shortenedUrl = shortenerService.shorten(uri);
         return ShortenerResponse.summarise(shortenedUrl);
     }
 
-    private URI validatedURL(ShortenerRequest url) throws URISyntaxException, MalformedURLException {
+    private URI validatedURL(CreateRequest url) throws URISyntaxException, MalformedURLException {
         UriValidator validator = new UriValidator();
         String uri = url.getUrl();
         if (!validator.validate(uri)) {
