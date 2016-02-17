@@ -1,6 +1,6 @@
 package it.w0rd.filters;
 
-import it.w0rd.api.ShortenerHandle;
+import it.w0rd.api.ShortenedUrl;
 import it.w0rd.api.ShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
@@ -41,9 +41,9 @@ public class ApiFilter implements Filter {
             String hash = requestURI.substring(1);
             Logger.getLogger("RedirectFilter").info("Resolving hash " + hash);
             try {
-                ShortenerHandle shortenerHandle = shortenerService.expand(hash);
+                ShortenedUrl shortenedUrl = shortenerService.expand(hash);
                 httpResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-                httpResponse.setHeader("Location", shortenerHandle.getOriginalURI().toString());
+                httpResponse.setHeader("Location", shortenedUrl.getOriginalURI().toString());
                 Logger.getLogger("RedirectFilter").info("Hash found, redirect to url for hash: " + hash);
             } catch (Exception ex) {
                 httpRequest.setAttribute("hashNotFound", hash);

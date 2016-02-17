@@ -115,7 +115,7 @@ public class AdminApiTest extends DataTest {
 
     @Test
     public void shouldRemoveExistingHash() throws Exception {
-        ShortenerHandle handle = shortenUrl("http://www.test.com");
+        ShortenedUrl handle = shortenUrl("http://www.test.com");
         AdminDeleteRequest deleteRequest = new AdminDeleteRequest(handle.getHash());
 
         byte[] postJson = OBJECT_MAPPER.writeValueAsBytes(deleteRequest);
@@ -148,7 +148,7 @@ public class AdminApiTest extends DataTest {
         });
     }
 
-    private ShortenerHandle shortenUrl(String url) throws URISyntaxException, IOException {
+    private ShortenedUrl shortenUrl(String url) throws URISyntaxException, IOException {
         return shortenerService.shorten(new URI(url));
     }
 

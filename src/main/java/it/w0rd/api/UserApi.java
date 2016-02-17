@@ -32,8 +32,8 @@ public class UserApi {
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ShortenerResponse shortenURL(@RequestBody ShortenerRequest shortenerRequest) throws IOException, URISyntaxException {
         URI uri = validatedURL(shortenerRequest);
-        ShortenerHandle shortenerHandle = shortenerService.shorten(uri);
-        return ShortenerResponse.summarise(shortenerHandle);
+        ShortenedUrl shortenedUrl = shortenerService.shorten(uri);
+        return ShortenerResponse.summarise(shortenedUrl);
     }
 
     private URI validatedURL(ShortenerRequest url) throws URISyntaxException, MalformedURLException {

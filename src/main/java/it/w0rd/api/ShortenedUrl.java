@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ShortenerHandle {
+public class ShortenedUrl {
 
     private URI originalURI;
     private String hash;
     private String description;
 
-    protected ShortenerHandle() {
+    protected ShortenedUrl() {
     }
 
-    public ShortenerHandle(URI originalURI, String hash, String desc) {
+    public ShortenedUrl(URI originalURI, String hash, String desc) {
         this.originalURI = originalURI;
         this.hash = hash;
         this.description = desc;
@@ -43,7 +43,7 @@ public class ShortenerHandle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ShortenerHandle that = (ShortenerHandle) o;
+        ShortenedUrl that = (ShortenedUrl) o;
 
         if (originalURI != null ? !originalURI.equals(that.originalURI) : that.originalURI != null) return false;
         return !(hash != null ? !hash.equals(that.hash) : that.hash != null);

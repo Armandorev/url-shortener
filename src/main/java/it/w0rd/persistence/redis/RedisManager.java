@@ -1,7 +1,7 @@
 package it.w0rd.persistence.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import it.w0rd.api.ShortenerHandle;
+import it.w0rd.api.ShortenedUrl;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -39,7 +39,7 @@ public class RedisManager {
         }
     }
 
-    public ShortenerHandle getHandleFor(String hash) throws IOException {
+    public ShortenedUrl getHandleFor(String hash) throws IOException {
         hash = hash.replace(HASH_PREFIX, "");
 
         try (Jedis jedis = pool.getResource()) {
@@ -48,12 +48,12 @@ public class RedisManager {
         }
     }
 
-    public void storeHash(ShortenerHandle shortenerHandle) throws JsonProcessingException {
-        URI url = shortenerHandle.getOriginalURI();
+    public void storeHash(ShortenedUrl shortenedUrl) throws JsonProcessingException {
+        URI url = shortenedUrl.getOriginalURI();
 
         try (Jedis jedis = pool.getResource()) {
-            jedis.set(HASH_PREFIX + shortenerHandle.getHash(), JsonHelper.serialize(shortenerHandle));
-            jedis.set(url.toString(), shortenerHandle.getHash());
+            jedis.set(HASH_PREFIX + shortenedUrl.getHash(), JsonHelper.serialize(shortenedUrl));
+            jedis.set(url.toString(), shortenedUrl.getHash());
             jedis.incrBy(COUNT_FIELD, 1);
         }
     }
@@ -81,7 +81,7 @@ public class RedisManager {
     }
 
     public void removeHash(String hashToDelete) throws IOException {
-        ShortenerHandle hashHandle = getHandleFor(hashToDelete);
+        ShortenedUrl hashHandle = getHandleFor(hashToDelete);
         URI originalURI = hashHandle.getOriginalURI();
 
         try (Jedis jedis = pool.getResource()) {

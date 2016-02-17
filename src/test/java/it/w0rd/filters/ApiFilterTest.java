@@ -1,8 +1,7 @@
 package it.w0rd.filters;
 
-import it.w0rd.api.ShortenerHandle;
+import it.w0rd.api.ShortenedUrl;
 import it.w0rd.api.ShortenerService;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -74,7 +72,7 @@ public class ApiFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/wave");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        Mockito.when(shortenerService.expand("wave")).thenReturn(new ShortenerHandle(new URI("http://www.test.com"), "wave", "Description"));
+        Mockito.when(shortenerService.expand("wave")).thenReturn(new ShortenedUrl(new URI("http://www.test.com"), "wave", "Description"));
 
         apiFilter.doFilter(request, response, filterChain);
 

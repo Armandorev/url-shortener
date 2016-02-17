@@ -45,11 +45,11 @@ public class AdminApi {
     // Redis does not support paging out of the box and needs to be implemented by hand.
     @RequestMapping(value = "/shortened_urls", method = GET, produces = APPLICATION_JSON_VALUE)
     public List<ShortenerResponse> listShortenedUrls() throws IOException {
-        Map<URI, ShortenerHandle> allShortenedURLs = shortenerService.getAllUrls();
+        Map<URI, ShortenedUrl> allShortenedURLs = shortenerService.getAllUrls();
 
         return allShortenedURLs.entrySet()
                 .stream()
-                .map((Map.Entry<URI, ShortenerHandle> entry) -> {
+                .map((Map.Entry<URI, ShortenedUrl> entry) -> {
                     try {
                         return ShortenerResponse.summarise(entry.getValue());
                     } catch (URISyntaxException e) {
@@ -82,7 +82,7 @@ public class AdminApi {
     }
 
     @RequestMapping(value = "/words/remove", method = POST, produces = APPLICATION_JSON_VALUE)
-    public ShortenerHandle deleteHash(@RequestBody AdminDeleteRequest deleteRequest) throws IOException {
+    public ShortenedUrl deleteHash(@RequestBody AdminDeleteRequest deleteRequest) throws IOException {
         return shortenerService.remove(deleteRequest.getHash());
     }
 

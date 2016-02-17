@@ -5,11 +5,11 @@ import java.net.URISyntaxException;
 
 public class ShortenerResponse {
 
-    public static ShortenerResponse summarise(ShortenerHandle shortenerHandle) throws URISyntaxException {
-        return new ShortenerResponse(shortenerHandle.getOriginalURI(),
-                shortenerHandle.getShortenedURI(),
-                shortenerHandle.getHash(),
-                shortenerHandle.getDescription());
+    public static ShortenerResponse summarise(ShortenedUrl shortenedUrl) throws URISyntaxException {
+        return new ShortenerResponse(shortenedUrl.getOriginalURI(),
+                shortenedUrl.getShortenedURI(),
+                shortenedUrl.getHash(),
+                shortenedUrl.getDescription());
     }
 
     private URI original;

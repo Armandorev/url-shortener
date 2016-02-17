@@ -20,8 +20,8 @@ public class ShortenerServiceTest extends DataTest {
 
     @Test
     public void shouldShortenUrl() throws URISyntaxException, IOException {
-        ShortenerHandle shortenerHandle = shortenUrl("http://www.example.org");
-        assertThat(shortenerHandle.getHash(), equalTo("able"));
+        ShortenedUrl shortenedUrl = shortenUrl("http://www.example.org");
+        assertThat(shortenedUrl.getHash(), equalTo("able"));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ShortenerServiceTest extends DataTest {
 
     @Test
     public void shouldRemoveExistingShortenedUrlAndFreeItUp() throws IOException, URISyntaxException {
-        ShortenerHandle shortenedUrl = shortenUrl("http://www.example.com");
+        ShortenedUrl shortenedUrl = shortenUrl("http://www.example.com");
 
         MatcherAssert.assertThat(dictionaryManager.getWordsAvailableSize(), IsEqual.equalTo(20L));
         assertThat(shortenerService.getShortenedCount(), IsEqual.equalTo(1L));
@@ -47,7 +47,7 @@ public class ShortenerServiceTest extends DataTest {
         assertThat(shortenerService.getShortenedCount(), IsEqual.equalTo(0L));
     }
 
-    private ShortenerHandle shortenUrl(String url) throws URISyntaxException, IOException {
+    private ShortenedUrl shortenUrl(String url) throws URISyntaxException, IOException {
         return shortenerService.shorten(new URI(url));
     }
 

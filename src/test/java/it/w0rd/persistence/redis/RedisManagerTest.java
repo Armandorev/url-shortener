@@ -3,9 +3,8 @@ package it.w0rd.persistence.redis;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import it.w0rd.Application;
 import it.w0rd.DataTest;
-import it.w0rd.api.ShortenerHandle;
+import it.w0rd.api.ShortenedUrl;
 import it.w0rd.persistence.PersistenceInitializer;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +44,7 @@ public class RedisManagerTest extends DataTest {
 
     @Test
     public void checkShortenedUrlIsPersistedAccordingly() throws URISyntaxException, JsonProcessingException {
-        ShortenerHandle url = new ShortenerHandle(new URI("http://w0rd.it"), "water", "description...");
+        ShortenedUrl url = new ShortenedUrl(new URI("http://w0rd.it"), "water", "description...");
         redisManager.storeHash(url);
 
         try (Jedis jedis = jedisPool.getResource()){
