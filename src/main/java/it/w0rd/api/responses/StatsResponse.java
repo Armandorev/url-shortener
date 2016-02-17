@@ -1,14 +1,14 @@
-package it.w0rd.api;
+package it.w0rd.api.responses;
 
-public class ShortenerStats {
+public class StatsResponse {
 
     private Long shortenedCount;
     private Long remainingCount;
 
-    public ShortenerStats() {
+    public StatsResponse() {
     }
 
-    public ShortenerStats(Long counter, Long remainingWords) {
+    public StatsResponse(Long counter, Long remainingWords) {
         this.setShortenedCount(counter);
         this.setRemainingCount(remainingWords);
     }
@@ -34,7 +34,7 @@ public class ShortenerStats {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ShortenerStats that = (ShortenerStats) o;
+        StatsResponse that = (StatsResponse) o;
 
         if (shortenedCount != null ? !shortenedCount.equals(that.shortenedCount) : that.shortenedCount != null)
             return false;

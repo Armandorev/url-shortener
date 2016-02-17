@@ -1,12 +1,14 @@
-package it.w0rd.api;
+package it.w0rd.api.responses;
+
+import it.w0rd.api.ShortenedUrl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ShortenerResponse {
+public class ShortenedUrlResponse {
 
-    public static ShortenerResponse summarise(ShortenedUrl shortenedUrl) throws URISyntaxException {
-        return new ShortenerResponse(shortenedUrl.getOriginalURI(),
+    public static ShortenedUrlResponse summarise(ShortenedUrl shortenedUrl) throws URISyntaxException {
+        return new ShortenedUrlResponse(shortenedUrl.getOriginalURI(),
                 shortenedUrl.getShortenedURI(),
                 shortenedUrl.getHash(),
                 shortenedUrl.getDescription());
@@ -17,10 +19,10 @@ public class ShortenerResponse {
     private String hash;
     private String description;
 
-    public ShortenerResponse() {
+    public ShortenedUrlResponse() {
     }
 
-    public ShortenerResponse(URI original, URI shortened, String hash, String description) throws URISyntaxException {
+    public ShortenedUrlResponse(URI original, URI shortened, String hash, String description) throws URISyntaxException {
         this.original = original;
         this.shortened = shortened;
         this.hash = hash;
@@ -48,7 +50,7 @@ public class ShortenerResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ShortenerResponse that = (ShortenerResponse) o;
+        ShortenedUrlResponse that = (ShortenedUrlResponse) o;
 
         if (!original.equals(that.original)) return false;
         return hash.equals(that.hash);

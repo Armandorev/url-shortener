@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import it.w0rd.api.requests.admin.DeleteRequest;
 import it.w0rd.api.requests.admin.ImportRequest;
 import it.w0rd.api.requests.admin.CreateRequest;
+import it.w0rd.api.responses.ShortenedUrlResponse;
 import it.w0rd.persistence.db.DictionaryHash;
 import it.w0rd.persistence.db.DictionaryManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,14 @@ public class AdminApi {
     // TODO: This does not scale, paging of shortened urls will be necessary to make scalable.
     // Redis does not support paging out of the box and needs to be implemented by hand.
     @RequestMapping(value = "/shortened_urls", method = GET, produces = APPLICATION_JSON_VALUE)
-    public List<ShortenerResponse> listShortenedUrls() throws IOException {
+    public List<ShortenedUrlResponse> listShortenedUrls() throws IOException {
         Map<URI, ShortenedUrl> allShortenedURLs = shortenerService.getAllUrls();
 
         return allShortenedURLs.entrySet()
                 .stream()
                 .map((Map.Entry<URI, ShortenedUrl> entry) -> {
                     try {
-                        return ShortenerResponse.summarise(entry.getValue());
+                        return ShortenedUrlResponse.summarise(entry.getValue());
                     } catch (URISyntaxException e) {
                         return null;
                     }

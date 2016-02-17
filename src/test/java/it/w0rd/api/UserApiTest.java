@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.w0rd.DataTest;
 import it.w0rd.api.requests.user.CreateRequest;
+import it.w0rd.api.responses.ShortenedUrlResponse;
+import it.w0rd.api.responses.StatsResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +49,11 @@ public class UserApiTest extends DataTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ShortenerStats shortenerStats = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<ShortenerStats>() {
+        StatsResponse statsResponse = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<StatsResponse>() {
         });
 
-        assertThat(shortenerStats.getRemainingCount(), equalTo(21L));
-        assertThat(shortenerStats.getShortenedCount(), equalTo(0L));
+        assertThat(statsResponse.getRemainingCount(), equalTo(21L));
+        assertThat(statsResponse.getShortenedCount(), equalTo(0L));
     }
 
     @Test
@@ -65,7 +67,7 @@ public class UserApiTest extends DataTest {
                 .andReturn();
 
         String responseAsString = postResponse.getResponse().getContentAsString();
-        ShortenerResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenerResponse>() {
+        ShortenedUrlResponse response = OBJECT_MAPPER.readValue(responseAsString, new TypeReference<ShortenedUrlResponse>() {
         });
 
         assertThat(response.getOriginal().toString(), equalTo(new CreateRequest("https://run.pivotal.io/").getUrl()));

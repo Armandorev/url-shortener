@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.w0rd.DataTest;
 import it.w0rd.api.requests.admin.DeleteRequest;
 import it.w0rd.api.requests.admin.ImportRequest;
+import it.w0rd.api.responses.ShortenedUrlResponse;
 import it.w0rd.persistence.db.DictionaryHash;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -52,7 +53,7 @@ public class AdminApiTest extends DataTest {
         shortenUrl("http://www.pivotal.io");
         shortenUrl("http://www.pivotallabs.com");
 
-        List<ShortenerResponse> responses = performGetAndUnserialize("/api/admin/shortened_urls");
+        List<ShortenedUrlResponse> responses = performGetAndUnserialize("/api/admin/shortened_urls");
 
         assertThat(responses, hasSize(2));
     }
@@ -126,7 +127,7 @@ public class AdminApiTest extends DataTest {
         assertThat(shortenerService.getShortenedCount(), equalTo(0L));
     }
 
-    private List<ShortenerResponse> performGetAndUnserialize(String path) throws Exception {
+    private List<ShortenedUrlResponse> performGetAndUnserialize(String path) throws Exception {
         MvcResult mvcResult = mockMvc.perform(get(path).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -142,9 +143,9 @@ public class AdminApiTest extends DataTest {
         return o.getContent();
     }
 
-    private List<ShortenerResponse> mapToShortenerResponses(MvcResult mvcResult) throws IOException {
+    private List<ShortenedUrlResponse> mapToShortenerResponses(MvcResult mvcResult) throws IOException {
         String bodyString = mvcResult.getResponse().getContentAsString();
-        return OBJECT_MAPPER.readValue(bodyString, new TypeReference<List<ShortenerResponse>>() {
+        return OBJECT_MAPPER.readValue(bodyString, new TypeReference<List<ShortenedUrlResponse>>() {
         });
     }
 
