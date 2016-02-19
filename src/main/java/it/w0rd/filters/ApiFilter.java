@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE - 2)
+@Order(Ordered.HIGHEST_PRECEDENCE - 3)
 public class ApiFilter implements Filter {
 
     @Autowired
