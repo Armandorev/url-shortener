@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.mock;
@@ -78,6 +79,8 @@ public class ApiFilterTest {
 
         Mockito.verify(filterChain, times(0))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
+
+        assertThat(response.getStatus(),equalTo(HttpServletResponse.SC_MOVED_PERMANENTLY));
     }
 
     @Test
