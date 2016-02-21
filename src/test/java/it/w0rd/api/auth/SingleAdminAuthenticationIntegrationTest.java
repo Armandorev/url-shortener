@@ -1,7 +1,7 @@
 package it.w0rd.api.auth;
 
 import it.w0rd.Application;
-import it.w0rd.filters.AdminFilter;
+import it.w0rd.filters.AdminAuthFilter;
 import it.w0rd.persistence.PersistenceInitializer;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class SingleAdminAuthenticationIntegrationTest {
 
     @Before
     public void setupWac() throws AdminAuthenticationCredentialsError {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilter(new AdminFilter()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilter(new AdminAuthFilter()).build();
     }
 
     @Test

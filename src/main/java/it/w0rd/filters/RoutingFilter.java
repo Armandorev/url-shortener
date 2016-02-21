@@ -15,15 +15,15 @@ import java.util.logging.Logger;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE - 3)
-public class ApiFilter implements Filter {
+public class RoutingFilter implements Filter {
 
     @Autowired
     ShortenerService shortenerService;
 
-    public ApiFilter() {
+    public RoutingFilter() {
     }
 
-    public ApiFilter(ShortenerService shortenerService) {
+    public RoutingFilter(ShortenerService shortenerService) {
         this.shortenerService = shortenerService;
     }
 

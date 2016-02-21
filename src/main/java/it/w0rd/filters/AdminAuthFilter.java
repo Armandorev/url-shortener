@@ -16,16 +16,16 @@ import java.util.Base64;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE - 2)
-public class AdminFilter implements Filter {
+public class AdminAuthFilter implements Filter {
 
     private final AuthenticationProvider authenticationProvider;
-    public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AdminFilter.class);
+    public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AdminAuthFilter.class);
 
-    public AdminFilter() throws AdminAuthenticationCredentialsError {
+    public AdminAuthFilter() throws AdminAuthenticationCredentialsError {
         authenticationProvider = new SingleAdminAuthentication("admin", "default");
     }
 
-    public AdminFilter(AuthenticationProvider authenticationProvider) {
+    public AdminAuthFilter(AuthenticationProvider authenticationProvider) {
         this.authenticationProvider = authenticationProvider;
     }
 

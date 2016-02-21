@@ -21,15 +21,15 @@ import static org.mockito.Mockito.times;
 
 import java.util.Base64;
 
-public class AdminFilterTest {
-    AdminFilter adminFilter;
+public class AdminAuthFilterTest {
+    AdminAuthFilter adminAuthFilter;
     FilterChain filterChain;
     AuthenticationProvider authenticationProvider;
 
     @Before
     public void setUp() throws IOException, ServletException {
         authenticationProvider = mock(AuthenticationProvider.class);
-        adminFilter = new AdminFilter(authenticationProvider);
+        adminAuthFilter = new AdminAuthFilter(authenticationProvider);
         filterChain = mock(FilterChain.class);
     }
 
@@ -38,7 +38,7 @@ public class AdminFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        adminFilter.doFilter(request, response, filterChain);
+        adminAuthFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(0))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -52,7 +52,7 @@ public class AdminFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin/index.html");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        adminFilter.doFilter(request, response, filterChain);
+        adminAuthFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(0))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -72,7 +72,7 @@ public class AdminFilterTest {
 
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        adminFilter.doFilter(request, response, filterChain);
+        adminAuthFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -85,7 +85,7 @@ public class AdminFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/index.html");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        adminFilter.doFilter(request, response, filterChain);
+        adminAuthFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));

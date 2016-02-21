@@ -22,16 +22,16 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
-public class ApiFilterTest {
+public class RoutingFilterTest {
 
     ShortenerService shortenerService;
-    ApiFilter apiFilter;
+    RoutingFilter routingFilter;
     FilterChain filterChain;
 
     @Before
     public void setUp() throws IOException, ServletException {
         shortenerService = mock(ShortenerService.class);
-        apiFilter = new ApiFilter(shortenerService);
+        routingFilter = new RoutingFilter(shortenerService);
         filterChain = mock(FilterChain.class);
     }
 
@@ -40,7 +40,7 @@ public class ApiFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/all");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        apiFilter.doFilter(request, response, filterChain);
+        routingFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -51,7 +51,7 @@ public class ApiFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/admin");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        apiFilter.doFilter(request, response, filterChain);
+        routingFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -62,7 +62,7 @@ public class ApiFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/static/admin/index.html");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        apiFilter.doFilter(request, response, filterChain);
+        routingFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(1))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -75,7 +75,7 @@ public class ApiFilterTest {
 
         Mockito.when(shortenerService.expand("wave")).thenReturn(new ShortenedUrl(new URI("http://www.test.com"), "wave", "Description"));
 
-        apiFilter.doFilter(request, response, filterChain);
+        routingFilter.doFilter(request, response, filterChain);
 
         Mockito.verify(filterChain, times(0))
                 .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
@@ -88,7 +88,7 @@ public class ApiFilterTest {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/wave");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        apiFilter.doFilter(request, response, filterChain);
+        routingFilter.doFilter(request, response, filterChain);
 
         assertThat(request.getAttribute("hashNotFound"), not(nullValue()));
     }
