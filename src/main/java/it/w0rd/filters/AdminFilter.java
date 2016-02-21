@@ -47,16 +47,16 @@ public class AdminFilter implements Filter {
         }
 
         final String authKey = httpRequest.getHeader("Authorization");
-        final String[] authInfo = new String(Base64.getDecoder().decode(authKey.substring(6))).split(":");
-        if (authInfo.length < 2) {
-            challenge(httpResponse);
-            return;
-        }
-
-        final String userName = authInfo[0];
-        final String password = authInfo[1];
-
         if(authKey != null && authKey.startsWith("Basic ")) {
+            final String[] authInfo = new String(Base64.getDecoder().decode(authKey.substring(6))).split(":");
+            if (authInfo.length < 2) {
+                challenge(httpResponse);
+                return;
+            }
+
+            final String userName = authInfo[0];
+            final String password = authInfo[1];
+
             if(authenticationProvider.isAdministrator(userName, password)) {
                 LOGGER.info("User " + userName + " has successfully logged in");
                 chain.doFilter(request, response);
