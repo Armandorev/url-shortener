@@ -1,6 +1,8 @@
 package it.w0rd.filters;
 
-import it.w0rd.api.AuthenticationProvider;
+import it.w0rd.api.auth.AdminAuthenticationCredentialsError;
+import it.w0rd.api.auth.AuthenticationProvider;
+import it.w0rd.api.auth.SingleAdminAuthentication;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -17,15 +19,8 @@ public class AdminFilter implements Filter {
 
     private final AuthenticationProvider authenticationProvider;
 
-
-
-    public AdminFilter() {
-        authenticationProvider = new AuthenticationProvider() {
-            @Override
-            public boolean isAdmin(String username, String password) {
-                return false;
-            }
-        };
+    public AdminFilter() throws AdminAuthenticationCredentialsError {
+        authenticationProvider = new SingleAdminAuthentication("admin", "default");
     }
 
     public AdminFilter(AuthenticationProvider authenticationProvider) {
@@ -43,7 +38,7 @@ public class AdminFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         final String requestURI = httpRequest.getRequestURI();
-        if(!requestURI.matches("/admin/.*")){
+        if(!requestURI.matches("/admin/.*") && !requestURI.matches("/api/admin.*")){
             chain.doFilter(request, response);
             return;
         }
@@ -53,12 +48,13 @@ public class AdminFilter implements Filter {
             final String[] authInfo = new String(Base64.getDecoder().decode(authKey.substring(6))).split(":");
             final String userName = authInfo[0];
             final String password = authInfo[1];
-            if(authenticationProvider.isAdmin(userName, password)) {
+            if(authenticationProvider.isAdministrator(userName, password)) {
                 chain.doFilter(request, response);
                 return;
             }
         }
-        httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        httpResponse.setHeader("WWW-Authenticate", "Basic");
     }
 
     @Override
