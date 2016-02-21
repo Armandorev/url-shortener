@@ -1,7 +1,7 @@
 package it.w0rd.e2e;
 
 import it.w0rd.Application;
-import it.w0rd.persistence.PersistenceInitializer;
+import it.w0rd.ApplicationInitializer;
 import it.w0rd.persistence.WordNetHelper;
 import it.w0rd.persistence.db.DictionaryManager;
 import it.w0rd.persistence.redis.RedisManager;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = ApplicationInitializer.class)
 @IntegrationTest("server.port:0")
 @WebAppConfiguration
 public class ShortenerScreenTest extends FluentTest {

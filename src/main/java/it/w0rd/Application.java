@@ -1,6 +1,5 @@
 package it.w0rd;
 
-import it.w0rd.persistence.PersistenceInitializer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -9,7 +8,7 @@ public class Application {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(Application.class)
-                .initializers(new PersistenceInitializer())
+                .initializers(new ApplicationInitializer())
                 .run(args);
     }
 

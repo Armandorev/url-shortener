@@ -22,7 +22,10 @@ public class AdminAuthFilter implements Filter {
     public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AdminAuthFilter.class);
 
     public AdminAuthFilter() throws AdminAuthenticationCredentialsError {
-        authenticationProvider = new SingleAdminAuthentication("admin", "default");
+        String username = System.getProperty("admin.username");
+        String password = System.getProperty("admin.password");
+
+        authenticationProvider = new SingleAdminAuthentication(username, password);
     }
 
     public AdminAuthFilter(AuthenticationProvider authenticationProvider) {

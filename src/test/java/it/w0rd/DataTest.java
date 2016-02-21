@@ -1,6 +1,5 @@
 package it.w0rd;
 
-import it.w0rd.persistence.PersistenceInitializer;
 import it.w0rd.persistence.WordNetHelper;
 import it.w0rd.persistence.db.DictionaryManager;
 import it.w0rd.persistence.redis.RedisManager;
@@ -16,7 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.io.IOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = ApplicationInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 public abstract class DataTest {

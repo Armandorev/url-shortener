@@ -2,7 +2,7 @@ package it.w0rd.api.auth;
 
 import it.w0rd.Application;
 import it.w0rd.filters.AdminAuthFilter;
-import it.w0rd.persistence.PersistenceInitializer;
+import it.w0rd.ApplicationInitializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = ApplicationInitializer.class)
 @WebIntegrationTest("server.port:0")
 public class SingleAdminAuthenticationIntegrationTest {
 

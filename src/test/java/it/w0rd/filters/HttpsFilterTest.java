@@ -1,7 +1,7 @@
 package it.w0rd.filters;
 
 import it.w0rd.Application;
-import it.w0rd.persistence.PersistenceInitializer;
+import it.w0rd.ApplicationInitializer;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = ApplicationInitializer.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 public class HttpsFilterTest {

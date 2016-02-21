@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import it.w0rd.Application;
 import it.w0rd.DataTest;
 import it.w0rd.api.ShortenedUrl;
-import it.w0rd.persistence.PersistenceInitializer;
+import it.w0rd.ApplicationInitializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class, initializers = PersistenceInitializer.class)
+@SpringApplicationConfiguration(classes = Application.class, initializers = ApplicationInitializer.class)
 @WebAppConfiguration
 public class RedisManagerTest extends DataTest {
 
