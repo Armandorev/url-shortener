@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE - 2)
@@ -39,6 +40,7 @@ public class AdminFilter implements Filter {
 
         final String requestURI = httpRequest.getRequestURI();
         if(!requestURI.matches("/admin/.*") && !requestURI.matches("/api/admin.*")){
+            Logger.getLogger("AdminFilter").info("Request does need not be authorized: " + httpRequest.getRequestURI());
             chain.doFilter(request, response);
             return;
         }
@@ -49,10 +51,17 @@ public class AdminFilter implements Filter {
             final String userName = authInfo[0];
             final String password = authInfo[1];
             if(authenticationProvider.isAdministrator(userName, password)) {
+                Logger.getLogger("AdminFilter").info("User " + userName + " has successfully logged in");
                 chain.doFilter(request, response);
                 return;
             }
         }
+
+        challenge(httpResponse);
+    }
+
+    private void challenge(HttpServletResponse httpResponse) {
+        Logger.getLogger("AdminFilter").info("No or wrong credentials");
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpResponse.setHeader("WWW-Authenticate", "Basic");
     }
