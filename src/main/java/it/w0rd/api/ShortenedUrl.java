@@ -4,20 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 public class ShortenedUrl {
 
     private URI originalURI;
     private String hash;
     private String description;
+    private Long creationTimestamp;
 
-    protected ShortenedUrl() {
-    }
+    protected ShortenedUrl() {}
 
     public ShortenedUrl(URI originalURI, String hash, String desc) {
         this.originalURI = originalURI;
         this.hash = hash;
         this.description = desc;
+        this.creationTimestamp = new Date().getTime();
     }
 
     public URI getOriginalURI() {
@@ -47,5 +49,9 @@ public class ShortenedUrl {
 
         if (originalURI != null ? !originalURI.equals(that.originalURI) : that.originalURI != null) return false;
         return !(hash != null ? !hash.equals(that.hash) : that.hash != null);
+    }
+
+    public Long getCreationTimestamp() {
+        return creationTimestamp;
     }
 }

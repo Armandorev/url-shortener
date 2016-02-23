@@ -2,6 +2,7 @@ package it.w0rd.api;
 
 import it.w0rd.DataTest;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,12 @@ public class ShortenerServiceTest extends DataTest {
 
         MatcherAssert.assertThat(dictionaryManager.getWordsAvailableSize(), IsEqual.equalTo(21L));
         assertThat(shortenerService.getShortenedCount(), IsEqual.equalTo(0L));
+    }
+
+    @Test
+    public void shouldStoreTimestamp() throws IOException, URISyntaxException {
+        ShortenedUrl shorten = shortenerService.shorten(URI.create("http://www.google.com"));
+        assertThat(shorten.getCreationTimestamp(), Matchers.notNullValue());
     }
 
     private ShortenedUrl shortenUrl(String url) throws URISyntaxException, IOException {

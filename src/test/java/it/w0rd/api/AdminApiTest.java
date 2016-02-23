@@ -56,6 +56,12 @@ public class AdminApiTest extends DataTest {
         List<ShortenedUrlResponse> responses = performGetAndUnserialize("/api/admin/shortened_urls");
 
         assertThat(responses, hasSize(2));
+
+        assertThat(responses.get(0).getCreationTimestamp(), Matchers.notNullValue());
+        assertThat(responses.get(0).getHash(), Matchers.notNullValue());
+        assertThat(responses.get(0).getOriginal(), Matchers.notNullValue());
+        assertThat(responses.get(0).getDescription(), Matchers.notNullValue());
+        assertThat(responses.get(0).getShortened(), Matchers.notNullValue());
     }
 
     @Test

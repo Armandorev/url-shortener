@@ -11,22 +11,24 @@ public class ShortenedUrlResponse {
         return new ShortenedUrlResponse(shortenedUrl.getOriginalURI(),
                 shortenedUrl.getShortenedURI(),
                 shortenedUrl.getHash(),
-                shortenedUrl.getDescription());
+                shortenedUrl.getDescription(),
+                shortenedUrl.getCreationTimestamp());
     }
 
     private URI original;
     private URI shortened;
     private String hash;
     private String description;
+    private Long creationTimestamp;
 
-    public ShortenedUrlResponse() {
-    }
+    protected ShortenedUrlResponse () {}
 
-    public ShortenedUrlResponse(URI original, URI shortened, String hash, String description) throws URISyntaxException {
+    public ShortenedUrlResponse(URI original, URI shortened, String hash, String description, Long creationTimestamp) throws URISyntaxException {
         this.original = original;
         this.shortened = shortened;
         this.hash = hash;
         this.description = description;
+        this.creationTimestamp = creationTimestamp;
     }
 
     public URI getOriginal() {
@@ -43,6 +45,10 @@ public class ShortenedUrlResponse {
 
     public String getDescription() {
         return description;
+    }
+
+    public Long getCreationTimestamp() {
+        return creationTimestamp;
     }
 
     @Override
@@ -67,4 +73,5 @@ public class ShortenedUrlResponse {
     public String toString() {
         return "Original: " + this.original + " Shortened: " + this.shortened;
     }
+
 }
