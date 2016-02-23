@@ -83,14 +83,4 @@ public class RoutingFilterTest {
         assertThat(response.getStatus(),equalTo(HttpServletResponse.SC_MOVED_PERMANENTLY));
     }
 
-    @Test
-    public void shouldRedirectTo404IfHashNotExistent() throws IOException, ServletException {
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/wave");
-        MockHttpServletResponse response = new MockHttpServletResponse();
-
-        routingFilter.doFilter(request, response, filterChain);
-
-        assertThat(request.getAttribute("hashNotFound"), not(nullValue()));
-    }
-
 }

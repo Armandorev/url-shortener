@@ -17,11 +17,12 @@ import java.util.logging.Logger;
 @Order(Ordered.HIGHEST_PRECEDENCE - 3)
 public class RoutingFilter implements Filter {
 
+    public static final String HTTP_ATTRIBUTE_HASH_NOT_FOUND = "hashNotFound";
+
     @Autowired
     ShortenerService shortenerService;
 
-    public RoutingFilter() {
-    }
+    public RoutingFilter() {}
 
     public RoutingFilter(ShortenerService shortenerService) {
         this.shortenerService = shortenerService;
@@ -44,10 +45,9 @@ public class RoutingFilter implements Filter {
                 ShortenedUrl shortenedUrl = shortenerService.expand(hash);
                 httpResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 httpResponse.setHeader("Location", shortenedUrl.getOriginalURI().toString());
-                Logger.getLogger("RedirectFilter").info("Hash found, redirect to url for hash: " + hash);
+                Logger.getLogger("RedirectFilter").info("Redirect to url for hash: " + hash);
             } catch (Exception ex) {
-                httpRequest.setAttribute("hashNotFound", hash);
-                Logger.getLogger("RedirectFilter").info("No hash found for hash: " + hash);
+                httpRequest.setAttribute(HTTP_ATTRIBUTE_HASH_NOT_FOUND, hash);
                 chain.doFilter(httpRequest, httpResponse);
             }
         }
