@@ -17,7 +17,7 @@ import java.io.IOException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class, initializers = ApplicationInitializer.class)
 @WebAppConfiguration
-@IntegrationTest("server.port:0")
+//@IntegrationTest("server.port:0")
 public abstract class DataTest {
 
     @Autowired

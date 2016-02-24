@@ -4,6 +4,8 @@ import it.w0rd.api.requests.user.CreateRequest;
 import it.w0rd.api.responses.ShortenedUrlResponse;
 import it.w0rd.api.responses.StatsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +34,10 @@ public class UserApi {
     }
 
     @RequestMapping(value = "/shorten", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ShortenedUrlResponse shortenURL(@RequestBody CreateRequest createRequest) throws IOException, URISyntaxException {
+    public ResponseEntity<ShortenedUrlResponse> shortenURL(@RequestBody CreateRequest createRequest) throws IOException, URISyntaxException {
         URI uri = validatedURL(createRequest);
         ShortenedUrl shortenedUrl = shortenerService.shorten(uri);
-        return ShortenedUrlResponse.summarise(shortenedUrl);
+        return new ResponseEntity<ShortenedUrlResponse>(ShortenedUrlResponse.summarise(shortenedUrl), HttpStatus.CREATED);
     }
 
     private URI validatedURL(CreateRequest url) throws URISyntaxException, MalformedURLException {

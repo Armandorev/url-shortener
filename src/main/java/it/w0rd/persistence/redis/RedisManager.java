@@ -16,6 +16,8 @@ public class RedisManager {
 
     public static final String HASH_PREFIX = "hash:";
     public static final String COUNT_FIELD = "$count";
+    public static final String DAILY_REQUEST_COUNT = "requestCount:";
+    public static final int NUMBER_OF_SECONDS_IN_A_DAY = 24 * 60 * 60;
 
     private JedisPool pool;
 
@@ -88,6 +90,18 @@ public class RedisManager {
             jedis.del(HASH_PREFIX + hashToDelete);
             jedis.del(originalURI.toString());
             jedis.decrBy(COUNT_FIELD, 1);
+        }
+    }
+
+    public long incrementRate(String clientIp) {
+        try (Jedis jedis = pool.getResource()) {
+            String key = DAILY_REQUEST_COUNT + clientIp;
+            if (jedis.get(key) == null) {
+                jedis.set(key, String.valueOf(0));
+                jedis.expire(key, NUMBER_OF_SECONDS_IN_A_DAY);
+            }
+
+            return jedis.incr(key);
         }
     }
 
