@@ -83,4 +83,19 @@ public class RoutingFilterTest {
         assertThat(response.getStatus(),equalTo(HttpServletResponse.SC_MOVED_PERMANENTLY));
     }
 
+    @Test
+    public void shouldRedirectHashCaseInsensitive() throws Throwable {
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/wAvE");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        Mockito.when(shortenerService.expand("wave")).thenReturn(new ShortenedUrl(new URI("http://www.test.com"), "wave", "Description"));
+
+        routingFilter.doFilter(request, response, filterChain);
+
+        Mockito.verify(filterChain, times(0))
+                .doFilter(Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class));
+
+        assertThat(response.getStatus(),equalTo(HttpServletResponse.SC_MOVED_PERMANENTLY));
+    }
+
 }

@@ -39,7 +39,7 @@ public class RoutingFilter implements Filter {
             Logger.getLogger("RedirectFilter").info("Request is file or api call " + requestURI);
             chain.doFilter(request, response);
         } else {
-            String hash = requestURI.substring(1);
+            String hash = requestURI.substring(1).toLowerCase();
             Logger.getLogger("RedirectFilter").info("Resolving hash " + hash);
             try {
                 ShortenedUrl shortenedUrl = shortenerService.expand(hash);
